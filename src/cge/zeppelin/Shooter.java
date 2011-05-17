@@ -37,53 +37,7 @@ public class Shooter {
                 System.exit(0);
             }
         });
-
-        final Magazin spheres = new Magazin(world, new Magazin.BulletMaker() {
-
-            @Override
-            public Entity makeOne() {
-                return Entity.makeSphere(0.5f, 0.1f, Matrix4.translate(0, 8f, 0)).tag("sphere");
-            }
-        }, 200);
-
-        final Magazin cubes = new Magazin(world, new Magazin.BulletMaker() {
-
-            @Override
-            public Entity makeOne() {
-                return Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 8f, 0))
-                        .tag("cube");
-            }
-        }, 200);
-
-        world.input.addKeyListener(KeyEvent.VK_B, new Runnable() {
-            @Override
-            public void run() {
-                cubes.next(new Vector3(0, 8f, 0));
-            }
-        });
-
-        world.input.addKeyListener(KeyEvent.VK_N, new Runnable() {
-            @Override
-            public void run() {
-                spheres.next(new Vector3(0, 8f, 0));
-            }
-        });
-
-        world.input.addKeyListener(KeyEvent.VK_SPACE, new Runnable() {
-            @Override
-            public void run() {
-                flyer.fire();
-            }
-        });
-
-        world.simulator.addCollisionListener(theBigOne, new CollisionListener() {
-            @Override
-            public void response(Entity e0, Entity e1) {
-                if (e1.isTagged("bullet"))
-                    cubes.next(new Vector3(0, 8f, 0));
-            }
-        });
-
+        
         Printer.print(world.renderer.root);
     }
 }

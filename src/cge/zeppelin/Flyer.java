@@ -18,8 +18,6 @@ class Flyer extends Entity {
     Transform rotation;
     Transform xform;
 
-    Magazin bullets;
-
     float speed = 5; // m/s
     float speedA = 1; // rad/s
 
@@ -32,13 +30,6 @@ class Flyer extends Entity {
 
         translation = Transform.translate(start);
         rotation = Transform.rotate(new Vector3(0, 1, 0), 0);
-
-        bullets = new Magazin(w, new Magazin.BulletMaker() {
-            @Override
-            public Entity makeOne() {
-                return makeSphere(0.2f, 0.2f, Matrix4.translate(0, 0, 0)).tag("bullet");
-            }
-        }, 100);
 
         update();
     }
@@ -76,15 +67,6 @@ class Flyer extends Entity {
             rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), -speedA * dt));
 
         update();
-    }
-
-    /**
-     * Fire the next bullet.
-     */
-    void fire() {
-        Vector3 velocity = rotation.getMatrix().mulDir(new Vector3(0, 0, -30));
-        Vector3 position = translation.getMatrix().translation();
-        bullets.next(position, velocity);
     }
 
     private void update() {
