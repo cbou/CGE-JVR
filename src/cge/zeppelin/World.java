@@ -16,6 +16,7 @@ public class World {
     final InputState input;
     final Simulator simulator;
     final Renderer renderer;
+    final Environnement environnement;
 
     /**
      * Create a new world.
@@ -24,6 +25,7 @@ public class World {
         input = i;
         simulator = s;
         renderer = r;
+        environnement = new Environnement(this);
     }
 
     /**
@@ -53,8 +55,9 @@ public class World {
     }
 
     void frame(float elapsed, GLAutoDrawable drawable) {
-        for (Entity e : entities)
+        for (Entity e : entities) {
             e.manipulate(elapsed, this);
+        }
         input.frame(elapsed);
         simulator.simulate(elapsed);
         renderer.render(drawable);

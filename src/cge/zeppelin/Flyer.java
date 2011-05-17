@@ -66,6 +66,8 @@ class Flyer extends Entity {
         else if (input.isOneDown('K', KeyEvent.VK_DOWN))
             rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), -speedA * dt));
 
+        world.environnement.affect(this, dt);
+        
         update();
     }
 
