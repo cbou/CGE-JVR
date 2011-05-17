@@ -1,4 +1,4 @@
-package cge.zepelin;
+package cge.zeppelin;
 /**
  * A pair of colliding entities. Comparison and hashing are invariant to entity
  * ordering.

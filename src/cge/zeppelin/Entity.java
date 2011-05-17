@@ -1,4 +1,4 @@
-package cge.zepelin;
+package cge.zeppelin;
 
 import java.io.File;
 import java.util.HashSet;

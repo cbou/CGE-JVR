@@ -1,4 +1,4 @@
-package cge.zepelin;
+package cge.zeppelin;
 import java.util.LinkedList;
 import java.util.Queue;
 

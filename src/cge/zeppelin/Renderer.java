@@ -1,4 +1,4 @@
-package cge.zepelin;
+package cge.zeppelin;
 import java.awt.Color;
 
 import javax.media.opengl.GL2GL3;

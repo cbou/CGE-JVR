@@ -1,4 +1,4 @@
-package cge.zepelin;
+package cge.zeppelin;
 import java.awt.Dimension;
 
 import javax.media.opengl.GLAutoDrawable;

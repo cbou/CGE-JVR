@@ -1,4 +1,4 @@
-package cge.zepelin;
+package cge.zeppelin;
 /**
  * The application is notified of collisions via this interface. The implementor
  * is called on collision of two entities.
