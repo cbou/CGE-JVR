@@ -16,7 +16,7 @@ public class World {
     final InputState input;
     final Simulator simulator;
     final Renderer renderer;
-    final Environnement environnement;
+    final EnvironnementManager environnement;
 
     /**
      * Create a new world.
@@ -25,7 +25,7 @@ public class World {
         input = i;
         simulator = s;
         renderer = r;
-        environnement = new Environnement(this);
+        environnement = new EnvironnementManager(this);
     }
 
     /**
