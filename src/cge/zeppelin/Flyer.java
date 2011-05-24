@@ -51,6 +51,8 @@ class Flyer extends Entity {
         node.addChildNode(zeppelin.node);
         node.addChildNode(zeppelin2.node);
         
+        
+        
         update();
     }
 

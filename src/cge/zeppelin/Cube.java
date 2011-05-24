@@ -19,9 +19,9 @@ public class Cube extends Entity{
         
         if (shape != null) {
             Vector3f inertia = new Vector3f(0, 0, 0);
-            shape.calculateLocalInertia(0, inertia);
+            shape.calculateLocalInertia(mass, inertia);
 
-            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(0, this, shape,
+            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(mass, this, shape,
                     inertia);
             info.restitution = 0.4f;
             info.linearDamping = 0.2f;

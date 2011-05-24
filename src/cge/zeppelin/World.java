@@ -90,7 +90,7 @@ public class World {
         // the big one
         add(Entity.makeCube(new Vector3(2, 2, 2), 0, Matrix4.translate(0, 10f, 0)));
         // the small one
-        add(Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, 0, 0)));
+        add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
         
      	renderer.camera.setTransform(Transform.translate(new Vector3(0,0,0)));
      	renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
