@@ -89,11 +89,11 @@ class Flyer extends Entity {
     }
     
     public void turn(float direction) {
-    	yRotVelocity += direction * rotAcceleration;
+    	yRotVelocity += direction * rotAcceleration * Math.min(Math.abs(velocity),1);
     }
     
     public void pitch(float direction) {
-    	xRotVelocity += direction * rotAcceleration;
+    	xRotVelocity += direction * rotAcceleration * Math.min(Math.abs(velocity),1);
     }
 
 	public void balast(int i) {

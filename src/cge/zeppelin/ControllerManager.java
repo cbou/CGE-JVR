@@ -9,8 +9,7 @@ public class ControllerManager {
 		this.world = world;
 	}
 	
-	public void update() {
-		
+	public void update() {		
 		if (world.input.isDown('W')){
         	world.flyer.accelerate(1);
         } else if (world.input.isDown('S')){
@@ -42,6 +41,14 @@ public class ControllerManager {
         if (world.input.isTriggered('1')){
         	world.renderer.switchCamera();
         }
+        
+        if (world.input.isDown('M')){
+        	world.renderer.zoomIn();
+        }
+        if (world.input.isDown('N')){
+        	world.renderer.zoomOut();
+        }
+        
 	}
 	
 }
