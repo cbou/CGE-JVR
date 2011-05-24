@@ -22,7 +22,7 @@ public class Renderer {
 	     
     Context ctx = null;
     GroupNode root = new GroupNode("Root");
-    GroupNode zeppelin = new GroupNode("Zeppelin");
+    GroupNode zeppelinNode = new GroupNode("Zeppelin");
     
     Pipeline pipeline = new Pipeline(root);
     CameraNode camera = new CameraNode("Camera", 1, 60);
@@ -44,8 +44,8 @@ public class Renderer {
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
         add(spot,camera2);
-        zeppelin.addChildNode(camera);
-        add(zeppelin);
+        zeppelinNode.addChildNode(camera);
+        add(zeppelinNode);
     }
 
     /**

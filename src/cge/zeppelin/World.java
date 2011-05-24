@@ -31,7 +31,7 @@ public class World {
         simulator = s;
         renderer = r;
         environnement = new EnvironnementManager(this);
-        flyer = new Flyer(this, renderer.zeppelin, new Vector3(0, 1.9f, 10)); 
+        flyer = new Flyer(this, renderer.zeppelinNode, new Vector3(3, 10, 0)); 
         
         populateWorld(50, 200);
     }
@@ -81,17 +81,16 @@ public class World {
 
         add(Entity.makeCube(new Vector3(100, 1, 100), 0, Matrix4.translate(0, -0.5f, 0)));
 
-        final Entity theBigOne = Entity.makeCube(new Vector3(2, 2, 2), 0,
-                Matrix4.translate(0, 10f, 0));
-        
-        add(theBigOne);
-        add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
+        // the big one
+        add(Entity.makeCube(new Vector3(2, 2, 2), 0, Matrix4.translate(0, 10f, 0)));
+        // the small one
+        add(Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, 0, 0)));
 
         Entity zeppelin = Entity.makeCube(new Vector3(1, 1, 3), 0, Matrix4.translate(0, 0, 0));
-        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
+        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1),0, Matrix4.translate(0, -1, 0));
 
-        renderer.zeppelin.addChildNode(zeppelin.node);
-        renderer.zeppelin.addChildNode(zeppelin2.node);
+        renderer.zeppelinNode.addChildNode(zeppelin.node);
+        renderer.zeppelinNode.addChildNode(zeppelin2.node);
         
      	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,5)));
      	renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
