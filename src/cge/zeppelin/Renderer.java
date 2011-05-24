@@ -9,7 +9,9 @@ import de.bht.jvr.core.Context;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.SpotLightNode;
+import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.pipeline.Pipeline;
+import de.bht.jvr.math.Vector3;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -19,6 +21,8 @@ public class Renderer {
 
     Context ctx = null;
     GroupNode root = new GroupNode("Root");
+    GroupNode zeppelin = new GroupNode("Zeppelin");
+    
     Pipeline pipeline = new Pipeline(root);
     CameraNode camera = new CameraNode("Camera", 1, 60);
     SpotLightNode spot = new SpotLightNode("Spot");
@@ -33,7 +37,9 @@ public class Renderer {
         spot.setIntensity(1f);
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
-        add(camera, spot);
+        add(spot);
+        zeppelin.addChildNode(camera);
+        add(zeppelin);
     }
 
     /**
@@ -66,6 +72,10 @@ public class Renderer {
      * on an OpenGL context.
      */
     void render(GLAutoDrawable drawable) {
+    	//
+    //	drawable.getGL().getGL2GL3().glPolygonMode(GL2GL3.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);
+    	camera.setTransform(Transform.translate(new Vector3(0,2,5)));
+    	//Shooter.zeppelin.node.setTransform(Transform.translate(new Vector3(0,0,0)));
         try {
             pipeline.update();
             pipeline.render(ctx);
