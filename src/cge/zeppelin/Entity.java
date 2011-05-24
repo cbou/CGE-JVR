@@ -27,46 +27,18 @@ import de.bht.jvr.math.Vector3;
  * Contains static factory methods for the creation of simple entities. Entities
  * can be tagged. Tags are supposed to be cheap.
  */
-class Entity extends MotionState {
+abstract class Entity extends MotionState {
 
-    final SceneNode node;
-
-    final CollisionShape shape;
-    final RigidBody body;
-    final float mass;
-
-    /**
-     * Create a new entity.
-     */
-    Entity(SceneNode n, CollisionShape s, float m) {
-        shape = s;
-        node = n;
-        mass = m;
-
-        if (shape != null) {
-            Vector3f inertia = new Vector3f(0, 0, 0);
-            shape.calculateLocalInertia(mass, inertia);
-
-            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(mass, this, shape,
-                    inertia);
-            info.restitution = 0.4f;
-            info.linearDamping = 0.2f;
-            info.angularDamping = 0.2f;
-
-            body = new RigidBody(info);
-            body.setUserPointer(this);
-
-            if (mass == 0.0f)
-                body.setActivationState(CollisionObject.DISABLE_DEACTIVATION);
-        } else {
-            body = null;
-        }
-    }
+	GroupNode node;
+    CollisionShape shape;
+    RigidBody body;
+    
+    float mass;
 
     /**
      * Override for entities that need to respond to changes in the world.
      */
-    void manipulate(float elapsed, World world) {}
+    void manipulate(float elapsed) {}
 
     /*
      * (non-Javadoc)
@@ -118,28 +90,7 @@ class Entity extends MotionState {
         xformN.setTransform(new Transform(initialXform));
         sizeN.setTransform(Transform.scale(size.x(), size.y(), size.z()));
 
-        return new Entity(xformN, bs, mass);
-    }
-
-    /**
-     * Create a new sphere entity with a given size, density and initial
-     * transformation.
-     */
-    static Entity makeSphere(float radius, float density, Matrix4 initialXform) {
-        loadOnce();
-
-        CollisionShape ss = new SphereShape(radius);
-        float mass = density * 4.0f / 3.0f * (float) Math.PI * radius * radius * radius;
-
-        GroupNode xformN = new GroupNode();
-        GroupNode sizeN = new GroupNode();
-        xformN.addChildNode(sizeN);
-        sizeN.addChildNode(sphere);
-
-        xformN.setTransform(new Transform(initialXform));
-        sizeN.setTransform(Transform.scale(radius * 2, radius * 2, radius * 2));
-
-        return new Entity(xformN, ss, mass);
+        return new Cube(xformN, bs, mass);
     }
 
     /**

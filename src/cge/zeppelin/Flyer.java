@@ -1,7 +1,14 @@
 package cge.zeppelin;
 
+import javax.vecmath.Vector3f;
+
+import com.bulletphysics.collision.shapes.BoxShape;
+import com.bulletphysics.collision.shapes.CollisionShape;
+
+import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Transform;
+import de.bht.jvr.math.Matrix4;
 import de.bht.jvr.math.Vector3;
 
 /**
@@ -26,18 +33,24 @@ class Flyer extends Entity {
     float gas				=  25;
     float load				=  15;
     
-	private float friction = 0.01f;
+	float friction = 0.01f;
     
     /**
      * Create a new flyer and attach it to an existing scene node. Needs a
      * reference to the world for access to input and scene state.
      */
-    Flyer(World w, SceneNode n, Vector3 start) {
-        super(n, null, 0);
+    Flyer(GroupNode n, Vector3 start) {
+        node = n;
 
         translation = Transform.translate(start);
         rotation 	= Transform.rotate(new Vector3(0, 1, 0), 0);
 
+        Entity zeppelin  = Entity.makeCube(new Vector3(2, 2, 15), 0, Matrix4.translate(0, 1.5f, 0));
+        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
+
+        node.addChildNode(zeppelin.node);
+        node.addChildNode(zeppelin2.node);
+        
         update();
     }
 
@@ -46,7 +59,7 @@ class Flyer extends Entity {
      * @see Entity#manipulate(float, World)
      */
     @Override
-    void manipulate(float dt, World world) {              
+    void manipulate(float dt) {              
         rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
         rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), xRotVelocity * dt));
 
@@ -71,8 +84,6 @@ class Flyer extends Entity {
         xRotVelocity = Math.abs(xRotVelocity) < 0.01 ? 0 : xRotVelocity;
       
         //TODO Centrifugal force for Roll
-        
-        world.environnement.affect(this, dt);
         
         update();
     }

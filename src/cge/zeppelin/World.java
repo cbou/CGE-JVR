@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
+import javax.vecmath.Vector3f;
+
+import com.bulletphysics.collision.shapes.BoxShape;
+import com.bulletphysics.collision.shapes.CollisionShape;
 
 import de.bht.jvr.core.Printer;
 import de.bht.jvr.core.Transform;
@@ -31,7 +35,8 @@ public class World {
         simulator = s;
         renderer = r;
         environnement = new EnvironnementManager(this);
-        flyer = new Flyer(this, renderer.zeppelinNode, new Vector3(3, 10, 0)); 
+        
+        flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0)); 
         
         populateWorld(50, 200);
     }
@@ -64,8 +69,9 @@ public class World {
 
     void frame(float elapsed, GLAutoDrawable drawable) {
         for (Entity e : entities) {
-            e.manipulate(elapsed, this);
+            e.manipulate(elapsed);
         }
+        environnement.affect(flyer, elapsed);
         input.frame(elapsed);
         simulator.simulate(elapsed);
         renderer.render(drawable);
@@ -85,12 +91,6 @@ public class World {
         add(Entity.makeCube(new Vector3(2, 2, 2), 0, Matrix4.translate(0, 10f, 0)));
         // the small one
         add(Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, 0, 0)));
-
-        Entity zeppelin  = Entity.makeCube(new Vector3(2, 2, 15), 0, Matrix4.translate(0, 1.5f, 0));
-        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
-
-        renderer.zeppelinNode.addChildNode(zeppelin.node);
-        renderer.zeppelinNode.addChildNode(zeppelin2.node);
         
      	renderer.camera.setTransform(Transform.translate(new Vector3(0,0,0)));
      	renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
