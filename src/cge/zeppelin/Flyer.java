@@ -1,10 +1,8 @@
 package cge.zeppelin;
-import java.awt.event.KeyEvent;
 
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
-import de.bht.jvr.util.awt.InputState;
 
 /**
  * An entity that responds to keyboard input and implements a very simple
@@ -43,18 +41,12 @@ class Flyer extends Entity {
         update();
     }
 
-    public Flyer(World world, SceneNode node, Vector3 vector3, float  acc) {
-		this(world,node,vector3);
-		this.acceleration= acc;
-	}
-
 	/*
      * (non-Javadoc)
      * @see Entity#manipulate(float, World)
      */
     @Override
-    void manipulate(float dt, World world) {
-              
+    void manipulate(float dt, World world) {              
         rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
         rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), xRotVelocity * dt));
 
@@ -65,12 +57,10 @@ class Flyer extends Entity {
         //Gravity, Gas and Balance
         float overAllGravity = gravity+gas-load;
         translation = translation.mul(Transform.translate(0,overAllGravity,0));
-       
         
         //TODO Alle Velocities in einen Vektor
         // Friction
         velocity *= 1-(friction*Math.abs(velocity));
-//        velocity *= 1-friction;
 
         velocity = Math.abs(velocity) < 0.01 ? 0 : velocity;
       
@@ -83,14 +73,8 @@ class Flyer extends Entity {
         //TODO Centrifugal force for Roll
         
         world.environnement.affect(this, dt);
+        
         update();
-    }
-
-    private void printState() {
-    	float yaw 	= (float) Math.acos(xform.extractRotation().getMatrix().get(0, 0));
-    	float pitch = (float) Math.acos(xform.extractRotation().getMatrix().get(1, 1));
-    	//System.out.println(String.format("Velocity %2.2f Pitch %2.2f Yaw %2.2f",velocity, Math.toDegrees(pitch),Math.toDegrees(yaw)));
-    	//System.out.println(String.format("Gas %2.2f Load %2.2f",gas, load));
     }
 
 	private void update() {
@@ -121,4 +105,11 @@ class Flyer extends Entity {
     	gas	-= 0.001;      
     	gas =  Math.max(0, gas);
 	}
+
+    private void printState() {
+    	float yaw 	= (float) Math.acos(xform.extractRotation().getMatrix().get(0, 0));
+    	float pitch = (float) Math.acos(xform.extractRotation().getMatrix().get(1, 1));
+    	//System.out.println(String.format("Velocity %2.2f Pitch %2.2f Yaw %2.2f",velocity, Math.toDegrees(pitch),Math.toDegrees(yaw)));
+    	//System.out.println(String.format("Gas %2.2f Load %2.2f",gas, load));
+    }
 }

@@ -1,5 +1,4 @@
 package cge.zeppelin;
-import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,8 +70,6 @@ public class World {
         simulator.simulate(elapsed);
         renderer.render(drawable);
     }
-
-	static Entity zeppelin;
     
     /**
      * Populate the world with the neccessary entities.
@@ -86,20 +83,20 @@ public class World {
 
         final Entity theBigOne = Entity.makeCube(new Vector3(2, 2, 2), 0,
                 Matrix4.translate(0, 10f, 0));
-
-        zeppelin = Entity.makeCube(new Vector3(1, 1, 3), 0, Matrix4.translate(0, 0, 0));
-        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
         
         add(theBigOne);
         add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
 
+        Entity zeppelin = Entity.makeCube(new Vector3(1, 1, 3), 0, Matrix4.translate(0, 0, 0));
+        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
+
         renderer.zeppelin.addChildNode(zeppelin.node);
         renderer.zeppelin.addChildNode(zeppelin2.node);
+        
      	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,5)));
      	renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
 
         add(flyer);
-        
         
         Printer.print(renderer.root);
     }
