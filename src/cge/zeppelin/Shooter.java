@@ -34,16 +34,12 @@ public class Shooter {
         world.add(theBigOne);
         world.add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
 
-//        world.renderer.camera.
-        
         world.renderer.zeppelin.addChildNode(zeppelin.node);
         world.renderer.zeppelin.addChildNode(zeppelin2.node);
-        //world.renderer.zeppelin.addChildNode(world.renderer.camera);
-        
-        
-        final Flyer flyer = new Flyer(world, world.renderer.zeppelin, new Vector3(0, 1.9f, 10));
-        
-        
+     	world.renderer.camera.setTransform(Transform.translate(new Vector3(0,2,5)));
+     	world.renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
+                
+        final Flyer flyer = new Flyer(world, world.renderer.zeppelin, new Vector3(0, 1.9f, 10)); 
         
         world.add(flyer);
         
@@ -51,7 +47,7 @@ public class Shooter {
 
             @Override
             public void run() {
-            	System.out.println("dd");
+       
             }
         });
         

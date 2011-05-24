@@ -85,6 +85,10 @@ class Flyer extends Entity {
         	load =  Math.max(0, load);
         }
    
+        if (input.isTriggered('1')){
+        	world.renderer.switchCamera();
+        }
+        
         rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
         rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), xRotVelocity * dt));
 

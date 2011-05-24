@@ -9,9 +9,8 @@ import de.bht.jvr.core.Context;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.SpotLightNode;
-import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.pipeline.Pipeline;
-import de.bht.jvr.math.Vector3;
+import de.bht.jvr.core.pipeline.PipelineCommandPtr;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -19,13 +18,20 @@ import de.bht.jvr.math.Vector3;
  */
 public class Renderer {
 
+	boolean pov = true;
+	     
     Context ctx = null;
     GroupNode root = new GroupNode("Root");
     GroupNode zeppelin = new GroupNode("Zeppelin");
     
     Pipeline pipeline = new Pipeline(root);
     CameraNode camera = new CameraNode("Camera", 1, 60);
+    CameraNode camera2 = new CameraNode("Camera2", 1, 60);
+   
     SpotLightNode spot = new SpotLightNode("Spot");
+	private CameraNode currentCamera = camera;
+	private PipelineCommandPtr switchAmbientCamCmd;
+	private PipelineCommandPtr switchLightCamCmd;
 
     /**
      * Create a new renderer.
@@ -37,7 +43,7 @@ public class Renderer {
         spot.setIntensity(1f);
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
-        add(spot);
+        add(spot,camera2);
         zeppelin.addChildNode(camera);
         add(zeppelin);
     }
@@ -47,14 +53,14 @@ public class Renderer {
      * callback on an OpenGL context.
      */
     void init(GLAutoDrawable drawable) {
-        GL2GL3 gl = drawable.getGL().getGL2GL3();
+    	GL2GL3 gl = drawable.getGL().getGL2GL3();
         gl.setSwapInterval(1);
         ctx = new Context(gl);
 
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-        pipeline.switchCamera(camera);
+        switchAmbientCamCmd = pipeline.switchCamera(currentCamera);
         pipeline.drawGeometry("AMBIENT", null);
-
+       
         Pipeline ll = pipeline.doLightLoop(false, true);
         ll.switchLightCamera();
         ll.createFrameBufferObject("ShadowMap", true, 0, 2048, 2048, 0);
@@ -62,9 +68,17 @@ public class Renderer {
         ll.clearBuffers(true, false, null);
         ll.drawGeometry("AMBIENT", null);
         ll.switchFrameBufferObject(null);
-        ll.switchCamera(camera);
+        switchLightCamCmd = ll.switchCamera(currentCamera);
         ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
         ll.drawGeometry("LIGHTING", null);
+        
+    }
+    
+    
+    public void switchCamera(){
+    	pov = !pov;
+    	switchAmbientCamCmd.switchCamera(pov ? camera:camera2);
+    	switchLightCamCmd.switchCamera(pov ? camera:camera2);
     }
 
     /**
@@ -72,11 +86,8 @@ public class Renderer {
      * on an OpenGL context.
      */
     void render(GLAutoDrawable drawable) {
-    	//
-    //	drawable.getGL().getGL2GL3().glPolygonMode(GL2GL3.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);
-    	camera.setTransform(Transform.translate(new Vector3(0,2,5)));
-    	//Shooter.zeppelin.node.setTransform(Transform.translate(new Vector3(0,0,0)));
         try {
+        
             pipeline.update();
             pipeline.render(ctx);
         } catch (Exception e) {
