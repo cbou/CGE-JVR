@@ -24,6 +24,7 @@ public class Main {
     static Simulator simulator = new Simulator(new Vector3(0, -10, 0));
     static InputState input = new InputState();
     static World world = new World(input, simulator, renderer);
+    static ControllerManager controllerManager = new ControllerManager(world);
     static StopWatch clock = new StopWatch();
 
     /**
@@ -31,13 +32,12 @@ public class Main {
      */
     public static void main(String[] args) {
         Log.addLogListener(new LogPrinter(-1, 0, -1));
-
-        Shooter.populateWorld(world, 50, 200);
-
+        
         GLEventListener app = new GLEventListener() {
 
             @Override
             public void display(GLAutoDrawable drawable) {
+                controllerManager.update();
                 world.frame(clock.elapsed(), drawable);
             }
 

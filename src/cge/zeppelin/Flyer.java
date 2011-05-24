@@ -54,41 +54,7 @@ class Flyer extends Entity {
      */
     @Override
     void manipulate(float dt, World world) {
-        InputState input = world.input;
-
-        if (input.isDown('W')){
-        	velocity-=acceleration;
-        }
-        else if (input.isDown('S')){
-        	velocity+=acceleration;
-        }
-        if (input.isOneDown('J', KeyEvent.VK_LEFT)){
-        	yRotVelocity+=rotAcceleration;
-        }
-        else if (input.isOneDown('L', KeyEvent.VK_RIGHT)){
-        	yRotVelocity-=rotAcceleration;
-        }
-       
-        if (input.isOneDown('I', KeyEvent.VK_UP)){
-        	xRotVelocity+=rotAcceleration;      
-        }
-        else if (input.isOneDown('K', KeyEvent.VK_DOWN)){
-        	xRotVelocity-=rotAcceleration;
-        }
-
-        if (input.isOneDown('G')){
-        	gas	-= 0.001;      
-        	gas =  Math.max(0, gas);
-        }
-        else if (input.isOneDown('B')){
-        	load -= 0.001;
-        	load =  Math.max(0, load);
-        }
-   
-        if (input.isTriggered('1')){
-        	world.renderer.switchCamera();
-        }
-        
+              
         rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
         rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), xRotVelocity * dt));
 
@@ -133,4 +99,26 @@ class Flyer extends Entity {
         
         printState(); 
     }
+    
+    public void accelerate(float direction) {
+    	velocity -= direction * acceleration;
+    }
+    
+    public void turn(float direction) {
+    	yRotVelocity += direction * rotAcceleration;
+    }
+    
+    public void pitch(float direction) {
+    	xRotVelocity += direction * rotAcceleration;
+    }
+
+	public void balast(int i) {
+    	load -= 0.001;
+    	load =  Math.max(0, load);
+	}
+
+	public void gaz(int i) {
+    	gas	-= 0.001;      
+    	gas =  Math.max(0, gas);
+	}
 }
