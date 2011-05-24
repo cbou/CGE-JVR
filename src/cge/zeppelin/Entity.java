@@ -47,8 +47,7 @@ class Entity extends MotionState {
             Vector3f inertia = new Vector3f(0, 0, 0);
             shape.calculateLocalInertia(mass, inertia);
 
-            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(mass, this, shape,
-                    inertia);
+            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(mass, this, shape, inertia);
             info.restitution = 0.4f;
             info.linearDamping = 0.2f;
             info.angularDamping = 0.2f;
@@ -106,8 +105,7 @@ class Entity extends MotionState {
     static Entity makeCube(Vector3 size, float density, Matrix4 initialXform) {
         loadOnce();
 
-        CollisionShape bs = new BoxShape(new Vector3f(0.5f * size.x(), 0.5f * size.y(),
-                0.5f * size.z()));
+        CollisionShape bs = new BoxShape(new Vector3f(0.5f * size.x(), 0.5f * size.y(), 0.5f * size.z()));
         float mass = density * size.x() * size.y() * size.z();
 
         GroupNode xformN = new GroupNode();

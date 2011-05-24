@@ -86,10 +86,10 @@ public class World {
         // the small one
         add(Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, 0, 0)));
 
-        Entity zeppelin  = Entity.makeCube(new Vector3(2, 2, 15), 0, Matrix4.translate(0, 1.5f, 0));
-        Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
+      //  Entity zeppelin  = Entity.makeCube(new Vector3(2, 2, 15), 0, Matrix4.translate(0, 1.5f, 0));
+        Entity zeppelin2 = new Zeppelin().createEntitiy();//Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
 
-        renderer.zeppelinNode.addChildNode(zeppelin.node);
+       // renderer.zeppelinNode.addChildNode(zeppelin.node);
         renderer.zeppelinNode.addChildNode(zeppelin2.node);
         
      	renderer.camera.setTransform(Transform.translate(new Vector3(0,0,0)));
