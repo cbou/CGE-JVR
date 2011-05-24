@@ -87,13 +87,13 @@ public class World {
         add(theBigOne);
         add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
 
-        Entity zeppelin = Entity.makeCube(new Vector3(1, 1, 3), 0, Matrix4.translate(0, 0, 0));
+        Entity zeppelin  = Entity.makeCube(new Vector3(2, 2, 15), 0, Matrix4.translate(0, 1.5f, 0));
         Entity zeppelin2 = Entity.makeCube(new Vector3(1, 1, 1), 0, Matrix4.translate(0, -1, 0));
 
         renderer.zeppelin.addChildNode(zeppelin.node);
         renderer.zeppelin.addChildNode(zeppelin2.node);
         
-     	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,5)));
+     	renderer.camera.setTransform(Transform.translate(new Vector3(0,0,0)));
      	renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
 
         add(flyer);

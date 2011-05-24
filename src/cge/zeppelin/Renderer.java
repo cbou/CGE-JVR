@@ -29,7 +29,6 @@ public class Renderer {
     CameraNode camera2 = new CameraNode("Camera2", 1, 60);
    
     SpotLightNode spot = new SpotLightNode("Spot");
-	private CameraNode currentCamera = camera;
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
 
@@ -58,7 +57,7 @@ public class Renderer {
         ctx = new Context(gl);
 
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-        switchAmbientCamCmd = pipeline.switchCamera(currentCamera);
+        switchAmbientCamCmd = pipeline.switchCamera(camera);
         pipeline.drawGeometry("AMBIENT", null);
        
         Pipeline ll = pipeline.doLightLoop(false, true);
@@ -68,7 +67,7 @@ public class Renderer {
         ll.clearBuffers(true, false, null);
         ll.drawGeometry("AMBIENT", null);
         ll.switchFrameBufferObject(null);
-        switchLightCamCmd = ll.switchCamera(currentCamera);
+        switchLightCamCmd = ll.switchCamera(camera);
         ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
         ll.drawGeometry("LIGHTING", null);
         
@@ -87,7 +86,6 @@ public class Renderer {
      */
     void render(GLAutoDrawable drawable) {
         try {
-        
             pipeline.update();
             pipeline.render(ctx);
         } catch (Exception e) {
@@ -119,4 +117,11 @@ public class Renderer {
             root.removeChildNode(node);
     }
 
+	public void zoomIn() {
+		camera2.setFieldOfView(camera2.getFieldOfView()+1);
+	}
+
+	public void zoomOut() {
+		camera2.setFieldOfView(camera2.getFieldOfView()-1);
+	}
 }
