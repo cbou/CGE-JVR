@@ -29,6 +29,10 @@ abstract class Entity extends MotionState {
 	private static SceneNode box = null;
     private static SceneNode sphere = null;
 
+	
+    Transform translation;
+    Transform rotation;
+    Transform xform;
 	    
 	GroupNode node;
     CollisionShape shape;

@@ -8,7 +8,6 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 
 import de.bht.jvr.core.GroupNode;
-import de.bht.jvr.core.SceneNode;
 
 public class Cube extends Entity{
 

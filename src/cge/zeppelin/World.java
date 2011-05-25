@@ -4,16 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
-import javax.vecmath.Vector3f;
-
-import com.bulletphysics.collision.shapes.BoxShape;
-import com.bulletphysics.collision.shapes.CollisionShape;
 
 import de.bht.jvr.core.Printer;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;
 import de.bht.jvr.math.Vector3;
-import de.bht.jvr.util.awt.*;
+import de.bht.jvr.util.awt.InputState;
 
 /**
  * Represent a world of entites that can be rendered and simulated.
@@ -94,10 +90,16 @@ public class World {
         // the small one
         add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
         
-     	renderer.camera.setTransform(Transform.translate(new Vector3(0,0,0)));
-     	renderer.camera2.setTransform(Transform.translate(new Vector3(0,2,25)));
+     	renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
+     	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,25)));
 
         add(flyer);
+        simulator.addCollisionListener(flyer, new CollisionListener() {
+            @Override
+            public void response(Entity e0, Entity e1) {
+                System.out.println("Collision detected");
+            }
+        });
         
         Printer.print(renderer.root);
     }

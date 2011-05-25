@@ -2,6 +2,10 @@ package cge.zeppelin;
 
 import java.awt.event.KeyEvent;
 
+import de.bht.jvr.core.Transform;
+import de.bht.jvr.math.Matrix4;
+import de.bht.jvr.math.Vector3;
+
 public class ControllerManager {
 	World world;
 
@@ -48,6 +52,18 @@ public class ControllerManager {
         if (world.input.isDown('N')){
         	world.renderer.zoomOut();
         }
+
+        if (world.input.isDown('J')){
+            world.add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(3, 16, 0)));
+        }
+        
+        if (world.input.isDown('I')){
+        	// Back to start
+        	world.flyer.translation = Transform.translate(new Vector3(3, 10, 0));
+        	world.flyer.rotation = Transform.rotate(new Vector3(0, 1, 0), 0);
+            world.flyer.update();
+        }
+
         
 	}
 	
