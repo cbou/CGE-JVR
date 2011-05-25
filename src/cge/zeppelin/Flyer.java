@@ -1,6 +1,6 @@
 package cge.zeppelin;
 
-import de.bht.jvr.core.SceneNode;
+import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
 
@@ -11,34 +11,37 @@ import de.bht.jvr.math.Vector3;
  */
 class Flyer extends Entity {
 
-	Transform translation;
-	Transform rotation;
-	Transform xform;
 
-	float acceleration 		= 0.5f; 	// m/s
-	float rotAcceleration	= 0.05f; 	// rad/s
+    Transform translation;
+    Transform rotation;
+    Transform xform;
 
-	float yRotVelocity 		= 0;
-	float xRotVelocity 		= 0;
-	float velocity 			= 0; 		// m/s
-
-	float gravity 			= -10;
-	float gas				=  25;
-	float load				=  15;
-
-	private float friction = 0.01f;
+    float acceleration 		= 0.5f; 	// m/s
+    float rotAcceleration	= 0.05f; 	// rad/s
+    
+    float yRotVelocity 		= 0;
+    float xRotVelocity 		= 0;
+    float velocity 			= 0; 		// m/s
+    
+    float gravity 			= -10;
+    float gas				=  25;
+    float load				=  15;
+    
+	float friction = 0.01f;
 	private float lastRot = 0;
-
-	/**
-	 * Create a new flyer and attach it to an existing scene node. Needs a
-	 * reference to the world for access to input and scene state.
-	 */
-	Flyer(World w, SceneNode n, Vector3 start) {
-		super(n, null, 0);
+	private Zeppelin zeppelin;
+    
+    /**
+     * Create a new flyer and attach it to an existing scene node. Needs a
+     * reference to the world for access to input and scene state.
+     */
+    Flyer(GroupNode n, Vector3 start) {
+        node = n;
 
 		translation = Transform.translate(start);
 		rotation 	= Transform.rotate(new Vector3(0, 1, 0), 0);
-
+		zeppelin = new Zeppelin(node); 
+		     
 		update();
 	}
 
@@ -47,11 +50,11 @@ class Flyer extends Entity {
 	 * @see Entity#manipulate(float, World)
 	 */
 	@Override
-	void manipulate(float dt, World world) {              
+	void manipulate(float dt) {              
 		rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
 		rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), xRotVelocity * dt));
 		rotation = rotation.mul(Transform.rotate(new Vector3(0, 0, 1), -lastRot ));
-		float newRot = lastRot = -yRotVelocity*velocity/80f;
+		float newRot = lastRot  = -yRotVelocity*velocity/80f;
 		rotation = rotation.mul(Transform.rotate(new Vector3(0, 0, 1), newRot));
 
 		translation = 
@@ -72,12 +75,11 @@ class Flyer extends Entity {
 
 		xRotVelocity *= 1-friction;
 		xRotVelocity = Math.abs(xRotVelocity) < 0.01 ? 0 : xRotVelocity;
+       
+        update();
+    }
 
-		world.environnement.affect(this, dt);
-
-		update();
-	}
-
+	
 	private void update() {
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
