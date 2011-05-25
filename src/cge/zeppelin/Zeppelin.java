@@ -17,6 +17,9 @@ public class Zeppelin {
 
 	private SceneNode hull;
 	private SceneNode cockpit;
+	private float gas = 1;
+	private SceneNode gasLevel;
+	private Entity entity;
 
 	public Entity createEntitiy(){
 		try {
@@ -24,10 +27,11 @@ public class Zeppelin {
 			//TODO Modell
 			hull 	= ColladaLoader.load(new File("models/sphere.dae"));
 			cockpit = ColladaLoader.load(new File("models/box.dae"));
-
-			hull.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 1f, 0)));
+			gasLevel = ColladaLoader.load(new File("models/box.dae"));
 			
+			hull.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
+			gasLevel.setTransform(Transform.scale(0.1f, 0.1f, 0.1f).mul(Transform.translate(0, -1f, -2)));
 			
 			CollisionShape bs = createBoundingShape(hull);
 			float mass = 0;//density * size.x() * size.y() * size.z();
@@ -37,11 +41,18 @@ public class Zeppelin {
 			xformN.addChildNode(sizeN);
 			sizeN.addChildNode(hull);
 			sizeN.addChildNode(cockpit);
+//			sizeN.addChildNode(gasLevel);
 			
 			//xformN.setTransform(new Transform(initialXform));
 			//sizeN.setTransform(Transform.scale(1, 1, 1));
-
-			return new Entity(xformN, bs, mass);
+			entity = new Entity(xformN, bs, mass){
+				 void manipulate(float elapsed, World world) {
+					 gasLevel.setTransform(Transform.scale(0.1f,gas-25,0.1f));
+//					 System.out.println(gas);
+				 }
+			};
+			
+			return entity;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +60,9 @@ public class Zeppelin {
 		return null;
 	}
 
-	
+	public void setGas(float amount){
+		this.gas = amount;
+	}
 	
 	private CollisionShape createBoundingShape(SceneNode node){
 		BBox box = node.getBBox();
