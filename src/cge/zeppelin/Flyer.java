@@ -10,8 +10,7 @@ import de.bht.jvr.math.Vector3;
  * The total number of bullets is fixed. Bullet entities are reused.
  */
 class Flyer extends Entity {
-
-
+	
     Transform translation;
     Transform rotation;
     Transform xform;
