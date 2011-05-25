@@ -26,6 +26,8 @@ public class World {
     final Renderer renderer;
     final EnvironnementManager environnement;
     final Flyer flyer;
+	Zeppelin zeppelin;
+	Entity zeppelinEntitiy;
 
     /**
      * Create a new world.

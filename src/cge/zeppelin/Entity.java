@@ -7,12 +7,9 @@ import java.util.Set;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
-import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
-import com.bulletphysics.collision.shapes.SphereShape;
 import com.bulletphysics.dynamics.RigidBody;
-import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
 
 import de.bht.jvr.collada14.loader.ColladaLoader;
@@ -29,6 +26,10 @@ import de.bht.jvr.math.Vector3;
  */
 abstract class Entity extends MotionState {
 
+	private static SceneNode box = null;
+    private static SceneNode sphere = null;
+
+	    
 	GroupNode node;
     CollisionShape shape;
     RigidBody body;
@@ -78,8 +79,7 @@ abstract class Entity extends MotionState {
     static Entity makeCube(Vector3 size, float density, Matrix4 initialXform) {
         loadOnce();
 
-        CollisionShape bs = new BoxShape(new Vector3f(0.5f * size.x(), 0.5f * size.y(),
-                0.5f * size.z()));
+        CollisionShape bs = new BoxShape(new Vector3f(0.5f * size.x(), 0.5f * size.y(), 0.5f * size.z()));
         float mass = density * size.x() * size.y() * size.z();
 
         GroupNode xformN = new GroupNode();
@@ -132,9 +132,7 @@ abstract class Entity extends MotionState {
         return false;
     }
 
-    private static SceneNode box = null;
-    private static SceneNode sphere = null;
-
+   
     private static void loadOnce() {
         try {
             if (box == null)
