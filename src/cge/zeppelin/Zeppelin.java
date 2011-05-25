@@ -15,6 +15,7 @@ public class Zeppelin extends Entity{
 	
 	public Zeppelin(GroupNode n){
 		try {
+			node = n;
 			//TODO Modell
 			hull 	= ColladaLoader.load(new File("models/sphere.dae"));
 			cockpit = ColladaLoader.load(new File("models/box.dae"));
