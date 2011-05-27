@@ -25,6 +25,7 @@ public class Main {
     static InputState input = new InputState();
     static World world = new World(input, simulator, renderer);
     static ControllerManager controllerManager = new ControllerManager(world);
+    static RaceManager raceManager = new RaceManager(world, renderer.sceneNode);
     static StopWatch clock = new StopWatch();
 
     /**
@@ -38,6 +39,7 @@ public class Main {
             @Override
             public void display(GLAutoDrawable drawable) {
                 controllerManager.update();
+                raceManager.update();
                 world.frame(clock.elapsed(), drawable);
             }
 

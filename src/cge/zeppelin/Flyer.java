@@ -44,20 +44,6 @@ class Flyer extends Entity {
 		rotation 	= Transform.rotate(new Vector3(0, 1, 0), 0);
 		zeppelin = new Zeppelin(node); 
 		     
-
-        mass = 0.1f;
-        Vector3 size = new Vector3(1,1,1);
-        shape = new BoxShape(new Vector3f(0.5f * size.x(), 0.5f * size.y(),
-                0.5f * size.z()));
-
-        Vector3f inertia = new Vector3f(0, 0, 0);
-        //shape.calculateLocalInertia(0, inertia);
-
-        RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(0, this, shape, inertia);
-        
-        body = new RigidBody(info);
-        body.setUserPointer(this); 
-		
         manipulate(0.01f);
 	}
 
@@ -93,33 +79,12 @@ class Flyer extends Entity {
 		xRotVelocity = Math.abs(xRotVelocity) < 0.01 ? 0 : xRotVelocity;
 
         update();
-        
-       // body.getWorldTransform(xform2)
-       // System.out.println(dt);
-        //System.out.println(body.getMotionState() != null);
-        body.saveKinematicState(dt);
-       
-        //body.
     }
 
 	
 	public void update() {
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
-		
-		/*com.bulletphysics.linearmath.Transform xform2 = new com.bulletphysics.linearmath.Transform();
-		xform2.set(new Matrix4f(node.getTransform().getMatrix().getData()));*/
-		//this.setWorldTransform(xform2);
-		//body.getWorldTransform(xform2);
-		//body.getWorldTransform(xform2).transform(new Vector3f(xform.getMatrix().translation().x(), xform.getMatrix().translation().y(), xform.getMatrix().translation().z()));
-		//body.setWorldTransform(xform2);
-		//this.getWorldTransform(n);
-		//System.out.println(body.hasContactResponse());
-		//body.translate(new Vector3f(0,0,0));
-		//com.bulletphysics.linearmath.Transform j = new com.bulletphysics.linearmath.Transform(xform.getMatrix());
-        //body.getWorldTransform(j);
-		//body.translate(new Vector3f(xform.getMatrix().translation().x(), xform.getMatrix().translation().y(), xform.getMatrix().translation().z()));
-		
 		printState(); 
 	}
 

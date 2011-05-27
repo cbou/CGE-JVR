@@ -1,4 +1,6 @@
 .classpath
+.project
 bin/*
 !bin/.
-.project
+settings/*
+!settings/.
