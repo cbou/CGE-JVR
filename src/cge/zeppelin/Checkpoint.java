@@ -11,10 +11,10 @@ import de.bht.jvr.math.Vector3;
 public class Checkpoint extends Entity {
 	
 	private SceneNode sphereModel;
-
-	public Checkpoint(GroupNode n, float size, Vector3 start){
+	float size;
+	public Checkpoint(GroupNode n, float s, Vector3 start){
 		//node;
-		
+		size = s;
 		try {
 			sphereModel 	= ColladaLoader.load(new File("models/sphere.dae"));
 		} catch (Exception e) {
@@ -25,6 +25,7 @@ public class Checkpoint extends Entity {
 		sphereModel.setTransform(Transform.scale(size, size, size));
 		node 	= new GroupNode();
 		node.addChildNode(sphereModel);
+		node.setTransform(Transform.translate(start));
 		n.addChildNode(node);
 	}
 

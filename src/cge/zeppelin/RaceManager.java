@@ -11,6 +11,8 @@ public class RaceManager {
 	GroupNode node;
 	World world;
 	ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
+	int status = 0;
+	float sumOfElapsed = 0;
 	
 	public RaceManager(World w, GroupNode n) {
 		node = n;
@@ -31,7 +33,7 @@ public class RaceManager {
 		addCheckpoint(new Checkpoint(node, 3, new Vector3(-14, 4,-30)));
 	}
 	
-	public void update() {
+	public void update(float elapsed) {
 		// uncomment this to modify position in debug mode
 		/*
 		checkpoints.get(0).node.setTransform(Transform.translate(3,10,-10));
@@ -40,6 +42,23 @@ public class RaceManager {
 		checkpoints.get(3).node.setTransform(Transform.translate(-14, 4,-30));
 		*/
 		
+		Checkpoint currentCheckpoint = checkpoints.get(status);
 		
+		Vector3 checkpointVector = currentCheckpoint.node.getTransform().extractTranslation().getMatrix().translation();
+		Vector3 flyerVector = world.flyer.node.getTransform().extractTranslation().getMatrix().translation();
+		
+		if (flyerVector.sub(checkpointVector).length() < currentCheckpoint.size) {
+			if (status < checkpoints.size() -1) {
+				status++;
+				System.out.printf("Great! Checkpoint number %s Ok!\n", status);
+			} else {
+				sumOfElapsed += elapsed;
+				if (sumOfElapsed > 3) {
+					System.out.println("You won!");
+				}
+			}
+		} else {
+			sumOfElapsed = 0;
+		}
 	}
 }

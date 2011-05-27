@@ -38,9 +38,10 @@ public class Main {
 
             @Override
             public void display(GLAutoDrawable drawable) {
+            	float elapsed = clock.elapsed();
                 controllerManager.update();
-                raceManager.update();
-                world.frame(clock.elapsed(), drawable);
+                raceManager.update(elapsed);
+                world.frame(elapsed, drawable);
             }
 
             @Override
