@@ -1,5 +1,6 @@
 package cge.zeppelin;
 
+import cge.zeppelin.util.Helper;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
@@ -23,7 +24,7 @@ class Flyer extends Entity {
     float load				=  15;
     
 	private float friction = 0.01f;
-	private float lastRot = 0;
+	private float roll = 0;
 	private Zeppelin zeppelin;
     
     /**
@@ -45,30 +46,44 @@ class Flyer extends Entity {
 	 * @see Entity#manipulate(float, World)
 	 */
 	@Override
-	void manipulate(float dt) {              
+	void manipulate(float dt) {    
+		// Yaw Angle
 		rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
+
+		// Limit pitch to 45 deg
+		float pitch = (float) Math.asin(xform.extractRotation().getMatrix().get(1, 2));
+		if (pitch<-0.5){
+			xRotVelocity = (float) Math.min(xRotVelocity, 0);
+		}
+		if (pitch>0.7){
+			xRotVelocity = Math.max(xRotVelocity, 0);
+		}
+		
+		// Pitch angle 
 		rotation = rotation.mul(Transform.rotate(new Vector3(1, 0, 0), xRotVelocity * dt));
-		rotation = rotation.mul(Transform.rotate(new Vector3(0, 0, 1), -lastRot ));
-		float newRot = lastRot  = -yRotVelocity*velocity/80f;
-		rotation = rotation.mul(Transform.rotate(new Vector3(0, 0, 1), newRot));
+		
+		// Roll angle
+		rotation = rotation.mul(Transform.rotate(new Vector3(0, 0, 1), -roll ));
+		roll  	 = -yRotVelocity*velocity/80f;
+		rotation = rotation.mul(Transform.rotate(new Vector3(0, 0, 1), roll));
 
 		translation = 
 			translation.mul(
 					Transform.translate(rotation.getMatrix().mulDir(new Vector3(0, 0, velocity * dt))));
 
-		//Gravity, Gas and Balance
+		// Gravity, Gas and Balance
 		float overAllGravity = gravity+gas-load;
 		translation = translation.mul(Transform.translate(0,overAllGravity,0));
 
 		//TODO Alle Velocities in einen Vektor
 		// Friction
-		velocity *= 1-(friction*Math.abs(velocity));
-		velocity = Math.abs(velocity) < 0.01 ? 0 : velocity;
+		velocity 	*= 1-(friction*Math.abs(velocity));
+		velocity 	= Math.abs(velocity) < 0.01 ? 0 : velocity;
 
-		yRotVelocity *= 1-friction;
+		yRotVelocity *= 1-(friction);//*Math.abs(yRotVelocity));
 		yRotVelocity = Math.abs(yRotVelocity) < 0.01 ? 0 : yRotVelocity;
 
-		xRotVelocity *= 1-friction;
+		xRotVelocity *= 1-(friction);//*Math.abs(xRotVelocity));
 		xRotVelocity = Math.abs(xRotVelocity) < 0.01 ? 0 : xRotVelocity;
 
         update();
