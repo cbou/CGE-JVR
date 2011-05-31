@@ -1,6 +1,5 @@
 package cge.zeppelin;
 
-import cge.zeppelin.util.Helper;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
