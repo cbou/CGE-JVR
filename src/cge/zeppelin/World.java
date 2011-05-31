@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import cge.zeppelin.environnement.EnvironnementManager;
+
 import de.bht.jvr.core.Printer;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;
@@ -17,7 +19,7 @@ import de.bht.jvr.util.awt.InputState;
 public class World {
 
     final Set<Entity> entities = Collections.synchronizedSet(new HashSet<Entity>());
-    final InputState input;
+    public final InputState input;
     final Simulator simulator;
     final Renderer renderer;
     final EnvironnementManager environnement;
@@ -66,6 +68,7 @@ public class World {
     }
 
     void frame(float elapsed, GLAutoDrawable drawable) {
+    	environnement.update();
         for (Entity e : entities) {
             e.manipulate(elapsed);
         }
