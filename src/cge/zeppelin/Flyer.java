@@ -9,7 +9,7 @@ import de.bht.jvr.math.Vector3;
  * interactive model. The flyer can shoot bullets into the viewing direction.
  * The total number of bullets is fixed. Bullet entities are reused.
  */
-class Flyer extends Entity {
+public class Flyer extends Entity {
 
     float acceleration 		= 0.5f; 	// m/s
     float rotAcceleration	= 0.05f; 	// rad/s

@@ -30,7 +30,7 @@ abstract class Entity extends MotionState {
     private static SceneNode sphere = null;
 
 	
-    Transform translation;
+    public Transform translation;
     Transform rotation;
     Transform xform = Transform.identity();
 	    
