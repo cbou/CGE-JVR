@@ -1,12 +1,5 @@
 package cge.zeppelin;
 
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
-
-import com.bulletphysics.collision.shapes.BoxShape;
-import com.bulletphysics.dynamics.RigidBody;
-import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
-
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
@@ -85,6 +78,7 @@ class Flyer extends Entity {
 	public void update() {
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
+		zeppelin.sendState(gas,load);
 		printState(); 
 	}
 
@@ -101,12 +95,12 @@ class Flyer extends Entity {
 	}
 
 	public void balast(int i) {
-		load -= 0.001;
+		load -= 0.001 * i;
 		load =  Math.max(0, load);
 	}
 
 	public void gaz(int i) {
-		gas	-= 0.001;      
+		gas	-= 0.001 * i;      
 		gas =  Math.max(0, gas);
 	}
 

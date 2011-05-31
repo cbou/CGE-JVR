@@ -46,7 +46,7 @@ public class Renderer {
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, spot,camera2);
+        add(zeppelinNode, sceneNode, spot, camera2);
     }
 
     /**

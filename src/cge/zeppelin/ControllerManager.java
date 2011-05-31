@@ -31,7 +31,7 @@ public class ControllerManager {
         }
         
         if (world.input.isDown('E')){
-        	world.flyer.gaz(1);
+        	world.flyer.gaz(100);
         }
         
         if (world.input.isDown(KeyEvent.VK_UP)){
