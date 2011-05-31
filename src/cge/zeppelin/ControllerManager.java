@@ -27,7 +27,7 @@ public class ControllerManager {
         }
         
         if (world.input.isDown('Q')){
-        	world.flyer.balast(1);
+        	world.flyer.balast(100);
         }
         
         if (world.input.isDown('E')){

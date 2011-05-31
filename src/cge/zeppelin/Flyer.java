@@ -22,7 +22,7 @@ class Flyer extends Entity {
     float gas				=  25;
     float load				=  15;
     
-	float friction = 0.01f;
+	private float friction = 0.01f;
 	private float lastRot = 0;
 	private Zeppelin zeppelin;
     
@@ -78,7 +78,7 @@ class Flyer extends Entity {
 	public void update() {
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
-		zeppelin.sendState(gas,load);
+		zeppelin.updateState(gas,load);
 		printState(); 
 	}
 

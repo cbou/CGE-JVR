@@ -11,11 +11,12 @@ public class Zeppelin extends Entity{
 
 	private SceneNode hull;
 	private SceneNode cockpit;
-	private float gasLevel;
-	private float balast;
 	private SceneNode gasMeter;
-	private float gasHeight = 0.1f;
-	private GroupNode sizeN;
+	private float gasRot;
+	private GroupNode gasNode;
+	private float gasMeterHeight = 0.04f;
+	private GroupNode loadNode;
+	private float loadRot;
 	
 	public Zeppelin(GroupNode n){
 		try {
@@ -27,17 +28,28 @@ public class Zeppelin extends Entity{
 
 			hull.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
-			gasMeter.setTransform(Transform.scale(0.001f, 0.1f, 0.1f).mul(Transform.translate(-1f, 0, -2)));
-
+		
 			GroupNode xformN 	= new GroupNode();
-			sizeN 				= new GroupNode();
+			GroupNode sizeN 	= new GroupNode();
+		    gasNode 			= new GroupNode();
+		    loadNode 			= new GroupNode();
+			
+			gasNode.setTransform(Transform.translate(-0.1f, -0.1f, -0.2f));
+			gasNode.addChildNode(gasMeter);
+			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/10, gasMeterHeight, gasMeterHeight/10)));
+			
+			loadNode.setTransform(Transform.translate(0.1f, -0.1f, -0.2f));
+			loadNode.addChildNode(gasMeter);
+
 			node.addChildNode(xformN);
 			xformN.addChildNode(sizeN);
 			
 			sizeN.addChildNode(hull);
-//			sizeN.addChildNode(cockpit);
-			node.addChildNode(gasMeter);
-						
+			sizeN.addChildNode(cockpit);
+
+			node.addChildNode(gasNode);
+			node.addChildNode(loadNode);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,23 +57,15 @@ public class Zeppelin extends Entity{
 
 	}
 
-	public void sendState(float gas, float load) {
-		this.gasLevel 	= gas;
-		this.balast 	= load;
+	public void updateState(float gas, float load) {
+		gasNode.setTransform(gasNode.getTransform().mul(Transform.rotateZ(-gasRot)));
+		gasRot = (float) (2-(gas/25f*Math.PI));
+		gasNode.setTransform(gasNode.getTransform().mul(Transform.rotateZ(gasRot)));
 		
-//		gasMeter.setTransform(gasMeter.getTransform().mul(Transform.translate(0, -gasHeight/2, 0)));			
-//		gasMeter.setTransform(gasMeter.getTransform().mul(Transform.scale(1,1/gasHeight,1)));
-//		gasMeter.setTransform(gasMeter.getTransform().mul(Transform.scale(0.9f,1,1)));			
-//		
-		gasMeter.setTransform(Transform.rotateZ(gasHeight).mul(gasMeter.getTransform()));			
-//		
-		gasHeight = (float) (gas/25f);
-		gasMeter.setTransform(Transform.rotateZ(-gasHeight).mul(gasMeter.getTransform()));			
-//		
-//		gasMeter.setTransform(gasMeter.getTransform().mul(Transform.translate(0, -gasHeight/2, 0)));			
-//		
-//		gasMeter.setTransform(gasMeter.getTransform().mul(Transform.scale(1,gasHeight,1)));
-//		gasMeter.setTransform(gasMeter.getTransform().mul(Transform.translate(0, gasHeight/2, 0)));
+		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(-loadRot)));
+		loadRot = (float) (2-(load/15f*Math.PI));
+		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(loadRot)));
+		
 	}
 	
 }
