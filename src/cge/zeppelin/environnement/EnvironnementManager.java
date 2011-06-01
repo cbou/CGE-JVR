@@ -108,4 +108,9 @@ public class EnvironnementManager {
 		affectWind(entity, dt);
 		affectRain(entity, dt);
 	}
+
+	public void reset() {
+		wind = null;
+		rain = null;
+	}
 }

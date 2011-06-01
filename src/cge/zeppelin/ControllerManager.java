@@ -62,6 +62,7 @@ public class ControllerManager {
         	world.flyer.translation = Transform.translate(new Vector3(3, 10, 0));
         	world.flyer.rotation = Transform.rotate(new Vector3(0, 1, 0), 0);
             world.flyer.update();
+            world.environnement.reset();
         }
 
         
