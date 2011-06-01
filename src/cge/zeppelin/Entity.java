@@ -93,9 +93,10 @@ abstract class Entity extends MotionState {
 
         xformN.setTransform(new Transform(initialXform));
         sizeN.setTransform(Transform.scale(size.x(), size.y(), size.z()));
-
+        
         return new Cube(xformN, bs, mass);
     }
+    
 
     /**
      * All the tags associated with this entity.
