@@ -27,11 +27,11 @@ public class ControllerManager {
         }
         
         if (world.input.isDown('Q')){
-        	world.flyer.balast(100);
+        	world.flyer.balast(10);
         }
         
         if (world.input.isDown('E')){
-        	world.flyer.gaz(100);
+        	world.flyer.gaz(10);
         }
         
         if (world.input.isDown(KeyEvent.VK_UP)){
@@ -58,10 +58,7 @@ public class ControllerManager {
         }
         
         if (world.input.isDown('I')){
-        	// Back to start
-        	world.flyer.translation = Transform.translate(new Vector3(3, 10, 0));
-        	world.flyer.rotation = Transform.rotate(new Vector3(0, 1, 0), 0);
-            world.flyer.update();
+        	world.flyer.reset();
         }
 
         

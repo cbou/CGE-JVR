@@ -11,7 +11,10 @@ import de.bht.jvr.math.Vector3;
  */
 public class Flyer extends Entity {
 
-    float acceleration 		= 0.5f; 	// m/s
+    private static final float STARTGAS = 25;
+	private static final float STARTLOAD = 15;
+	
+	float acceleration 		= 0.5f; 	// m/s
     float rotAcceleration	= 0.05f; 	// rad/s
     
     float yRotVelocity 		= 0;
@@ -19,8 +22,8 @@ public class Flyer extends Entity {
     float velocity 			= 0; 		// m/s
     
     float gravity 			= -10;
-    float gas				=  25;
-    float load				=  15;
+    float gas				=  STARTGAS;
+    float load				=  STARTLOAD;
     
 	private float friction = 0.01f;
 	private float roll = 0;
@@ -116,6 +119,18 @@ public class Flyer extends Entity {
 	public void gaz(int i) {
 		gas	-= 0.001 * i;      
 		gas =  Math.max(0, gas);
+	}
+	
+	public void reset(){
+		gas = STARTGAS;
+		load = STARTLOAD;
+		// Back to start
+    	translation = Transform.translate(new Vector3(3, 10, 0));
+    	rotation = Transform.rotate(new Vector3(0, 1, 0), 0);
+    	velocity = xRotVelocity = yRotVelocity = 0;
+    
+    	update();
+    
 	}
 
 	private void printState() {

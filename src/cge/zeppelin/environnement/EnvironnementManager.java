@@ -58,7 +58,8 @@ public class EnvironnementManager {
 	 */
 	public void update() {
 		Random randomGenerator = new Random();
-		
+//		wind = null;
+//		rain = null;
 	    if (wind instanceof Wind) {
 	    	wind.update();
 	    	if (wind.stop()) {
