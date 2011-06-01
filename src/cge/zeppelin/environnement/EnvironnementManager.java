@@ -24,6 +24,8 @@ public class EnvironnementManager {
 	long windLastTime = 0;
 	long rainLastTime = 0;
 	
+	public boolean disabled;
+	
 	public EnvironnementManager(World world) {
         world.input.addKeyListener(KeyEvent.VK_P, new Runnable() {
 
@@ -58,8 +60,9 @@ public class EnvironnementManager {
 	 */
 	public void update() {
 		Random randomGenerator = new Random();
-//		wind = null;
-//		rain = null;
+		
+		if (disabled) return; 
+
 	    if (wind instanceof Wind) {
 	    	wind.update();
 	    	if (wind.stop()) {
@@ -70,15 +73,17 @@ public class EnvironnementManager {
 	    }
 	    
 	    if (rain instanceof Rain) {
-	    	rain.update();
+    		rain.update();
+	    	if (rain.stop()) {
+	    		rain = null;
+	    	}
 	    } else if (randomGenerator.nextInt(100) == 0) {
 	    	this.makeRain();
 	    }
-	    
 	}
 	
 	protected void affectWind(Flyer entity, float dt) {
-		if (!(wind instanceof Wind)) return ;
+		if (!(wind instanceof Wind) && !disabled) return ;
 		
 		entity.translation = entity.translation.mul(
 			Transform.translate(
@@ -92,7 +97,7 @@ public class EnvironnementManager {
 	}
 
 	protected void affectRain(Flyer entity, float dt) {
-		if (!(rain instanceof Rain)) return ;
+		if (!(rain instanceof Rain) && !disabled) return ;
 
 		entity.translation = entity.translation.mul(
 			Transform.translate(
@@ -106,12 +111,23 @@ public class EnvironnementManager {
 	}
 	
 	public void affect(Flyer entity, float dt) {
-		affectWind(entity, dt);
-		affectRain(entity, dt);
+		if (!disabled) {
+			affectWind(entity, dt);
+			affectRain(entity, dt);
+		}
 	}
 
 	public void reset() {
 		wind = null;
 		rain = null;
 	}
+	
+	public void switchDisable() {
+		disabled = !disabled;
+		if (disabled) {
+			System.out.println("STOP WEATHER");
+		} else {
+			System.out.println("STOP WEATHER");
+		}
+	} 
 }

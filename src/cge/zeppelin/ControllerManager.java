@@ -57,10 +57,14 @@ public class ControllerManager {
             world.add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(3, 16, 0)));
         }
         
-        if (world.input.isDown('I')){
+        if (world.input.isTriggered('R')){
         	world.flyer.reset();
+        	world.environnement.reset();
         }
 
+        if (world.input.isTriggered('T')){
+        	world.environnement.switchDisable();
+        }
         
 	}
 	
