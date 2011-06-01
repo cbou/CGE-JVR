@@ -32,7 +32,7 @@ abstract class Entity extends MotionState {
 	
     public Transform translation;
     Transform rotation;
-    Transform xform;
+    Transform xform = Transform.identity();
 	    
 	GroupNode node;
     CollisionShape shape;

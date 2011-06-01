@@ -94,7 +94,7 @@ public class World {
         add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
         
      	renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
-     	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,25)));
+//     	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,25)));
 
         add(flyer);
         simulator.addCollisionListener(flyer, new CollisionListener() {
