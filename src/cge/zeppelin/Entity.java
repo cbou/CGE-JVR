@@ -24,7 +24,7 @@ import de.bht.jvr.math.Vector3;
  * Contains static factory methods for the creation of simple entities. Entities
  * can be tagged. Tags are supposed to be cheap.
  */
-abstract class Entity extends MotionState {
+abstract public class Entity extends MotionState {
 
 	private static SceneNode box = null;
     private static SceneNode sphere = null;
@@ -96,6 +96,7 @@ abstract class Entity extends MotionState {
         
         return new Cube(xformN, bs, mass);
     }
+   
     
 
     /**

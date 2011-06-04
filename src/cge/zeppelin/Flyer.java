@@ -75,6 +75,10 @@ public class Flyer extends Entity {
 
 		// Gravity, Gas and Balance
 		float overAllGravity = gravity+gas-load;
+		float height = translation.extractTranslation().getMatrix().get(1, 3);
+		if (height<=2){
+			overAllGravity = Math.max(0, overAllGravity);
+		}
 		translation = translation.mul(Transform.translate(0,overAllGravity,0));
 
 		//TODO Alle Velocities in einen Vektor

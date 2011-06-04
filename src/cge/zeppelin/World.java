@@ -86,15 +86,15 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 20, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
-        add(Entity.makeCube(new Vector3(100, 1, 100), 0, Matrix4.translate(0, -0.5f, 0)));
-
+      //  add(Entity.makeCube(new Vector3(100, 1, 100), 0, Matrix4.translate(0, -0.5f, 0)));
         // the big one
-        add(Entity.makeCube(new Vector3(2, 2, 2), 0, Matrix4.translate(0, 10f, 0)));
+      //  add(Entity.makeCube(new Vector3(2, 2, 2), 1, Matrix4.translate(0, 10f, 0)));
         // the small one
-        add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
+       // add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
         
-     	renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
-//     	renderer.camera.setTransform(Transform.translate(new Vector3(0,2,25)));
+        Terrain t = new Terrain();
+        add(t);
+        renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
 
         add(flyer);
         simulator.addCollisionListener(flyer, new CollisionListener() {
