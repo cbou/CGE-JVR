@@ -35,7 +35,7 @@ public class Terrain extends Entity{
 			float[] tangents = new float[]{0,0,0,1,1,1};
 			float[] binormals = new float[]{1,1,1,1,1,1};
 			
-			positions = createTriangleArea(20,20);
+			positions = createTriangleArea(30,30);
 			normals = createNormals(positions);
 			indices = new int[positions.length];		
 			for (int i=0;i<positions.length;indices[i]=i++);
@@ -44,9 +44,9 @@ public class Terrain extends Entity{
 			mesh = new TriangleMesh(indices, positions, normals, null, null, null);
 			fetchMat(box);
 			
-			meshNode = new ShapeNode("flup",mesh,mt);
+			meshNode = new ShapeNode("terrain",mesh,mt);
 			node = new GroupNode();
-			node.addChildNode(box);
+			//node.addChildNode(box);
 			node.addChildNode(meshNode);
 			
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ public class Terrain extends Entity{
 	private float[] createTriangleArea(int rows, int columns) {
 		float[][] tmp = new float[rows][];
 		for(int y=0;y<rows;y++){
-			tmp[y] = createTriangleStripe(columns,y);
+			tmp[y] = createTriangleStripe(columns,y, 1);
 		}
 		
 		int rowlength= tmp[0].length;
@@ -122,35 +122,35 @@ public class Terrain extends Entity{
 		 
 	}
 	
-	private float[] createTriangleStripe(int triangles, int y){
-		int h = 1;
-		float z = 2;
+	private float[] createTriangleStripe(int triangles, int y, int h){
+		
+		float z = 10;
 		float[]tmp = new float[triangles*9];
 		for (int i=0;i<triangles/2;i++){
 			int triPair = i*18;
 			z = (float) Math.random();
 			tmp[triPair]   = i*h;
-			tmp[triPair+1] = z*noise(i*h,y);
+			tmp[triPair+1] = noise(i*h,y);
 			tmp[triPair+2] = y;
 			
 			tmp[triPair+3] = i*h;
-			tmp[triPair+4] = z*noise(i*h,y+h);
+			tmp[triPair+4] = noise(i*h,y+h);
 			tmp[triPair+5] = y+h;
 			
 			tmp[triPair+6] = i*h+h;
-			tmp[triPair+7] = z*noise(i*h+h,y);
+			tmp[triPair+7] = noise(i*h+h,y);
 			tmp[triPair+8] = y;
 			
 			tmp[triPair+9] = i*h;
-			tmp[triPair+10] = z*noise(i*h,y+h);
+			tmp[triPair+10] = noise(i*h,y+h);
 			tmp[triPair+11] = y+h;
 		
 			tmp[triPair+12] = i*h+h;
-			tmp[triPair+13] = z*noise(i*h+h,y+h);
+			tmp[triPair+13] = noise(i*h+h,y+h);
 			tmp[triPair+14] = y+h;
 			
 			tmp[triPair+15] = i*h+h;
-			tmp[triPair+16] = z*noise(i*h+h,y);
+			tmp[triPair+16] = noise(i*h+h,y);
 			tmp[triPair+17] = y;
 		}
 		return tmp;
