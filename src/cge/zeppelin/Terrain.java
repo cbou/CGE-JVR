@@ -11,45 +11,37 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 
 import de.bht.jvr.collada14.loader.ColladaLoader;
+import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Material;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.TriangleMesh;
-import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
 
-	class terrainMesh{
-		float[] positions ;
-		float[] normals ;
-		
-	}
 	
 	private SceneNode box;
-	Entity b;
 	private TriangleMesh triangleMesh;
-	ShapeNode meshNode;
-	PApplet noiseMaker = new PApplet();
+	private ShapeNode meshNode;
+	private PApplet noiseMaker = new PApplet();
 	
 	Terrain() {
 		try {
 			int[] indices;
 			terrainMesh mesh = new terrainMesh();
-			float[] texCoords = new float[]{1,1,1,1,1,1};
-			float[] tangents = new float[]{0,0,0,1,1,1};
-			float[] binormals = new float[]{1,1,1,1,1,1};
+			float[] texCoords;
+			float[] tangents;
+			float[] binormals;
 			
 			mesh = createTriangleArea(10,10);
-			mesh.normals = createNormals(mesh.positions);
+		
 			indices = new int[mesh.positions.length];		
 			for (int i=0;i<mesh.positions.length;indices[i]=i++);
 			
 			box = ColladaLoader.load(new File("models/sphere.dae"));
 			triangleMesh = new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null);
-			fetchMat(box);
-			
-			meshNode = new ShapeNode("terrain",triangleMesh,mt);
+			meshNode = new ShapeNode("terrain",triangleMesh, fetchMat(box,"null_Shape"));
 			node = new GroupNode();
 			//node.addChildNode(box);
 			node.addChildNode(meshNode);
@@ -88,11 +80,9 @@ public class Terrain extends Entity{
 			float xDiff = noise((x-1)*10,y*10)-noise((x+1)*10, y*10);
 			float yDiff = noise(x*10,(y-1)*10)-noise(x*10, (y+1)*10);
 			
-			Vector3 v = new Vector3(xDiff,yDiff,1f);
-			v=v.normalize();
-			tmp[i]   = v.x();
-			tmp[i+1] = v.y();
-			tmp[i+2] = v.z();
+			tmp[i]   = xDiff;
+			tmp[i+1] = yDiff;
+			tmp[i+2] = 0.5f;
 		}
 		return tmp;
 	}
@@ -105,27 +95,18 @@ public class Terrain extends Entity{
 			float[] tmp= createTriangleStripe(columns,row*10, 10);
 			System.arraycopy(tmp, 0, tmpMesh.positions, row*tmp.length, tmp.length);
 		}
+		//TODO in einem Schritt die Normalen richtig berechnen!
+		tmpMesh.normals = createNormals(tmpMesh.positions);
 		
 		return tmpMesh;
 	}
 
 	Material mt;
 	
-	private void fetchMat(SceneNode node) {
-//		Material tmp;
-		if (node instanceof ShapeNode){
-			System.out.println("MAT");
-			mt = (((ShapeNode)node).getMaterial());
-			System.out.println(mt);
-		} else if (node instanceof GroupNode) {
-			for (SceneNode cn:((GroupNode)node).getChildNodes()){
-//				System.out.println(cn);
-//				return(fetchMat(cn));
-				fetchMat(cn);
-			}
-		} 
-//		return fetchMat(node);
-		 
+	private Material fetchMat(SceneNode node,String name) {
+	    ShapeNode shape = Finder.find(node, ShapeNode.class, name);
+	    return shape.getMaterial();
+	    
 	}
 	
 	private float[] createTriangleStripe(int triangles, int y, int h){
@@ -165,13 +146,10 @@ public class Terrain extends Entity{
 		return noiseMaker.noise(x,y);
 	}
 
-	public static void main(String[] args) {
-	
-		Terrain t = new Terrain();
-		terrainMesh ps = t.createTriangleArea(1,1);
-		for (int i=0;i<ps.positions.length;i+=3){
-			//System.out.println(ps[i]+" "+ps[i+1]+" "+ps[i+2]);
-		}
+	class terrainMesh{
+		float[] positions ;
+		float[] normals ;
 		
 	}
+
 }
