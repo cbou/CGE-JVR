@@ -26,6 +26,7 @@ public class World {
     final Flyer flyer;
 	Zeppelin zeppelin;
 	Entity zeppelinEntitiy;
+	public Terrain terrain;
 
     /**
      * Create a new world.
@@ -92,8 +93,8 @@ public class World {
         // the small one
         add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
         
-        Terrain t = new Terrain();
-        add(t);
+        terrain = new Terrain();
+        add(terrain);
         renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
 
         add(flyer);

@@ -1,16 +1,27 @@
 package cge.zeppelin;
 import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
+import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
+import de.bht.jvr.core.Shader;
+import de.bht.jvr.core.ShaderMaterial;
+import de.bht.jvr.core.ShaderProgram;
+import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.core.uniforms.UniformVector3;
+import de.bht.jvr.math.Vector3;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -33,6 +44,8 @@ public class Renderer {
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
 
+	private ShaderMaterial teapotMat;
+
     /**
      * Create a new renderer.
      */
@@ -48,6 +61,10 @@ public class Renderer {
         
         add(zeppelinNode, sceneNode, spot, camera2);
     }
+    
+    public void setTerrain(ShapeNode terrain) {
+        terrain.setMaterial(teapotMat);
+    }
 
     /**
      * Initialize the renderer. This is meant to be called from the init()
@@ -58,6 +75,19 @@ public class Renderer {
         gl.setSwapInterval(1);
         ctx = new Context(gl);
 
+		try {
+			Shader ambientVs = new Shader(getResource("ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader ambientFs = new Shader(getResource("ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+
+	        teapotMat = new ShaderMaterial();
+	        teapotMat.setShaderProgram("AMBIENT", ambientProgram);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
         switchAmbientCamCmd = pipeline.switchCamera(camera);
         pipeline.drawGeometry("AMBIENT", null);
@@ -72,7 +102,7 @@ public class Renderer {
         switchLightCamCmd = ll.switchCamera(camera);
         ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
         ll.drawGeometry("LIGHTING", null);        
-       
+        
     }
     
     
@@ -126,4 +156,12 @@ public class Renderer {
 	public void zoomOut() {
 		camera2.setFieldOfView(camera2.getFieldOfView()-1);
 	}
+
+    private static InputStream getResource(String filename) throws FileNotFoundException {
+    	
+        InputStream is = new FileInputStream("./shaders/" + filename);
+        if (is == null)
+            throw new RuntimeException("Resource not found: " + filename);
+        return is;
+    }
 }

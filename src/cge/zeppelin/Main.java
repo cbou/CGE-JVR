@@ -50,6 +50,7 @@ public class Main {
             @Override
             public void init(GLAutoDrawable drawable) {
                 renderer.init(drawable);
+                renderer.setTerrain(world.terrain.meshNode);
             }
 
             @Override
@@ -75,5 +76,6 @@ public class Main {
 
         glPanel.requestFocusInWindow();
         animator.start();
+        
     }
 }
