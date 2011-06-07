@@ -6,9 +6,12 @@ import javax.media.opengl.GLAutoDrawable;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
+import de.bht.jvr.core.DirectionalLightNode;
 import de.bht.jvr.core.GroupNode;
+import de.bht.jvr.core.PointLightNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.SpotLightNode;
+import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
 
@@ -30,6 +33,9 @@ public class Renderer {
     CameraNode camera2 = new CameraNode("Camera2", 1, 60);
    
     SpotLightNode spot = new SpotLightNode("Spot");
+//    DirectionalLightNode sun = new DirectionalLightNode("Sun");
+    PointLightNode sun = new PointLightNode("sun0");
+    
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
 
@@ -43,10 +49,16 @@ public class Renderer {
         spot.setIntensity(1f);
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
+       
+        sun.setTransform(Transform.translate(3, 3, 3));
+        sun.setDiffuseColor(new Color(1.0f, 1.0f, 1.0f));
+        sun.setSpecularColor(new Color(1.0f, 1.0f, 1.0f));
+//        sun.setAttenuation(constantAttenuation, linearAttenuation, quadraticAttenuation)
+        sun.setIntensity(1f);
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, spot, camera2);
+        add(zeppelinNode, sceneNode, spot, camera2, sun);
     }
 
     /**

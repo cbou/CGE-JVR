@@ -26,6 +26,7 @@ public class World {
     final Flyer flyer;
 	Zeppelin zeppelin;
 	Entity zeppelinEntitiy;
+	private Terrain terrain = new Terrain();
 
     /**
      * Create a new world.
@@ -36,10 +37,11 @@ public class World {
         renderer = r;
         environnement = new EnvironnementManager(this);
         
-        flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0)); 
-        
+        flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
         populateWorld(50, 200);
+        
     }
+    
 
     /**
      * Add an entity.
@@ -86,14 +88,17 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 20, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
+//        renderer.sun.setTransform(Transform.translate(20, 20, 20)
+//                .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
+
 //        add(Entity.makeCube(new Vector3(100, 1, 100), 0, Matrix4.translate(0, -0.5f, 0)));
         // the big one
         add(Entity.makeCube(new Vector3(2, 2, 2), 1, Matrix4.translate(0, 10f, 0)));
         // the small one
         add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
         
-        Terrain t = new Terrain();
-        add(t);
+        add(terrain);
+        
         renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
 
         add(flyer);

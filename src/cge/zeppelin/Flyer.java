@@ -28,17 +28,19 @@ public class Flyer extends Entity {
 	private float friction = 0.01f;
 	private float roll = 0;
 	private Zeppelin zeppelin;
+	private Terrain terrain;
     
     /**
      * Create a new flyer and attach it to an existing scene node. Needs a
      * reference to the world for access to input and scene state.
      */
-    Flyer(GroupNode n, Vector3 start) {
+    Flyer(GroupNode n, Vector3 start, Terrain terrain) {
         node = n;
-
-		translation = Transform.translate(start);
+        this.terrain = terrain;
+		
+        translation = Transform.translate(start);
 		rotation 	= Transform.rotate(new Vector3(0, 1, 0), 0);
-		zeppelin = new Zeppelin(node); 
+		zeppelin 	= new Zeppelin(node); 
 		     
         manipulate(0.01f);
 	}
@@ -75,8 +77,9 @@ public class Flyer extends Entity {
 
 		// Gravity, Gas and Balance
 		float overAllGravity = gravity+gas-load;
-		float height = translation.extractTranslation().getMatrix().get(1, 3);
-		if (height<=2){
+		
+		Vector3 position = translation.extractTranslation().getMatrix().translation();
+		if (position.y()<=terrain.getHeight(position.x(),position.y())+1){
 			overAllGravity = Math.max(0, overAllGravity);
 		}
 		translation = translation.mul(Transform.translate(0,overAllGravity,0));
@@ -126,7 +129,7 @@ public class Flyer extends Entity {
 	}
 	
 	public void reset(){
-		gas = STARTGAS;
+		gas  = STARTGAS;
 		load = STARTLOAD;
 		// Back to start
     	translation = Transform.translate(new Vector3(3, 10, 0));
