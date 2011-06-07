@@ -17,7 +17,7 @@ import de.bht.jvr.core.Material;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.TriangleMesh;
-import de.bht.jvr.logger.Log;
+import de.bht.jvr.core.attributes.AttributeVector3;
 import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
@@ -27,7 +27,7 @@ public class Terrain extends Entity{
 	ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
 	Material mt;
-	private float amplitude = 5;
+	private float amplitude = 20;
 	private Material mat;
 	private int[] indices;
 	private terrainMesh mesh;
@@ -83,12 +83,11 @@ public class Terrain extends Entity{
 		for (int i=0;i<tmp.length;i+=3){
 			float x = positions[i];
 			float z = positions[i+2];
-
-			float xDiff = noise((x-1)*10,z*10)-noise((x+1)*10, z*10);
-			float zDiff = noise(x*10,(z-1)*10)-noise(x*10, (z+1)*10);
+			float xDiff = noise((x+10),z)-noise((x-10), z);
+			float zDiff = noise(x,(z+10))-noise(x, (z-10));
 
 			tmp[i]   = xDiff;
-			tmp[i+1] = 0.8f;
+			tmp[i+1] = 0.5f;
 			tmp[i+2] = zDiff;
 		}
 		return tmp;
@@ -150,7 +149,10 @@ public class Terrain extends Entity{
 
 
 	private float noise(float x, float y) {
-		return noiseMaker.noise(x,y);
+		noiseMaker.noiseDetail(4,0.1f);
+//		System.out.println("nn");
+//		return (float) Math.sqrt(noiseMaker.noise(x,y));
+		return (float) noiseMaker.noise(x,y);
 	}
 
 	public void manipulate(float elapsed){
@@ -174,9 +176,11 @@ public class Terrain extends Entity{
 			mesh  = createTriangleArea(20,20, 
 					(int)(Math.round(xOffset/10)*10)-50, 
 					(int)(Math.round(zOffset/10)*10)-50);	
+			
 			triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null).getVertices());
+			triangleMesh.setAttribute("jvr_Normal",  new AttributeVector3(mesh.normals));
+		
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

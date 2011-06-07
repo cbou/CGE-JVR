@@ -41,8 +41,6 @@ public class Renderer {
     CameraNode camera2 = new CameraNode("Camera2", 1, 60);
    
     SpotLightNode spot = new SpotLightNode("Spot");
-//    DirectionalLightNode sun = new DirectionalLightNode("Sun");
-//    PointLightNode sun = new PointLightNode("sun0");
     
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
@@ -64,7 +62,7 @@ public class Renderer {
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, camera2);
+        add(zeppelinNode, sceneNode, camera2, spot);
     }
     
     public void setTerrainMaterial(ShapeNode t) {
@@ -169,7 +167,6 @@ public class Renderer {
 		        ambientFs.compile(ctx);
 		        earthMat = new ShaderMaterial();
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
-//		        earthMat.setShaderProgram("LIGHTING", ambientProgram);
 		        terrain.setMaterial(earthMat);
 			} catch (IOException e) {
 	        } catch (Exception e) {
