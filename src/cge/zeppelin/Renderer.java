@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
@@ -11,16 +13,15 @@ import javax.media.opengl.GLAutoDrawable;
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
 import de.bht.jvr.core.GroupNode;
-import de.bht.jvr.core.PointLightNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
 import de.bht.jvr.core.ShaderMaterial;
 import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.SpotLightNode;
-import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.logger.Log;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -41,12 +42,14 @@ public class Renderer {
    
     SpotLightNode spot = new SpotLightNode("Spot");
 //    DirectionalLightNode sun = new DirectionalLightNode("Sun");
-    PointLightNode sun = new PointLightNode("sun0");
+//    PointLightNode sun = new PointLightNode("sun0");
     
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
 
-	private ShaderMaterial teapotMat;
+	private ShaderMaterial earthMat;
+
+	private ShapeNode terrain;
 
     /**
      * Create a new renderer.
@@ -58,20 +61,15 @@ public class Renderer {
         spot.setIntensity(1f);
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
-       
-        sun.setTransform(Transform.translate(3, 3, 3));
-        sun.setDiffuseColor(new Color(1.0f, 1.0f, 1.0f));
-        sun.setSpecularColor(new Color(1.0f, 1.0f, 1.0f));
-//        sun.setAttenuation(constantAttenuation, linearAttenuation, quadraticAttenuation)
-        sun.setIntensity(1f);
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, spot, camera2, sun);
+        add(zeppelinNode, sceneNode, camera2);
     }
     
-    public void setTerrain(ShapeNode terrain) {
-        terrain.setMaterial(teapotMat);
+    public void setTerrainMaterial(ShapeNode t) {
+    	terrain = t;
+    	refreshShader();
     }
 
     /**
@@ -82,18 +80,6 @@ public class Renderer {
     	GL2GL3 gl = drawable.getGL().getGL2GL3();
         gl.setSwapInterval(1);
         ctx = new Context(gl);
-
-		try {
-			Shader ambientVs = new Shader(getResource("ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader ambientFs = new Shader(getResource("ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
-
-	        teapotMat = new ShaderMaterial();
-	        teapotMat.setShaderProgram("AMBIENT", ambientProgram);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
         
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
@@ -125,6 +111,7 @@ public class Renderer {
      * on an OpenGL context.
      */
     void render(GLAutoDrawable drawable) {
+    	refreshShader();
         try {
             pipeline.update();
             pipeline.render(ctx);
@@ -172,4 +159,21 @@ public class Renderer {
             throw new RuntimeException("Resource not found: " + filename);
         return is;
     }
+
+	public void refreshShader() {		
+		if (terrain instanceof ShapeNode) {
+			try {
+				Shader ambientVs = new Shader(getResource("ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader ambientFs = new Shader(getResource("ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+		        ambientFs.compile(ctx);
+		        earthMat = new ShaderMaterial();
+		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
+		        terrain.setMaterial(earthMat);
+			} catch (IOException e) {
+	        } catch (Exception e) {
+	        	System.out.println("Can not compile shader!");
+			}
+		}
+	}
 }
