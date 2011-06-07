@@ -169,6 +169,7 @@ public class Renderer {
 		        ambientFs.compile(ctx);
 		        earthMat = new ShaderMaterial();
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
+//		        earthMat.setShaderProgram("LIGHTING", ambientProgram);
 		        terrain.setMaterial(earthMat);
 			} catch (IOException e) {
 	        } catch (Exception e) {
