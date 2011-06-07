@@ -103,6 +103,7 @@ public class Flyer extends Entity {
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
 		zeppelin.updateState(gas,load);
+		terrain.postPosition(translation.extractTranslation().getMatrix().translation());
 		printState(); 
 	}
 

@@ -34,7 +34,7 @@ public class Renderer {
    
     SpotLightNode spot = new SpotLightNode("Spot");
 //    DirectionalLightNode sun = new DirectionalLightNode("Sun");
-    PointLightNode sun = new PointLightNode("sun0");
+//    PointLightNode sun = new PointLightNode("sun0");
     
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
@@ -49,16 +49,10 @@ public class Renderer {
         spot.setIntensity(1f);
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
-       
-        sun.setTransform(Transform.translate(3, 3, 3));
-        sun.setDiffuseColor(new Color(1.0f, 1.0f, 1.0f));
-        sun.setSpecularColor(new Color(1.0f, 1.0f, 1.0f));
-//        sun.setAttenuation(constantAttenuation, linearAttenuation, quadraticAttenuation)
-        sun.setIntensity(1f);
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, spot, camera2, sun);
+        add(zeppelinNode, sceneNode, spot, camera2);
     }
 
     /**
