@@ -25,6 +25,9 @@ public class Terrain extends Entity{
 	private TriangleMesh triangleMesh;
 	ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
+	Material mt;
+	private float amplitude;
+	
 	
 	Terrain() {
 		try {
@@ -103,7 +106,6 @@ public class Terrain extends Entity{
 		return tmpMesh;
 	}
 
-	Material mt;
 	
 	private Material fetchMat(SceneNode node,String name) {
 	    ShapeNode shape = Finder.find(node, ShapeNode.class, name);
@@ -112,32 +114,31 @@ public class Terrain extends Entity{
 	}
 	
 	private float[] createTriangleStripe(int triangles, int y, int h){
-		float z = 10;
 		float[] tmp = new float[triangles*9];
 		for (int i=0;i<triangles/2;i++){
-			int triPair = i*18;
+			int triPair    = i*18;
 			tmp[triPair]   = i*h;
-			tmp[triPair+1] = z*noise(i*h,y);
+			tmp[triPair+1] = amplitude*noise(i*h,y);
 			tmp[triPair+2] = y;
 			
 			tmp[triPair+3] = i*h;
-			tmp[triPair+4] = z*noise(i*h,y+h);
+			tmp[triPair+4] = amplitude*noise(i*h,y+h);
 			tmp[triPair+5] = y+h;
 			
 			tmp[triPair+6] = i*h+h;
-			tmp[triPair+7] = z*noise(i*h+h,y);
+			tmp[triPair+7] = amplitude*noise(i*h+h,y);
 			tmp[triPair+8] = y;
 			
 			tmp[triPair+9]  = i*h;
-			tmp[triPair+10] = z*noise(i*h,y+h);
+			tmp[triPair+10] = amplitude*noise(i*h,y+h);
 			tmp[triPair+11] = y+h;
 		
 			tmp[triPair+12] = i*h+h;
-			tmp[triPair+13] = z*noise(i*h+h,y+h);
+			tmp[triPair+13] = amplitude*noise(i*h+h,y+h);
 			tmp[triPair+14] = y+h;
 			
 			tmp[triPair+15] = i*h+h;
-			tmp[triPair+16] = z*noise(i*h+h,y);
+			tmp[triPair+16] = amplitude*noise(i*h+h,y);
 			tmp[triPair+17] = y;
 		}
 		return tmp;
@@ -152,6 +153,10 @@ public class Terrain extends Entity{
 		float[] positions ;
 		float[] normals ;
 		
+	}
+
+	public float getHeight(float x, float y) {
+		return amplitude*noise(x, y);
 	}
 
 }
