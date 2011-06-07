@@ -17,6 +17,7 @@ import de.bht.jvr.core.Material;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.TriangleMesh;
+import de.bht.jvr.logger.Log;
 import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
@@ -40,7 +41,7 @@ public class Terrain extends Entity{
 			float[] tangents;
 			float[] binormals;
 
-			mesh = createTriangleArea(10,10, xOffset,zOffset);
+			mesh = createTriangleArea(20,20, xOffset,zOffset);
 
 			indices = new int[mesh.positions.length];		
 			for (int i=0;i<mesh.positions.length;indices[i]=i++);
@@ -82,14 +83,14 @@ public class Terrain extends Entity{
 		float[] tmp = new float[positions.length];
 		for (int i=0;i<tmp.length;i+=3){
 			float x = positions[i];
-			float y = positions[i+1];
+			float z = positions[i+2];
 
-			float xDiff = noise((x-1)*10,y*10)-noise((x+1)*10, y*10);
-			float yDiff = noise(x*10,(y-1)*10)-noise(x*10, (y+1)*10);
+			float xDiff = noise((x-1)*10,z*10)-noise((x+1)*10, z*10);
+			float zDiff = noise(x*10,(z-1)*10)-noise(x*10, (z+1)*10);
 
 			tmp[i]   = xDiff;
-			tmp[i+1] = yDiff;
-			tmp[i+2] = 0.5f;
+			tmp[i+1] = 0.8f;
+			tmp[i+2] = zDiff;
 		}
 		return tmp;
 	}
@@ -119,29 +120,30 @@ public class Terrain extends Entity{
 
 		float[] tmp = new float[triangles*9];
 		for (int i=0;i<triangles/2;i++){
+			
 			int triPair    = i*18;
 			tmp[triPair]   = x+i*h;
-			tmp[triPair+1] = amplitude*noise(i*h,z);
+			tmp[triPair+1] = amplitude*noise(x+i*h,z);
 			tmp[triPair+2] = z;
-
+			
 			tmp[triPair+3] = x+i*h;
-			tmp[triPair+4] = amplitude*noise(i*h,z+h);
+			tmp[triPair+4] = amplitude*noise(x+i*h,z+h);
 			tmp[triPair+5] = z+h;
 
 			tmp[triPair+6] = x+i*h+h;
-			tmp[triPair+7] = amplitude*noise(i*h+h,z);
+			tmp[triPair+7] = amplitude*noise(x+i*h+h,z);
 			tmp[triPair+8] = z;
 
 			tmp[triPair+9]  = x+i*h;
-			tmp[triPair+10] = amplitude*noise(i*h,z+h);
+			tmp[triPair+10] = amplitude*noise(x+i*h,z+h);
 			tmp[triPair+11] = z+h;
 
 			tmp[triPair+12] = x+i*h+h;
-			tmp[triPair+13] = amplitude*noise(i*h+h,z+h);
+			tmp[triPair+13] = amplitude*noise(x+i*h+h,z+h);
 			tmp[triPair+14] = z+h;
 
 			tmp[triPair+15] = x+i*h+h;
-			tmp[triPair+16] = amplitude*noise(i*h+h,z);
+			tmp[triPair+16] = amplitude*noise(x+i*h+h,z);
 			tmp[triPair+17] = z;
 		}
 		return tmp;
@@ -169,11 +171,11 @@ public class Terrain extends Entity{
 	public void postPosition(Vector3 translation) {
 		xOffset = translation.x();
 		zOffset = translation.z();
-
 		try {
-			mesh 		 = createTriangleArea(10,10, (Math.round(xOffset/10)*10)-50, (Math.round(zOffset/10)*10)-50);	
+			mesh  = createTriangleArea(20,20, 
+					(int)(Math.round(xOffset/10)*10)-50, 
+					(int)(Math.round(zOffset/10)*10)-50);	
 			triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null).getVertices());
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

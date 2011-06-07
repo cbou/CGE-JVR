@@ -1,5 +1,8 @@
 package cge.zeppelin;
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -32,7 +35,7 @@ public class Main {
      * Main entry point for the application.
      */
     public static void main(String[] args) {
-        Log.addLogListener(new LogPrinter(-1, 0, -1));
+        Log.addLogListener(new LogPrinter(1, 0, 1));
         
         GLEventListener app = new GLEventListener() {
 

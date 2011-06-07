@@ -2,6 +2,7 @@ package cge.zeppelin;
 
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Transform;
+import de.bht.jvr.logger.Log;
 import de.bht.jvr.math.Vector3;
 
 /**
@@ -94,7 +95,6 @@ public class Flyer extends Entity {
 
 		xRotVelocity *= 1-(friction);//*Math.abs(xRotVelocity));
 		xRotVelocity = Math.abs(xRotVelocity) < 0.01 ? 0 : xRotVelocity;
-
         update();
     }
 
