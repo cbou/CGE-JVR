@@ -24,7 +24,7 @@ public class Terrain extends Entity{
 
 	private SceneNode box;
 	private TriangleMesh triangleMesh;
-	private ShapeNode meshNode;
+	ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
 	Material mt;
 	private float amplitude = 5;
@@ -53,7 +53,6 @@ public class Terrain extends Entity{
 			node = new GroupNode();
 			node.addChildNode(box);
 			node.addChildNode(meshNode);
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

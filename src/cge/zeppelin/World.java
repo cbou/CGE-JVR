@@ -26,7 +26,8 @@ public class World {
     final Flyer flyer;
 	Zeppelin zeppelin;
 	Entity zeppelinEntitiy;
-	private Terrain terrain = new Terrain();
+
+	public Terrain terrain = new Terrain();
 
     /**
      * Create a new world.

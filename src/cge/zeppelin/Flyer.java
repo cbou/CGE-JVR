@@ -83,6 +83,7 @@ public class Flyer extends Entity {
 		if (position.y()<=terrain.getHeight(position.x(),position.y())+1){
 			overAllGravity = Math.max(0, overAllGravity);
 		}
+		
 		translation = translation.mul(Transform.translate(0,overAllGravity,0));
 
 		//TODO Alle Velocities in einen Vektor

@@ -1,19 +1,27 @@
 package cge.zeppelin;
 import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
-import de.bht.jvr.core.DirectionalLightNode;
 import de.bht.jvr.core.GroupNode;
-import de.bht.jvr.core.PointLightNode;
 import de.bht.jvr.core.SceneNode;
+import de.bht.jvr.core.Shader;
+import de.bht.jvr.core.ShaderMaterial;
+import de.bht.jvr.core.ShaderProgram;
+import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.SpotLightNode;
-import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.logger.Log;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -39,6 +47,10 @@ public class Renderer {
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
 
+	private ShaderMaterial earthMat;
+
+	private ShapeNode terrain;
+
     /**
      * Create a new renderer.
      */
@@ -52,7 +64,12 @@ public class Renderer {
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, spot, camera2);
+        add(zeppelinNode, sceneNode, camera2);
+    }
+    
+    public void setTerrainMaterial(ShapeNode t) {
+    	terrain = t;
+    	refreshShader();
     }
 
     /**
@@ -64,6 +81,7 @@ public class Renderer {
         gl.setSwapInterval(1);
         ctx = new Context(gl);
 
+        
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
         switchAmbientCamCmd = pipeline.switchCamera(camera);
         pipeline.drawGeometry("AMBIENT", null);
@@ -78,7 +96,7 @@ public class Renderer {
         switchLightCamCmd = ll.switchCamera(camera);
         ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
         ll.drawGeometry("LIGHTING", null);        
-       
+        
     }
     
     
@@ -93,6 +111,7 @@ public class Renderer {
      * on an OpenGL context.
      */
     void render(GLAutoDrawable drawable) {
+    	refreshShader();
         try {
             pipeline.update();
             pipeline.render(ctx);
@@ -131,5 +150,30 @@ public class Renderer {
 
 	public void zoomOut() {
 		camera2.setFieldOfView(camera2.getFieldOfView()-1);
+	}
+
+    private static InputStream getResource(String filename) throws FileNotFoundException {
+    	
+        InputStream is = new FileInputStream("./shaders/" + filename);
+        if (is == null)
+            throw new RuntimeException("Resource not found: " + filename);
+        return is;
+    }
+
+	public void refreshShader() {		
+		if (terrain instanceof ShapeNode) {
+			try {
+				Shader ambientVs = new Shader(getResource("ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader ambientFs = new Shader(getResource("ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+		        ambientFs.compile(ctx);
+		        earthMat = new ShaderMaterial();
+		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
+		        terrain.setMaterial(earthMat);
+			} catch (IOException e) {
+	        } catch (Exception e) {
+	        	System.out.println("Can not compile shader!");
+			}
+		}
 	}
 }
