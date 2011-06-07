@@ -81,6 +81,7 @@ public class Flyer extends Entity {
 		
 		Vector3 position = translation.extractTranslation().getMatrix().translation();
 		if (position.y()<=terrain.getHeight(position.x(),position.y())+1){
+			//TODO wenn das Terrain steigt, sollte man wieder hochkommen
 			overAllGravity = Math.max(0, overAllGravity);
 		}
 		
@@ -103,6 +104,7 @@ public class Flyer extends Entity {
 	public void update() {
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
+		
 		zeppelin.updateState(gas,load);
 		terrain.postPosition(translation.extractTranslation().getMatrix().translation());
 		printState(); 
