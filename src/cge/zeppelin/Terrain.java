@@ -26,6 +26,8 @@ public class Terrain extends Entity{
 	private float zOffset = 0;
 	private float xOffset = 0;
 	private int grid = 10;
+	private int xSize = 20;
+	private int zSize = 40;
 
 	Terrain() {
 		try {
@@ -33,7 +35,7 @@ public class Terrain extends Entity{
 			float[] tangents;
 			float[] binormals;
 
-			mesh = createTriangleArea(50,50, xOffset,zOffset);
+			mesh = createTriangleArea(xSize,zSize, xOffset,zOffset);
 
 			indices = new int[mesh.positions.length];		
 			for (int i=0;i<mesh.positions.length;indices[i]=i++);
@@ -70,11 +72,12 @@ public class Terrain extends Entity{
 	private terrainMesh createTriangleArea(int rows, int columns, float x, float z) {
 		terrainMesh tmpMesh = new terrainMesh();
 		tmpMesh.positions = new float[rows*columns*9];
-
+System.out.println("-------");
 		for(int row=0;row<rows;row++){
 			float[] tmp= createTriangleStripe(columns,x,z+row*grid, grid);
 			System.arraycopy(tmp, 0, tmpMesh.positions, row*tmp.length, tmp.length);
 		}
+		System.out.println("----------");
 		//TODO in einem Schritt die Normalen richtig berechnen!
 		tmpMesh.normals = createNormals(tmpMesh.positions);
 
@@ -117,6 +120,12 @@ public class Terrain extends Entity{
 			tmp[triPair+15] = x+i*h+h;
 			tmp[triPair+16] = amplitude*noise(x+i*h+h,z);
 			tmp[triPair+17] = z;
+			
+			System.out.println(x+i*h);
+			System.out.println(z);
+			System.out.println("-");
+			System.out.println(x+i*h+h);
+			System.out.println(z+h);
 		}
 		return tmp;
 	}
@@ -140,9 +149,9 @@ public class Terrain extends Entity{
 		xOffset = translation.x();
 		zOffset = translation.z();
 		try {
-			mesh  = createTriangleArea(50,50, 
-					(int)(Math.round(xOffset/grid)*grid)-50, 
-					(int)(Math.round(zOffset/grid)*grid)-50);	
+			mesh  = createTriangleArea(xSize,zSize, 
+					(int)(Math.round(xOffset/grid)*grid)-xSize*10/2, 
+					(int)(Math.round(zOffset/grid)*grid)-zSize*5/2);	
 			
 			triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null).getVertices());
 			triangleMesh.setAttribute("jvr_Normal",  new AttributeVector3(mesh.normals));
