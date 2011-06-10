@@ -21,7 +21,9 @@ import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.core.uniforms.UniformVector3;
 import de.bht.jvr.logger.Log;
+import de.bht.jvr.math.Vector3;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -163,10 +165,20 @@ public class Renderer {
 			try {
 				Shader ambientVs = new Shader(getResource("ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
 		        Shader ambientFs = new Shader(getResource("ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+		        Shader lightingVs = new Shader(getResource("lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader lightingFs = new Shader(getResource("lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+		        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+		        
+		     
 		        ambientFs.compile(ctx);
 		        earthMat = new ShaderMaterial();
+		        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
+		        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
+		     
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
+		        earthMat.setShaderProgram("LIGHTING", lightingProgram);
+
 		        terrain.setMaterial(earthMat);
 			} catch (IOException e) {
 	        } catch (Exception e) {

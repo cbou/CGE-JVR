@@ -17,7 +17,7 @@ public class Terrain extends Entity{
 
 	private SceneNode box;
 	private TriangleMesh triangleMesh;
-	private ShapeNode meshNode;
+	ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
 	private float amplitude = 10;
 	private Material mat;
@@ -148,7 +148,6 @@ public class Terrain extends Entity{
 		if (Math.abs(xOffset-oldXOffset)>=10 | Math.abs(zOffset-oldZOffset)>=10){
 			oldXOffset = xOffset;
 			oldZOffset = zOffset;
-			System.out.println("ter");
 			try {
 				//Dauer 9-24 milliSekunden
 				mesh  = createTriangleArea(xSize,zSize, 

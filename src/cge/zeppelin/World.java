@@ -1,4 +1,5 @@
 package cge.zeppelin;
+import java.awt.Color;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import javax.media.opengl.GLAutoDrawable;
 import cge.zeppelin.environnement.EnvironnementManager;
 
 import de.bht.jvr.core.Printer;
+import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;
 import de.bht.jvr.math.Vector3;
@@ -24,8 +26,6 @@ public class World {
     final Renderer renderer;
     final EnvironnementManager environnement;
     final Flyer flyer;
-	Zeppelin zeppelin;
-	Entity zeppelinEntitiy;
 
 	public Terrain terrain = new Terrain();
 
@@ -89,7 +89,7 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 20, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
-        add(Entity.makeCube(new Vector3(500, 1, 500), 0, Matrix4.translate(0, 0, 0)));
+        add(Entity.makeCube(new Vector3(500, 1, 500), 0, Matrix4.translate(0, -0.1f, 0)));
         // the big one
         add(Entity.makeCube(new Vector3(2, 2, 2), 1, Matrix4.translate(0, 10f, 0)));
         // the small one
@@ -100,6 +100,17 @@ public class World {
         renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
 
         add(flyer);
+        
+    	SpotLightNode zepSpot = new SpotLightNode();
+    	zepSpot.setCastShadow(true);
+    	zepSpot.setSpotCutOff(30);
+    	zepSpot.setShadowBias(0.3f);
+    	zepSpot.setIntensity(0.8f);
+    	zepSpot.setSpecularColor(new Color(0.8f, 0.5f, 0.8f));
+    	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
+        
+    	flyer.node.addChildNode(zepSpot);
+    
         simulator.addCollisionListener(flyer, new CollisionListener() {
             @Override
             public void response(Entity e0, Entity e1) {
