@@ -106,7 +106,7 @@ public class Flyer extends Entity {
 		
 		zeppelin.updateState(gas,load);
 		terrain.postPosition(translation.extractTranslation().getMatrix().translation());
-		printState(); 
+//		printState(); 
 	}
 
 	public void accelerate(float direction) {

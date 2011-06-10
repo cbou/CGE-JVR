@@ -25,9 +25,11 @@ public class Terrain extends Entity{
 	private terrainMesh mesh;
 	private float zOffset = 0;
 	private float xOffset = 0;
-	private int grid = 10;
-	private int xSize = 20;
-	private int zSize = 40;
+	private int grid  = 20;
+	private int xSize = 40; //Fuer quadratisch halb so gross wie ySize
+	private int zSize = 80;
+	private float oldXOffset = Float.MAX_VALUE;
+	private float oldZOffset = Float.MAX_VALUE;
 
 	Terrain() {
 		try {
@@ -72,12 +74,10 @@ public class Terrain extends Entity{
 	private terrainMesh createTriangleArea(int rows, int columns, float x, float z) {
 		terrainMesh tmpMesh = new terrainMesh();
 		tmpMesh.positions = new float[rows*columns*9];
-System.out.println("-------");
 		for(int row=0;row<rows;row++){
 			float[] tmp= createTriangleStripe(columns,x,z+row*grid, grid);
 			System.arraycopy(tmp, 0, tmpMesh.positions, row*tmp.length, tmp.length);
 		}
-		System.out.println("----------");
 		//TODO in einem Schritt die Normalen richtig berechnen!
 		tmpMesh.normals = createNormals(tmpMesh.positions);
 
@@ -121,11 +121,6 @@ System.out.println("-------");
 			tmp[triPair+16] = amplitude*noise(x+i*h+h,z);
 			tmp[triPair+17] = z;
 			
-			System.out.println(x+i*h);
-			System.out.println(z);
-			System.out.println("-");
-			System.out.println(x+i*h+h);
-			System.out.println(z+h);
 		}
 		return tmp;
 	}
@@ -146,20 +141,25 @@ System.out.println("-------");
 	}
 
 	public void postPosition(Vector3 translation) {
+		
 		xOffset = translation.x();
 		zOffset = translation.z();
-		try {
-			mesh  = createTriangleArea(xSize,zSize, 
-					(int)(Math.round(xOffset/grid)*grid)-xSize*10/2, 
-					(int)(Math.round(zOffset/grid)*grid)-zSize*5/2);	
-			
-			triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null).getVertices());
-			triangleMesh.setAttribute("jvr_Normal",  new AttributeVector3(mesh.normals));
 		
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (Math.abs(xOffset-oldXOffset)>=10 | Math.abs(zOffset-oldZOffset)>=10){
+			oldXOffset = xOffset;
+			oldZOffset = zOffset;
+			System.out.println("ter");
+			try {
+				//Dauer 9-24 milliSekunden
+				mesh  = createTriangleArea(xSize,zSize, 
+						(int)(Math.round(xOffset/grid)*grid)-xSize*5, 
+						(int)(Math.round(zOffset/grid)*grid)-zSize*2.5f);	
+				triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null).getVertices());
+				triangleMesh.setAttribute("jvr_Normal",  new AttributeVector3(mesh.normals));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
 
 }
