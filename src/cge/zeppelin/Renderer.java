@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
+import javax.vecmath.TexCoord2f;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
@@ -50,6 +51,8 @@ public class Renderer {
 
 	private ShapeNode terrain;
 
+	private Texture2D texture;
+
     /**
      * Create a new renderer.
      */
@@ -79,6 +82,14 @@ public class Renderer {
     	GL2GL3 gl = drawable.getGL().getGL2GL3();
         gl.setSwapInterval(1);
         ctx = new Context(gl);
+        
+		try {
+			texture = new Texture2D(getFileResource("textures/grass.jpg"));
+	        texture.bind(ctx);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
@@ -151,20 +162,28 @@ public class Renderer {
 		camera2.setFieldOfView(camera2.getFieldOfView()-1);
 	}
 
-    private static InputStream getResource(String filename) throws FileNotFoundException {
-        InputStream is = new FileInputStream("./shaders/" + filename);
+    private static InputStream getInputStreamResource(String filename) throws FileNotFoundException {    	
+        InputStream is = new FileInputStream("./ressources/" + filename);
         if (is == null)
             throw new RuntimeException("Resource not found: " + filename);
         return is;
     }
 
-	public void refreshShader() {		
+    private static File getFileResource(String filename) throws FileNotFoundException {
+    	
+        File file = new File("./ressources/" + filename);
+        if (!file.exists())
+            throw new RuntimeException("Resource not found: " + filename);
+        return file;
+    }
+
+	public void refreshShader() {
 		if (terrain instanceof ShapeNode) {
 			try {
-				Shader ambientVs = new Shader(getResource("ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-		        Shader ambientFs = new Shader(getResource("ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-		        Shader lightingVs = new Shader(getResource("lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-		        Shader lightingFs = new Shader(getResource("lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+				Shader ambientVs = new Shader(getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader ambientFs = new Shader(getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+		        Shader lightingVs = new Shader(getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader lightingFs = new Shader(getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 		        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 		        
@@ -172,14 +191,10 @@ public class Renderer {
 		        earthMat = new ShaderMaterial();
 		        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 		        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-		     
+		        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 		        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 
-		        Texture2D t = new Texture2D(new File("/Users/andreasrettig/workspace/CGE-JVR/src/text.jpg"));
-		        t.bind(ctx);
-		        earthMat.setTexture("AMBIENT", "jvr_Texture", t);
-//		        System.out.println("tt "+t.getId(ctx));
 		        terrain.setMaterial(earthMat);
 			} catch (IOException e) {
 				e.printStackTrace();

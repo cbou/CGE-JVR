@@ -142,9 +142,9 @@ abstract public class Entity extends MotionState {
     private static void loadOnce() {
         try {
             if (box == null)
-                box = ColladaLoader.load(new File("models/box.dae"));
+                box = ColladaLoader.load(new File("./ressources/models/box.dae"));
             if (sphere == null)
-                sphere = ColladaLoader.load(new File("models/sphere.dae"));
+                sphere = ColladaLoader.load(new File("./ressources/models/sphere.dae"));
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

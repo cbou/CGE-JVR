@@ -42,7 +42,7 @@ public class Terrain extends Entity{
 			indices = new int[mesh.positions.length];		
 			for (int i=0;i<mesh.positions.length;indices[i]=i++);
 
-			box 		 = ColladaLoader.load(new File("models/sphere.dae"));
+			box 		 = ColladaLoader.load(new File("./ressources/models/sphere.dae"));
 			mat 		 = fetchMat(box,"null_Shape");
 			triangleMesh = new TriangleMesh(indices, mesh.positions, mesh.normals, mesh.textCoords, null, null);
 			meshNode 	 = new ShapeNode("terrain",triangleMesh, mat);
@@ -88,10 +88,9 @@ public class Terrain extends Entity{
 	private float[] createTextCoords(float[] positions) {
 		float[] tmp = new float[(positions.length/3)*2];
 		for (int i=0;i<tmp.length;i+=2){
-			tmp[i]   = positions[i];
-			tmp[i+1] = positions[i+2];
+			tmp[i]   = 0;//(float) Math.random();//positions[i];
+			tmp[i+1] = 1;//(float) Math.random();//positions[i+2];
 		}
-		System.out.println(tmp.length+" "+positions.length);
 		return tmp;
 	}
 

@@ -16,7 +16,7 @@ public class Checkpoint extends Entity {
 		//node;
 		size = s;
 		try {
-			sphereModel 	= ColladaLoader.load(new File("models/sphere.dae"));
+			sphereModel 	= ColladaLoader.load(new File("./ressources/models/sphere.dae"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

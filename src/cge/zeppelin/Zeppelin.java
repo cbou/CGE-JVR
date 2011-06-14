@@ -22,9 +22,9 @@ public class Zeppelin extends Entity{
 		try {
 			node = n;
 			//TODO Modell
-			hull 	= ColladaLoader.load(new File("models/sphere.dae"));
-			cockpit = ColladaLoader.load(new File("models/box.dae"));
-			gasMeter= ColladaLoader.load(new File("models/box.dae"));
+			hull 	= ColladaLoader.load(new File("./ressources/models/sphere.dae"));
+			cockpit = ColladaLoader.load(new File("./ressources/models/box.dae"));
+			gasMeter= ColladaLoader.load(new File("./ressources/models/box.dae"));
 
 			hull.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
