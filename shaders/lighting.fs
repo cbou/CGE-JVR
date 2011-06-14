@@ -33,6 +33,6 @@ void main (void)
       color = jvr_LightSource_Specular.rgb;
   }
   
-  gl_FragColor.rgb = color;
+  //gl_FragColor.rgb = color;
   gl_FragColor.a = 1.0;
 }

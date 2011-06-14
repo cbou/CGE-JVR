@@ -1,11 +1,10 @@
 package cge.zeppelin;
 import java.awt.Color;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
@@ -19,10 +18,10 @@ import de.bht.jvr.core.ShaderMaterial;
 import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.SpotLightNode;
+import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
 import de.bht.jvr.core.uniforms.UniformVector3;
-import de.bht.jvr.logger.Log;
 import de.bht.jvr.math.Vector3;
 
 /**
@@ -153,7 +152,6 @@ public class Renderer {
 	}
 
     private static InputStream getResource(String filename) throws FileNotFoundException {
-    	
         InputStream is = new FileInputStream("./shaders/" + filename);
         if (is == null)
             throw new RuntimeException("Resource not found: " + filename);
@@ -170,7 +168,6 @@ public class Renderer {
 		        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 		        
-		     
 		        ambientFs.compile(ctx);
 		        earthMat = new ShaderMaterial();
 		        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
@@ -179,9 +176,15 @@ public class Renderer {
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 		        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 
+		        Texture2D t = new Texture2D(new File("/Users/andreasrettig/workspace/CGE-JVR/src/text.jpg"));
+		        t.bind(ctx);
+		        earthMat.setTexture("AMBIENT", "jvr_Texture", t);
+//		        System.out.println("tt "+t.getId(ctx));
 		        terrain.setMaterial(earthMat);
 			} catch (IOException e) {
+				e.printStackTrace();
 	        } catch (Exception e) {
+	        	e.printStackTrace();
 	        	System.out.println("Can not compile shader!");
 			}
 		}
