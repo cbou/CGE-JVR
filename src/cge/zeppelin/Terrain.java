@@ -42,7 +42,7 @@ public class Terrain extends Entity{
 			indices = new int[mesh.positions.length];		
 			for (int i=0;i<mesh.positions.length;indices[i]=i++);
 
-			box 		 = ColladaLoader.load(new File("models/sphere.dae"));
+			box 		 = ColladaLoader.load(new File("./ressources/models/sphere.dae"));
 			mat 		 = fetchMat(box,"null_Shape");
 			triangleMesh = new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null);
 			meshNode 	 = new ShapeNode("terrain",triangleMesh, mat);
