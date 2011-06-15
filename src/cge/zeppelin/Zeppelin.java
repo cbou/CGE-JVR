@@ -2,6 +2,8 @@ package cge.zeppelin;
 
 import java.io.File;
 
+import cge.zeppelin.util.Helper;
+
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
@@ -22,9 +24,9 @@ public class Zeppelin extends Entity{
 		try {
 			node = n;
 			//TODO Modell
-			hull 	= ColladaLoader.load(new File("./ressources/models/sphere.dae"));
-			cockpit = ColladaLoader.load(new File("./ressources/models/box.dae"));
-			gasMeter= ColladaLoader.load(new File("./ressources/models/box.dae"));
+			hull 	= ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
+			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
+			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 
 			hull.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));

@@ -2,6 +2,8 @@ package cge.zeppelin;
 
 import java.io.File;
 
+import cge.zeppelin.util.Helper;
+
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
@@ -16,7 +18,7 @@ public class Checkpoint extends Entity {
 		//node;
 		size = s;
 		try {
-			sphereModel 	= ColladaLoader.load(new File("./ressources/models/sphere.dae"));
+			sphereModel 	= ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -10,6 +10,8 @@ import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 import javax.vecmath.TexCoord2f;
 
+import cge.zeppelin.util.Helper;
+
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
 import de.bht.jvr.core.GroupNode;
@@ -84,7 +86,7 @@ public class Renderer {
         ctx = new Context(gl);
         
 		try {
-			texture = new Texture2D(getFileResource("textures/grass.jpg"));
+			texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
 	        texture.bind(ctx);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -162,29 +164,13 @@ public class Renderer {
 		camera2.setFieldOfView(camera2.getFieldOfView()-1);
 	}
 
-    private static InputStream getInputStreamResource(String filename) throws FileNotFoundException {
-    	
-        InputStream is = new FileInputStream("./ressources/" + filename);
-        if (is == null)
-            throw new RuntimeException("Resource not found: " + filename);
-        return is;
-    }
-
-    private static File getFileResource(String filename) throws FileNotFoundException {
-    	
-        File file = new File("./ressources/" + filename);
-        if (!file.exists())
-            throw new RuntimeException("Resource not found: " + filename);
-        return file;
-    }
-
 	public void refreshShader() {
 		if (terrain instanceof ShapeNode) {
 			try {
-				Shader ambientVs = new Shader(getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-		        Shader ambientFs = new Shader(getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-		        Shader lightingVs = new Shader(getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-		        Shader lightingFs = new Shader(getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+				Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+		        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+		        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 		        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 		        

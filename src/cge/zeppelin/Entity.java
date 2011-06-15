@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
+import cge.zeppelin.util.Helper;
+
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
@@ -142,9 +144,9 @@ abstract public class Entity extends MotionState {
     private static void loadOnce() {
         try {
             if (box == null)
-                box = ColladaLoader.load(new File("./ressources/models/box.dae"));
+                box = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
             if (sphere == null)
-                sphere = ColladaLoader.load(new File("./ressources/models/sphere.dae"));
+                sphere = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
