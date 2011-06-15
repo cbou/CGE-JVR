@@ -46,7 +46,7 @@ public class Terrain extends Entity{
 
 			box 		 = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
 			mat 		 = fetchMat(box,"null_Shape");
-			triangleMesh = new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null);
+			triangleMesh = new TriangleMesh(indices, mesh.positions, mesh.normals, mesh.textCoords, null, null);
 			meshNode 	 = new ShapeNode("terrain",triangleMesh, mat);
 			node 		 = new GroupNode();
 			node.addChildNode(meshNode);
@@ -75,17 +75,26 @@ public class Terrain extends Entity{
 
 	private terrainMesh createTriangleArea(int rows, int columns, float x, float z) {
 		terrainMesh tmpMesh = new terrainMesh();
-		tmpMesh.positions = new float[rows*columns*9];
+		tmpMesh.positions 	= new float[rows*columns*9];
 		for(int row=0;row<rows;row++){
 			float[] tmp= createTriangleStripe(columns,x,z+row*grid, grid);
 			System.arraycopy(tmp, 0, tmpMesh.positions, row*tmp.length, tmp.length);
 		}
 		//TODO in einem Schritt die Normalen richtig berechnen!
-		tmpMesh.normals = createNormals(tmpMesh.positions);
-
+		tmpMesh.normals 	= createNormals(tmpMesh.positions);
+		tmpMesh.textCoords 	= createTextCoords(tmpMesh.positions);
 		return tmpMesh;
 	}
 
+
+	private float[] createTextCoords(float[] positions) {
+		float[] tmp = new float[(positions.length/3)*2];
+		for (int i=0;i<tmp.length;i+=2){
+			tmp[i]   = 0;//(float) Math.random();//positions[i];
+			tmp[i+1] = 1;//(float) Math.random();//positions[i+2];
+		}
+		return tmp;
+	}
 
 	private Material fetchMat(SceneNode node,String name) {
 		ShapeNode shape = Finder.find(node, ShapeNode.class, name);
@@ -95,7 +104,8 @@ public class Terrain extends Entity{
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
 
-		float[] tmp = new float[triangles*9];
+		float[] tmp  = new float[triangles*9];
+		
 		for (int i=0;i<triangles/2;i++){
 			
 			int triPair    = i*18;
@@ -134,6 +144,7 @@ public class Terrain extends Entity{
 	}
 
 	class terrainMesh{
+	    float[] textCoords;
 		float[] positions ;
 		float[] normals ;
 	}
@@ -155,7 +166,7 @@ public class Terrain extends Entity{
 				mesh  = createTriangleArea(xSize,zSize, 
 						(int)(Math.round(xOffset/grid)*grid)-xSize*5, 
 						(int)(Math.round(zOffset/grid)*grid)-zSize*2.5f);	
-				triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, null, null, null).getVertices());
+				triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, mesh.textCoords, null, null).getVertices());
 				triangleMesh.setAttribute("jvr_Normal",  new AttributeVector3(mesh.normals));
 			} catch (Exception e) {
 				e.printStackTrace();

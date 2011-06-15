@@ -163,7 +163,7 @@ public class Renderer {
 	public void zoomOut() {
 		camera2.setFieldOfView(camera2.getFieldOfView()-1);
 	}
-
+	
 	public void refreshShader() {
 		if (terrain instanceof ShapeNode) {
 			try {
@@ -174,22 +174,20 @@ public class Renderer {
 		        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 		        
-		     
 		        ambientFs.compile(ctx);
 		        earthMat = new ShaderMaterial();
 		        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 		        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 		        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
-		        //earthMat.setShaderProgram("LIGHTING", lightingProgram);
+		        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 
 		        terrain.setMaterial(earthMat);
 			} catch (IOException e) {
-	        	System.out.println("Can not compile shader! (IO Exception)");
+				e.printStackTrace();
 	        } catch (Exception e) {
-	        	System.out.println("Can not compile shader! (Exception)");
-	        	System.out.println(e.getMessage());
 	        	e.printStackTrace();
+	        	System.out.println("Can not compile shader!");
 			}
 		}
 	}
