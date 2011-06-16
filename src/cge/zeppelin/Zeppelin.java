@@ -9,7 +9,7 @@ import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Transform;
 
-public class Zeppelin extends Entity{
+public class Zeppelin extends Entity {
 
 	private SceneNode hull;
 	private SceneNode cockpit;

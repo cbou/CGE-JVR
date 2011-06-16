@@ -53,7 +53,6 @@ public class Main {
             @Override
             public void init(GLAutoDrawable drawable) {
                 renderer.init(drawable);
-                renderer.setTerrainMaterial(world.terrain.meshNode);
             }
 
             @Override

@@ -14,6 +14,7 @@ import cge.zeppelin.util.Helper;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
+import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
@@ -24,6 +25,7 @@ import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.core.uniforms.UniformBool;
 import de.bht.jvr.core.uniforms.UniformVector3;
 import de.bht.jvr.math.Vector3;
 
@@ -51,7 +53,7 @@ public class Renderer {
 
 	private ShaderMaterial earthMat;
 
-	private ShapeNode terrain;
+	private ShapeNode terrainShapeNode;
 
 	private Texture2D texture;
 
@@ -71,8 +73,8 @@ public class Renderer {
         add(zeppelinNode, sceneNode, camera2, spot);
     }
     
-    public void setTerrainMaterial(ShapeNode t) {
-    	terrain = t;
+    public void setTerrainMaterial(ShapeNode tShapeNode) {
+    	terrainShapeNode = tShapeNode;
     	refreshShader();
     }
 
@@ -102,6 +104,7 @@ public class Renderer {
         ll.switchLightCamera();
         ll.createFrameBufferObject("ShadowMap", true, 0, 2048, 2048, 0);
         ll.switchFrameBufferObject("ShadowMap");
+        ll.drawGeometry("SKY2", null); // draw sky box
         ll.clearBuffers(true, false, null);
         ll.drawGeometry("AMBIENT", null);
         ll.switchFrameBufferObject(null);
@@ -165,7 +168,7 @@ public class Renderer {
 	}
 	
 	public void refreshShader() {
-		if (terrain instanceof ShapeNode) {
+		if (terrainShapeNode instanceof ShapeNode) {
 			try {
 				Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
 		        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
@@ -182,7 +185,7 @@ public class Renderer {
 		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 		        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 
-		        terrain.setMaterial(earthMat);
+		        terrainShapeNode.setMaterial(earthMat);
 			} catch (IOException e) {
 				e.printStackTrace();
 	        } catch (Exception e) {

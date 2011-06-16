@@ -7,8 +7,8 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import cge.zeppelin.environnement.EnvironnementManager;
-
 import de.bht.jvr.core.Printer;
+import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;
@@ -26,6 +26,7 @@ public class World {
     final Renderer renderer;
     final EnvironnementManager environnement;
     final Flyer flyer;
+    final Skybox skybox;
 
 	public Terrain terrain = new Terrain();
 
@@ -39,6 +40,7 @@ public class World {
         environnement = new EnvironnementManager(this);
         
         flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
+        skybox = new Skybox(renderer.zeppelinNode); 
         populateWorld(50, 200);
         
     }
@@ -71,6 +73,7 @@ public class World {
     }
 
     void frame(float elapsed, GLAutoDrawable drawable) {
+    	skybox.update();
     	environnement.update();
         for (Entity e : entities) {
             e.manipulate(elapsed);
@@ -100,6 +103,7 @@ public class World {
         renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
 
         add(flyer);
+        add(skybox);
         
     	SpotLightNode zepSpot = new SpotLightNode();
     	zepSpot.setCastShadow(true);
@@ -108,8 +112,9 @@ public class World {
     	zepSpot.setIntensity(0.8f);
     	zepSpot.setSpecularColor(new Color(0.8f, 0.5f, 0.8f));
     	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
-        
     	flyer.node.addChildNode(zepSpot);
+
+
     
         simulator.addCollisionListener(flyer, new CollisionListener() {
             @Override
