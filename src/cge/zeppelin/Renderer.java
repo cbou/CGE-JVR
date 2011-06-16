@@ -51,10 +51,6 @@ public class Renderer {
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
 
-	private ShaderMaterial earthMat;
-
-	private ShapeNode terrainShapeNode;
-
 	private Texture2D texture;
 
     /**
@@ -72,11 +68,6 @@ public class Renderer {
         
         add(zeppelinNode, sceneNode, camera2, spot);
     }
-    
-    public void setTerrainMaterial(ShapeNode tShapeNode) {
-    	terrainShapeNode = tShapeNode;
-    	refreshShader();
-    }
 
     /**
      * Initialize the renderer. This is meant to be called from the init()
@@ -86,14 +77,6 @@ public class Renderer {
     	GL2GL3 gl = drawable.getGL().getGL2GL3();
         gl.setSwapInterval(1);
         ctx = new Context(gl);
-        
-		try {
-			texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
-	        texture.bind(ctx);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
         
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
@@ -126,7 +109,6 @@ public class Renderer {
      * on an OpenGL context.
      */
     void render(GLAutoDrawable drawable) {
-    	refreshShader();
         try {
             pipeline.update();
             pipeline.render(ctx);
@@ -165,33 +147,5 @@ public class Renderer {
 
 	public void zoomOut() {
 		camera2.setFieldOfView(camera2.getFieldOfView()-1);
-	}
-	
-	public void refreshShader() {
-		if (terrainShapeNode instanceof ShapeNode) {
-			try {
-				Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-		        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-		        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-		        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-		        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
-		        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
-		        
-		        ambientFs.compile(ctx);
-		        earthMat = new ShaderMaterial();
-		        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-		        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-		        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
-		        earthMat.setShaderProgram("AMBIENT", ambientProgram);
-		        earthMat.setShaderProgram("LIGHTING", lightingProgram);
-
-		        terrainShapeNode.setMaterial(earthMat);
-			} catch (IOException e) {
-				e.printStackTrace();
-	        } catch (Exception e) {
-	        	e.printStackTrace();
-	        	System.out.println("Can not compile shader!");
-			}
-		}
 	}
 }

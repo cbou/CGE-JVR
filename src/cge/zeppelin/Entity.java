@@ -45,9 +45,13 @@ abstract public class Entity extends MotionState {
     /**
      * Override for entities that need to respond to changes in the world.
      */
-    void manipulate(float elapsed) {}
+    void manipulate(float elapsed) {
+    	refreshShader();
+    }
 
-    /*
+    void refreshShader() {}
+
+	/*
      * (non-Javadoc)
      * @see
      * com.bulletphysics.linearmath.MotionState#getWorldTransform(com.bulletphysics

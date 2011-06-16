@@ -28,7 +28,7 @@ public class World {
     final Flyer flyer;
     final Skybox skybox;
 
-	public Terrain terrain = new Terrain();
+	public Terrain terrain = new Terrain(this);
 
     /**
      * Create a new world.
@@ -40,7 +40,7 @@ public class World {
         environnement = new EnvironnementManager(this);
         
         flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
-        skybox = new Skybox(renderer.zeppelinNode); 
+        skybox = new Skybox(this, renderer.zeppelinNode); 
         populateWorld(50, 200);
         
     }

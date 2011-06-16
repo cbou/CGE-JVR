@@ -1,6 +1,9 @@
 package cge.zeppelin;
 
 import java.io.File;
+import java.io.IOException;
+
+import javax.media.opengl.GL2GL3;
 
 import cge.zeppelin.util.Helper;
 
@@ -10,9 +13,14 @@ import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Material;
 import de.bht.jvr.core.SceneNode;
+import de.bht.jvr.core.Shader;
+import de.bht.jvr.core.ShaderMaterial;
+import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
+import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.TriangleMesh;
 import de.bht.jvr.core.attributes.AttributeVector3;
+import de.bht.jvr.core.uniforms.UniformVector3;
 import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
@@ -32,8 +40,11 @@ public class Terrain extends Entity{
 	private int zSize = 80;
 	private float oldXOffset = Float.MAX_VALUE;
 	private float oldZOffset = Float.MAX_VALUE;
+	private World world;
+	private Texture2D texture;
 
-	Terrain() {
+	Terrain(World w) {
+		world = w;
 		try {
 			float[] texCoords;
 			float[] tangents;
@@ -99,7 +110,6 @@ public class Terrain extends Entity{
 	private Material fetchMat(SceneNode node,String name) {
 		ShapeNode shape = Finder.find(node, ShapeNode.class, name);
 		return shape.getMaterial();
-
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
@@ -171,6 +181,36 @@ public class Terrain extends Entity{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void refreshShader() {
+		try {
+			// load texture
+			texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
+	        texture.bind(world.renderer.ctx);
+	        
+			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
+	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+	        
+	        ambientFs.compile(world.renderer.ctx);
+	        ShaderMaterial earthMat = new ShaderMaterial();
+	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
+	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
+	        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
+	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
+	        earthMat.setShaderProgram("LIGHTING", lightingProgram);
+	
+	        meshNode.setMaterial(earthMat);
+		} catch (IOException e) {
+			e.printStackTrace();
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	System.out.println("Can not compile shader!");
 		}
 	}
 
