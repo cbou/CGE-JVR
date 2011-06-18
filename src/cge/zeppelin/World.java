@@ -8,7 +8,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import cge.zeppelin.environnement.EnvironnementManager;
 import de.bht.jvr.core.Printer;
-import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;

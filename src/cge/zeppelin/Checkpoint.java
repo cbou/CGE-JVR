@@ -1,9 +1,6 @@
 package cge.zeppelin;
 
-import java.io.File;
-
 import cge.zeppelin.util.Helper;
-
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;

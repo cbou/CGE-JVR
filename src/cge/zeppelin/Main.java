@@ -1,8 +1,5 @@
 package cge.zeppelin;
 import java.awt.Dimension;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -14,8 +11,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 import de.bht.jvr.logger.Log;
 import de.bht.jvr.logger.LogPrinter;
 import de.bht.jvr.math.Vector3;
-import de.bht.jvr.util.awt.InputState;
 import de.bht.jvr.util.StopWatch;
+import de.bht.jvr.util.awt.InputState;
 
 /**
  * A medium complex example showing integration of the jVR renderer and the

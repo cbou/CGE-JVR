@@ -2,7 +2,6 @@ package cge.zeppelin;
 
 import java.awt.event.KeyEvent;
 
-import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;
 import de.bht.jvr.math.Vector3;
 

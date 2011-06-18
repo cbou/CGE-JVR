@@ -2,14 +2,11 @@ attribute vec4 jvr_Vertex;
 attribute vec2 jvr_TexCoord;
 
 uniform mat4 jvr_ModelViewProjectionMatrix;
-uniform mat4 jvr_ProjectionMatrix;
-uniform mat4 jvr_ModelViewMatrix;
-uniform float jvr_PolygonOffset;
 
-varying vec2 texCoord;
+varying vec2 texture_coordinate;
 
 void main(void)
 {
-	texCoord = jvr_TexCoord;
-	gl_Position = jvr_ModelViewProjectionMatrix * jvr_Vertex;
+  gl_Position = jvr_ModelViewProjectionMatrix * jvr_Vertex;
+  texture_coordinate = jvr_TexCoord;
 }

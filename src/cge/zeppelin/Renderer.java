@@ -1,33 +1,16 @@
 package cge.zeppelin;
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
-import javax.vecmath.TexCoord2f;
-
-import cge.zeppelin.util.Helper;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
-import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
-import de.bht.jvr.core.Shader;
-import de.bht.jvr.core.ShaderMaterial;
-import de.bht.jvr.core.ShaderProgram;
-import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.SpotLightNode;
-import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
-import de.bht.jvr.core.uniforms.UniformBool;
-import de.bht.jvr.core.uniforms.UniformVector3;
-import de.bht.jvr.math.Vector3;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
@@ -50,8 +33,6 @@ public class Renderer {
     
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
-
-	private Texture2D texture;
 
     /**
      * Create a new renderer.
@@ -87,7 +68,6 @@ public class Renderer {
         ll.switchLightCamera();
         ll.createFrameBufferObject("ShadowMap", true, 0, 2048, 2048, 0);
         ll.switchFrameBufferObject("ShadowMap");
-        ll.drawGeometry("SKY2", null); // draw sky box
         ll.clearBuffers(true, false, null);
         ll.drawGeometry("AMBIENT", null);
         ll.switchFrameBufferObject(null);

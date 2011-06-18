@@ -1,16 +1,13 @@
 package cge.zeppelin;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.media.opengl.GL2GL3;
 
 import cge.zeppelin.util.Helper;
-
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.Finder;
-import de.bht.jvr.core.Geometry;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
@@ -19,14 +16,9 @@ import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.Transform;
-import de.bht.jvr.core.TriangleMesh;
-import de.bht.jvr.core.uniforms.UniformVector3;
-import de.bht.jvr.math.Vector3;
 
 public class Skybox extends Entity {
     private Texture2D bk, dn, ft, lf, rt, up;
-    private Geometry planeGeo;
-    private ShaderProgram textureProg;
     SceneNode plane;
 	private World world;
 	private ShapeNode shapeNode;
@@ -40,18 +32,14 @@ public class Skybox extends Entity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		plane.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 0, -1)));
 
-		shapeNode 	 = new ShapeNode("terrain");
+		plane.setTransform(Transform.scale(1000, 1000, 6).mul(Transform.translate(0, 0, -100f)));
+		shapeNode = Finder.find(plane, ShapeNode.class, "Plane01_Shape");
 		
-		GroupNode xformN 	= new GroupNode();
-		GroupNode sizeN 	= new GroupNode();
+		GroupNode groupNode = new GroupNode();
 		
-		node.addChildNode(xformN);
-		xformN.addChildNode(sizeN);
-		
-		sizeN.addChildNode(plane);
+		groupNode.addChildNode(plane);
+		node.addChildNode(groupNode);
     }
     
     private void loadFiles() throws FileNotFoundException, Exception {
@@ -64,8 +52,6 @@ public class Skybox extends Entity {
         lf = new Texture2D(Helper.getFileResource("textures/sky/mountain_ring_lf.jpg"));
         rt = new Texture2D(Helper.getFileResource("textures/sky/mountain_ring_rt.jpg"));
         up = new Texture2D(Helper.getFileResource("textures/sky/mountain_ring_up.jpg"));
-
-        textureProg = new ShaderProgram(Helper.getFileResource("shaders/sky.vs"), Helper.getFileResource("shaders/sky.fs"));
     }
     
     /**
@@ -80,18 +66,20 @@ public class Skybox extends Entity {
 			Texture2D texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
 	        texture.bind(world.renderer.ctx);
 	        
-			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/sky.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/sky.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+			Shader skyVs = new Shader(Helper.getInputStreamResource("shaders/sky.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader skyFs = new Shader(Helper.getInputStreamResource("shaders/sky.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        ShaderProgram ambientProgram = new ShaderProgram(skyVs, skyFs);
 	        
-	        ambientFs.compile(world.renderer.ctx);
-	        ShaderMaterial earthMat = new ShaderMaterial();
-	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-	        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
-	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
-	
-	        shapeNode.setMaterial(earthMat);
+	        skyFs.compile(world.renderer.ctx);
+	        skyVs.compile(world.renderer.ctx);
+	        ShaderMaterial skyMat = new ShaderMaterial();
+/*	        skyMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
+	        skyMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));*/
+	        skyMat.setTexture("AMBIENT", "jvr_Texture0", ft);
+	        skyMat.setShaderProgram("AMBIENT", ambientProgram);
+	        
+	        
+	        shapeNode.setMaterial(skyMat);
 		} catch (IOException e) {
 			e.printStackTrace();
 	    } catch (Exception e) {

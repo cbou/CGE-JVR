@@ -1,13 +1,11 @@
 package cge.zeppelin;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.media.opengl.GL2GL3;
 
-import cge.zeppelin.util.Helper;
-
 import processing.core.PApplet;
+import cge.zeppelin.util.Helper;
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;

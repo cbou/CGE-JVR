@@ -12,15 +12,15 @@ import de.bht.jvr.core.GroupNode;
 public class Cube extends Entity{
 
 	Cube(GroupNode n, CollisionShape s, float m) {
-        shape = s;
+        collisionShape = s;
         node = n;
         mass = m;
         
-        if (shape != null) {
+        if (collisionShape != null) {
             Vector3f inertia = new Vector3f(0, 0, 0);
-            shape.calculateLocalInertia(mass, inertia);
+            collisionShape.calculateLocalInertia(mass, inertia);
 
-            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(mass, this, shape,
+            RigidBodyConstructionInfo info = new RigidBodyConstructionInfo(mass, this, collisionShape,
                     inertia);
             info.restitution = 0.4f;
             info.linearDamping = 0.2f;

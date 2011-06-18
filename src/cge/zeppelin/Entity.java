@@ -1,6 +1,5 @@
 package cge.zeppelin;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +36,7 @@ abstract public class Entity extends MotionState {
     Transform xform = Transform.identity();
 	    
 	GroupNode node;
-    CollisionShape shape;
+    CollisionShape collisionShape;
     RigidBody body;
     
     float mass;

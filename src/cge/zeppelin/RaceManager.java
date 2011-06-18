@@ -3,7 +3,6 @@ package cge.zeppelin;
 import java.util.ArrayList;
 
 import de.bht.jvr.core.GroupNode;
-import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
 
 public class RaceManager {
