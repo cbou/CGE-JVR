@@ -23,6 +23,7 @@ public class Renderer {
     Context ctx = null;
     GroupNode root = new GroupNode("Root");
     GroupNode zeppelinNode = new GroupNode("Zeppelin");
+    GroupNode skyboxNode = new GroupNode("Skybox");
     GroupNode sceneNode = new GroupNode("Scene");
     
     Pipeline pipeline = new Pipeline(root);
@@ -47,7 +48,7 @@ public class Renderer {
         
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, camera2, spot);
+        add(zeppelinNode, sceneNode, camera2, spot, skyboxNode);
     }
 
     /**

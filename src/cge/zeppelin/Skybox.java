@@ -58,6 +58,7 @@ public class Skybox extends Entity {
      * just for test purpose.
      */
     public void update() {
+        this.node.setTransform(Transform.translate(world.renderer.camera.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
     }
 	
 	public void refreshShader() {
@@ -73,8 +74,6 @@ public class Skybox extends Entity {
 	        skyFs.compile(world.renderer.ctx);
 	        skyVs.compile(world.renderer.ctx);
 	        ShaderMaterial skyMat = new ShaderMaterial();
-/*	        skyMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-	        skyMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));*/
 	        skyMat.setTexture("AMBIENT", "jvr_Texture0", ft);
 	        skyMat.setShaderProgram("AMBIENT", ambientProgram);
 	        

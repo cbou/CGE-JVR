@@ -39,7 +39,7 @@ public class World {
         environnement = new EnvironnementManager(this);
         
         flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
-        skybox = new Skybox(this, renderer.zeppelinNode); 
+        skybox = new Skybox(this, renderer.skyboxNode); 
         populateWorld(50, 200);
         
     }
