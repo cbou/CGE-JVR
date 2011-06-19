@@ -40,7 +40,7 @@ public class Skybox extends Entity {
 		planeFt.setTransform(Transform.translate(0, 0, -1 * boxSize).mul(Transform.scale(1000, 1000, 6)));
 		planeRt.setTransform(Transform.translate(boxSize, 0, 0).mul(Transform.rotateYDeg(-90)).mul(Transform.scale(1000, 1000, 6)));
 		planeLf.setTransform(Transform.translate(-1 * boxSize, 0, 0).mul(Transform.rotateYDeg(90)).mul(Transform.scale(1000, 1000, 6)));
-		planeUp.setTransform(Transform.translate(0, -1 * boxSize, 0).mul(Transform.rotateYDeg(180)).mul(Transform.rotateXDeg(90)).mul(Transform.scale(1000, 1000, 6)));
+		planeUp.setTransform(Transform.translate(0, boxSize, 0).mul(Transform.rotateYDeg(180)).mul(Transform.rotateXDeg(90)).mul(Transform.scale(1000, 1000, 6)));
 		
 		
 		shapeNodeBk = Finder.find(planeBk, ShapeNode.class, "Plane01_Shape");
@@ -83,7 +83,7 @@ public class Skybox extends Entity {
     /**
      * just for test purpose.
      */
-    public void update() {		
+    public void update() {
         this.node.setTransform(Transform.translate(world.renderer.camera.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
     }
 	
