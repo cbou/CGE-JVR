@@ -28,6 +28,7 @@ public class World {
     final Skybox skybox;
 
 	public Terrain terrain = new Terrain(this);
+	private boolean refreshShader = true;
 
     /**
      * Create a new world.
@@ -76,6 +77,10 @@ public class World {
     	environnement.update();
         for (Entity e : entities) {
             e.manipulate(elapsed);
+
+            if (refreshShader) {
+            	e.refreshShader();
+            }
         }
         environnement.affect(flyer, elapsed);
         input.frame(elapsed);
@@ -124,4 +129,13 @@ public class World {
         
         Printer.print(renderer.root);
     }
+	
+	public void switchRefreshShader() {
+		refreshShader = !refreshShader;
+		if (refreshShader) {
+			System.out.println("STOP REFRESH SHADER");
+		} else {
+			System.out.println("STOP REFRESH SHADER");
+		}
+	} 
 }

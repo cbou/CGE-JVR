@@ -61,8 +61,14 @@ public class ControllerManager {
         	world.environnement.reset();
         }
 
+        // Weather switcher
         if (world.input.isTriggered('T')){
         	world.environnement.switchDisable();
+        }
+
+        // Refresh shader switcher
+        if (world.input.isTriggered('L')){
+        	world.switchRefreshShader();
         }
         
 	}

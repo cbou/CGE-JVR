@@ -44,9 +44,7 @@ abstract public class Entity extends MotionState {
     /**
      * Override for entities that need to respond to changes in the world.
      */
-    void manipulate(float elapsed) {
-    	refreshShader();
-    }
+    void manipulate(float elapsed) {}
 
     void refreshShader() {}
 
