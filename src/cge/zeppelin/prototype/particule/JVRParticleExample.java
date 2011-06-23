@@ -1,10 +1,6 @@
 package cge.zeppelin.prototype.particule;
 
-import de.bht.jvr.util.Color;
-import java.io.File;
-
 import cge.zeppelin.util.Helper;
-
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.GroupNode;
@@ -17,6 +13,7 @@ import de.bht.jvr.math.Vector3;
 import de.bht.jvr.renderer.AwtRenderWindow;
 import de.bht.jvr.renderer.RenderWindow;
 import de.bht.jvr.renderer.Viewer;
+import de.bht.jvr.util.Color;
 import de.bht.jvr.util.InputState;
 import de.bht.jvr.util.StopWatch;
 
@@ -41,7 +38,7 @@ public class JVRParticleExample {
         GroupNode emitterDir = new GroupNode();
         emitterPos.addChildNode(emitterDir);
         
-        Emitter emitter = new Emitter(emitterDir, 10000);
+        Emitter emitter = new Emitter(emitterDir, 1000);
         
         PointLightNode light = new PointLightNode("sun");
         light.setTransform(Transform.translate(3, 3, 3));

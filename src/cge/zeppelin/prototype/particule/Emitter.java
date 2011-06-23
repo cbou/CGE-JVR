@@ -1,6 +1,5 @@
 package cge.zeppelin.prototype.particule;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,8 +9,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GL3;
 
-import cge.zeppelin.util.Helper;
+import processing.core.PApplet;
 
+import cge.zeppelin.util.Helper;
 import de.bht.jvr.core.AttributeCloud;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Shader;
@@ -31,9 +31,9 @@ public class Emitter {
     private int count;
 
     private ArrayList<Vector3> position;
-    private ArrayList<Vector3> velocity;
-    private ArrayList<Float> energy;
     private ArrayList<Float> age;
+    private ArrayList<Float> startPosition;
+    private ArrayList<Float> radius;
 
     private Vector3 gravity = new Vector3(0, -10, 0);
     private float damping = 0.9f;
@@ -48,6 +48,7 @@ public class Emitter {
 
     private float halfLife = 0.5f;
     private float initEnergy = 1f;
+	private PApplet noiseMaker = new PApplet();
 
     public Emitter(GroupNode p, int c) {
         parent = p;
@@ -58,7 +59,6 @@ public class Emitter {
         cloud = new AttributeCloud(count, GL.GL_POINTS);
         ShaderProgram shader = null;
         try {
-            Resource loader = new Resource(getClass());
             Shader vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
             Shader geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
             Shader frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
@@ -84,50 +84,42 @@ public class Emitter {
         for (int i = 0; i != count; i++)
             position.add(new Vector3(0, 0, 0));
 
-        velocity = new ArrayList<Vector3>(count);
-        for (int i = 0; i != count; i++)
-            velocity.add(new Vector3(0, 0, 0));
-
-        energy = new ArrayList<Float>(count);
-        for (int i = 0; i != count; i++)
-            energy.add(0.0f);
-
         age = new ArrayList<Float>(count);
         for (int i = 0; i != count; i++)
             age.add(Float.POSITIVE_INFINITY);
 
-        cloud.setAttribute("partPosition", new AttributeVector3(position));
-        cloud.setAttribute("partVelocity", new AttributeVector3(velocity));
-        cloud.setAttribute("partEnergy", new AttributeFloat(energy));
+        startPosition = new ArrayList<Float>(count);
+        for (int i = 0; i != count; i++)
+        	startPosition.add(PApplet.map(i, 0, count, 0, 360));
 
+        radius = new ArrayList<Float>(count);
+        for (int i = 0; i != count; i++)
+        	radius.add(noiseMaker.random(1,2));
+        
+        cloud.setAttribute("partPosition", new AttributeVector3(position));
+        
         material.setUniform("AMBIENT", "maxEnergy", new UniformFloat(maxEnergy));
     }
 
     public void simulate(float elapsed) {
-        
-        float toEmmit = (int) (emmitRate * elapsed);
 
         for (int i = 0; i != count; i++) {
-
-            // Emmit if neccessary and possible
-            if (energy.get(i) <= 0.1f && toEmmit != 0) {
-                Transform t = parent.getWorldTransform(null);
-                position.set(i, t.getMatrix().mulPoint(new Vector3(0, 0, 0)));
-                velocity.set(i, t.getMatrix().mulDir(randomVector3(minVel, maxVel)));
-                energy.set(i, (float) 1);
-                age.set(i, (float) 0);
-                toEmmit -= 1;
+            age.set(i, age.get(i) + elapsed*50);
+            
+            if (age.get(i) > 360) {
+            	age.set(i, (float) 0);
             }
 
-            // Simulate
-            age.set(i, age.get(i) + elapsed);
-            velocity.set(i, velocity.get(i).add(gravity.mul(elapsed)));
-            position.set(i, position.get(i).add(velocity.get(i).mul(elapsed)));
-            energy.set(i, (float) (initEnergy * Math.pow(0.5f, age.get(i) / halfLife)));
+            float n = (float) noiseMaker.noise(age.get(i));
+            
+        	float r = age.get(i);
+            float x1 = (float) (1 + Math.cos(PApplet.radians(r + startPosition.get(i))) * (radius.get(i)+n/30));
+            float y1 = (float) (1 + Math.sin(PApplet.radians(r + startPosition.get(i))) * (radius.get(i)+n/30));
+            position.set(i, new Vector3(x1,y1,1));
         }
         // Set
         cloud.setAttribute("partPosition", new AttributeVector3(position));
-        cloud.setAttribute("partEnergy", new AttributeFloat(energy));
+        cloud.setAttribute("partRadius", new AttributeFloat(radius));
     }
 
     private static Random random = new Random();
