@@ -1,5 +1,4 @@
 package cge.zeppelin;
-import java.awt.Color;
 
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
@@ -11,6 +10,7 @@ import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.util.Color;
 
 /**
  * Encapsulates the jVR render. Maintains a scene graph, a camera, a light
