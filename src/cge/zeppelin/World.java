@@ -1,5 +1,4 @@
 package cge.zeppelin;
-import java.awt.Color;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +11,7 @@ import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Matrix4;
 import de.bht.jvr.math.Vector3;
+import de.bht.jvr.util.Color;
 import de.bht.jvr.util.awt.InputState;
 
 /**
