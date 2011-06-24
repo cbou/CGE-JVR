@@ -10,7 +10,6 @@ import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GL3;
 
 import processing.core.PApplet;
-
 import cge.zeppelin.util.Helper;
 import de.bht.jvr.core.AttributeCloud;
 import de.bht.jvr.core.GroupNode;
@@ -18,7 +17,6 @@ import de.bht.jvr.core.Shader;
 import de.bht.jvr.core.ShaderMaterial;
 import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
-import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.attributes.AttributeFloat;
 import de.bht.jvr.core.attributes.AttributeVector3;
 import de.bht.jvr.core.uniforms.UniformFloat;
@@ -35,19 +33,6 @@ public class Emitter {
     private ArrayList<Float> startPosition;
     private ArrayList<Float> radius;
 
-    private Vector3 gravity = new Vector3(0, -10, 0);
-    private float damping = 0.9f;
-
-    private Vector3 minVel = new Vector3(-2, 5, -2);
-    private Vector3 maxVel = new Vector3(2, 10, 2);
-
-    private float minEnergy = 2.0f;
-    private float maxEnergy = 4.0f;
-
-    private float emmitRate = 3000;
-
-    private float halfLife = 0.5f;
-    private float initEnergy = 1f;
 	private PApplet noiseMaker = new PApplet();
 	private ShapeNode emitter;
 
@@ -98,8 +83,6 @@ public class Emitter {
         	radius.add(noiseMaker.random(1,2));
         
         cloud.setAttribute("partPosition", new AttributeVector3(position));
-        
-        material.setUniform("AMBIENT", "maxEnergy", new UniformFloat(maxEnergy));
     }
 
     public void simulate(float elapsed) {
