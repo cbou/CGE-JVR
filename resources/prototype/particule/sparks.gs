@@ -1,6 +1,6 @@
 uniform mat4 jvr_ProjectionMatrix;
 
-float hs = 0.05;
+float hs = 0.025;
 
 varying in float partRadiusV[];
 varying out float partRadiusG;

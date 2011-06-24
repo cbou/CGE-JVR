@@ -79,8 +79,8 @@ public class JVRParticleExample {
                 angleY += elapsed * speed;
             if (input.isOneDown('A', java.awt.event.KeyEvent.VK_LEFT))
                 angleY -= elapsed * speed;
-
-
+            if (input.isOneDown('R'))
+            	emitter.refreshShader();
             if (input.isDown('Q'))
                 System.exit(0);
 

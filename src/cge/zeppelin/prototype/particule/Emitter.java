@@ -49,12 +49,13 @@ public class Emitter {
     private float halfLife = 0.5f;
     private float initEnergy = 1f;
 	private PApplet noiseMaker = new PApplet();
+	private ShapeNode emitter;
 
     public Emitter(GroupNode p, int c) {
         parent = p;
         count = c;
 
-        ShapeNode emitter = new ShapeNode("Emitter");
+        emitter = new ShapeNode("Emitter");
         
         cloud = new AttributeCloud(count, GL.GL_POINTS);
         ShaderProgram shader = null;
@@ -133,4 +134,28 @@ public class Emitter {
                 randomValue(min.z(), max.z()));
     }
 
+    public void refreshShader(){
+    	ShaderProgram shader = null;
+    	     
+    	try {
+            Shader vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
+            Shader geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
+            Shader frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
+
+            shader = new ShaderProgram(vert, frag, geom);            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        shader.setParameter(GL2GL3.GL_GEOMETRY_INPUT_TYPE_ARB, GL.GL_POINTS);
+        shader.setParameter(GL2GL3.GL_GEOMETRY_OUTPUT_TYPE_ARB, GL2.GL_QUADS);
+        shader.setParameter(GL2GL3.GL_GEOMETRY_VERTICES_OUT_ARB, 4);
+
+        ShaderMaterial material = new ShaderMaterial("AMBIENT", shader);
+        material.setMaterialClass("PARTICLE");
+
+        emitter.setMaterial(material);
+
+    }
+    
 }
