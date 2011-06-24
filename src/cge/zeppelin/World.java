@@ -133,7 +133,7 @@ public class World {
 	public void switchRefreshShader() {
 		refreshShader = !refreshShader;
 		if (refreshShader) {
-			System.out.println("STOP REFRESH SHADER");
+			System.out.println("START REFRESH SHADER");
 		} else {
 			System.out.println("STOP REFRESH SHADER");
 		}

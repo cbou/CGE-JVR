@@ -44,10 +44,7 @@ public class Terrain extends Entity{
 	Terrain(World w) {
 		world = w;
 		try {
-			float[] texCoords;
-			float[] tangents;
-			float[] binormals;
-
+			
 			mesh = createTriangleArea(xSize,zSize, xOffset,zOffset);
 
 			indices = new int[mesh.positions.length];		
