@@ -40,7 +40,8 @@ public class Terrain extends Entity{
 	private float oldZOffset = Float.MAX_VALUE;
 	private World world;
 	private Texture2D texture;
-
+	private float textureScaling = 2f;
+	
 	Terrain(World w) {
 		world = w;
 		try {
@@ -94,10 +95,27 @@ public class Terrain extends Entity{
 
 
 	private float[] createTextCoords(float[] positions) {
+		//UV are only 2D 
 		float[] tmp = new float[(positions.length/3)*2];
-		for (int i=0;i<tmp.length;i+=2){
-			tmp[i]   = 0;//(float) Math.random();//positions[i];
-			tmp[i+1] = 1;//(float) Math.random();//positions[i+2];
+		for (int i=0;i<tmp.length;i+=12){
+			tmp[i]   = 0;
+			tmp[i+1] = 0;
+			
+			tmp[i+2] = 0;
+			tmp[i+3] = textureScaling;
+			
+			tmp[i+4] = textureScaling;
+			tmp[i+5] = 0;
+			
+			tmp[i+6] = 0;
+			tmp[i+7] = textureScaling;
+			
+			tmp[i+8] = textureScaling;
+			tmp[i+9] = textureScaling;
+			
+			tmp[i+10] = textureScaling;
+			tmp[i+11] = 0;
+			
 		}
 		return tmp;
 	}
@@ -185,10 +203,10 @@ public class Terrain extends Entity{
 			texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
 	        texture.bind(world.renderer.ctx);
 	        
-			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 	        
@@ -197,6 +215,8 @@ public class Terrain extends Entity{
 	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
+	        earthMat.setTexture("LIGHTING", "jvr_Texture0", texture);
+		       
 	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 	        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 	
