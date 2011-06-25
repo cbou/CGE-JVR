@@ -27,7 +27,7 @@ public class World {
     final Flyer flyer;
     final Skybox skybox;
 
-	public Terrain terrain = new Terrain(this);
+	public Terrain terrain = new Terrain();
 	private boolean refreshShader = true;
 
     /**
@@ -118,8 +118,6 @@ public class World {
     	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
     	flyer.node.addChildNode(zepSpot);
 
-
-    
         simulator.addCollisionListener(flyer, new CollisionListener() {
             @Override
             public void response(Entity e0, Entity e1) {

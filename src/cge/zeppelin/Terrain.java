@@ -27,7 +27,7 @@ public class Terrain extends Entity{
 	private static final float WATERLEVEL = 0;
 	private SceneNode box;
 	private TriangleMesh triangleMesh;
-	ShapeNode meshNode;
+	private ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
 	private float amplitude = 10;
 	private Material mat;
@@ -40,14 +40,12 @@ public class Terrain extends Entity{
 	private int zSize = 80;
 	private float oldXOffset = Float.MAX_VALUE;
 	private float oldZOffset = Float.MAX_VALUE;
-	private World world;
 	private Texture2D textureHigh;
 	private Texture2D textureMiddle;
 	private Texture2D textureLow;
 	private float textureScaling = 2f;
 	
-	Terrain(World w) {
-		world = w;
+	Terrain() {
 		try {
 			mesh = createTriangleArea(xSize,zSize, xOffset,zOffset);
 
@@ -135,7 +133,7 @@ public class Terrain extends Entity{
 	}
 
 	private float getElevation(float x, float y){
-		return amplitude*noise(x,y);
+		return (float) (amplitude*noise(x,y) + 100*bigNoise(x, y));
 	}
 	
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
@@ -176,6 +174,13 @@ public class Terrain extends Entity{
 	private float noise(float x, float y) {
 		noiseMaker.noiseDetail(4,0.1f);
 		return (float) noiseMaker.noise(x,y);
+	}
+
+	private float bigNoise(float x, float y) {
+		noiseMaker.noiseDetail(4,0.1f);
+		float n = noiseMaker.noise(x/100,y/100);
+//		return (float) n < 0.3f ? 0 : n;
+		return 0;
 	}
 
 	class terrainMesh{
@@ -225,7 +230,6 @@ public class Terrain extends Entity{
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 	        
-	        ambientFs.compile(world.renderer.ctx);
 	        ShaderMaterial earthMat = new ShaderMaterial();
 	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
