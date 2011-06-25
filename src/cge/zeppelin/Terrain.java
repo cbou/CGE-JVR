@@ -39,7 +39,10 @@ public class Terrain extends Entity{
 	private float oldXOffset = Float.MAX_VALUE;
 	private float oldZOffset = Float.MAX_VALUE;
 	private World world;
-	private Texture2D texture;
+	private Texture2D textureHigh;
+	private Texture2D textureMiddle;
+	private Texture2D textureLow;
+	
 	private float textureScaling = 2f;
 	
 	Terrain(World w) {
@@ -200,8 +203,11 @@ public class Terrain extends Entity{
 	public void refreshShader() {
 		try {
 			// load texture
-			texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
-	        texture.bind(world.renderer.ctx);
+			textureHigh    = new Texture2D(Helper.getFileResource("textures/snow.jpg"));
+			textureMiddle  = new Texture2D(Helper.getFileResource("textures/rock.jpg"));
+			textureLow     = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
+			
+	        textureHigh.bind(world.renderer.ctx);
 	        
 			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
@@ -214,9 +220,11 @@ public class Terrain extends Entity{
 	        ShaderMaterial earthMat = new ShaderMaterial();
 	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-	        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
-	        earthMat.setTexture("LIGHTING", "jvr_Texture0", texture);
-		       
+	        //earthMat.setTexture("AMBIENT", "jvr_Texture0", textureHigh);
+	        earthMat.setTexture("LIGHTING", "jvr_TextureHigh", textureHigh);
+	        earthMat.setTexture("LIGHTING", "jvr_TextureMiddle", textureMiddle);
+	        earthMat.setTexture("LIGHTING", "jvr_TextureLow", textureLow);
+			       
 	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 	        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 	
