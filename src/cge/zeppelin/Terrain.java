@@ -18,14 +18,16 @@ import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.TriangleMesh;
 import de.bht.jvr.core.attributes.AttributeVector3;
+import de.bht.jvr.core.uniforms.UniformFloat;
 import de.bht.jvr.core.uniforms.UniformVector3;
 import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
 
+	private static final float WATERLEVEL = 0;
 	private SceneNode box;
 	private TriangleMesh triangleMesh;
-	ShapeNode meshNode;
+	private ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
 	private float amplitude = 10;
 	private Material mat;
@@ -38,13 +40,13 @@ public class Terrain extends Entity{
 	private int zSize = 80;
 	private float oldXOffset = Float.MAX_VALUE;
 	private float oldZOffset = Float.MAX_VALUE;
-	private World world;
-	private Texture2D texture;
-
-	Terrain(World w) {
-		world = w;
+	private Texture2D textureHigh;
+	private Texture2D textureMiddle;
+	private Texture2D textureLow;
+	private float textureScaling = 2f;
+	
+	Terrain() {
 		try {
-			
 			mesh = createTriangleArea(xSize,zSize, xOffset,zOffset);
 
 			indices = new int[mesh.positions.length];		
@@ -67,14 +69,20 @@ public class Terrain extends Entity{
 	private float[] createNormals(float[] positions) {
 		float[] tmp = new float[positions.length];
 		for (int i=0;i<tmp.length;i+=3){
-			float x = positions[i];
-			float z = positions[i+2];
-			float xDiff = noise((x+grid),z)-noise((x-grid), z);
-			float zDiff = noise(x,(z+grid))-noise(x, (z-grid));
+			if (positions[i+1] <= WATERLEVEL){
+				tmp[i]   = 0;
+				tmp[i+1] = 1.0f;
+				tmp[i+2] = 0;
+			} else {
+				float x = positions[i];
+				float z = positions[i+2];
+				float xDiff = getElevation((x+grid),z)-getElevation((x-grid), z);
+				float zDiff = getElevation(x,(z+grid))-getElevation(x, (z-grid));
 
-			tmp[i]   = xDiff;
-			tmp[i+1] = 0.6f;
-			tmp[i+2] = zDiff;
+				tmp[i]   = xDiff;
+				tmp[i+1] = 1.0f;
+				tmp[i+2] = zDiff;
+			}
 		}
 		return tmp;
 	}
@@ -94,10 +102,27 @@ public class Terrain extends Entity{
 
 
 	private float[] createTextCoords(float[] positions) {
+		//UV are only 2D 
 		float[] tmp = new float[(positions.length/3)*2];
-		for (int i=0;i<tmp.length;i+=2){
-			tmp[i]   = 0;//(float) Math.random();//positions[i];
-			tmp[i+1] = 1;//(float) Math.random();//positions[i+2];
+		for (int i=0;i<tmp.length;i+=12){
+			tmp[i]   = 0;
+			tmp[i+1] = 0;
+			
+			tmp[i+2] = 0;
+			tmp[i+3] = textureScaling;
+			
+			tmp[i+4] = textureScaling;
+			tmp[i+5] = 0;
+			
+			tmp[i+6] = 0;
+			tmp[i+7] = textureScaling;
+			
+			tmp[i+8] = textureScaling;
+			tmp[i+9] = textureScaling;
+			
+			tmp[i+10] = textureScaling;
+			tmp[i+11] = 0;
+			
 		}
 		return tmp;
 	}
@@ -107,6 +132,10 @@ public class Terrain extends Entity{
 		return shape.getMaterial();
 	}
 
+	private float getElevation(float x, float y){
+		return (float) (amplitude*noise(x,y) + 100*bigNoise(x, y));
+	}
+	
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
 
 		float[] tmp  = new float[triangles*9];
@@ -115,37 +144,43 @@ public class Terrain extends Entity{
 			
 			int triPair    = i*18;
 			tmp[triPair]   = x+i*h;
-			tmp[triPair+1] = amplitude*noise(x+i*h,z);
+			tmp[triPair+1] = getElevation(x+i*h,z);
 			tmp[triPair+2] = z;
 			
 			tmp[triPair+3] = x+i*h;
-			tmp[triPair+4] = amplitude*noise(x+i*h,z+h);
+			tmp[triPair+4] = getElevation(x+i*h,z+h);
 			tmp[triPair+5] = z+h;
 
 			tmp[triPair+6] = x+i*h+h;
-			tmp[triPair+7] = amplitude*noise(x+i*h+h,z);
+			tmp[triPair+7] = getElevation(x+i*h+h,z);
 			tmp[triPair+8] = z;
 
 			tmp[triPair+9]  = x+i*h;
-			tmp[triPair+10] = amplitude*noise(x+i*h,z+h);
+			tmp[triPair+10] = tmp[triPair+4];
 			tmp[triPair+11] = z+h;
 
 			tmp[triPair+12] = x+i*h+h;
-			tmp[triPair+13] = amplitude*noise(x+i*h+h,z+h);
+			tmp[triPair+13] = getElevation(x+i*h+h,z+h);
 			tmp[triPair+14] = z+h;
 
 			tmp[triPair+15] = x+i*h+h;
-			tmp[triPair+16] = amplitude*noise(x+i*h+h,z);
+			tmp[triPair+16] = tmp[triPair+7];
 			tmp[triPair+17] = z;
 			
 		}
 		return tmp;
 	}
 
-
 	private float noise(float x, float y) {
 		noiseMaker.noiseDetail(4,0.1f);
 		return (float) noiseMaker.noise(x,y);
+	}
+
+	private float bigNoise(float x, float y) {
+		noiseMaker.noiseDetail(4,0.1f);
+		float n = noiseMaker.noise(x/100,y/100);
+//		return (float) n < 0.3f ? 0 : n;
+		return 0;
 	}
 
 	class terrainMesh{
@@ -182,21 +217,29 @@ public class Terrain extends Entity{
 	public void refreshShader() {
 		try {
 			// load texture
-			texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
-	        texture.bind(world.renderer.ctx);
+			textureHigh    = new Texture2D(Helper.getFileResource("textures/snow.jpg"));
+			textureMiddle  = new Texture2D(Helper.getFileResource("textures/rock.jpg"));
+			textureLow     = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
+			
+	       // textureHigh.bind(world.renderer.ctx);
 	        
-			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 	        
-	        ambientFs.compile(world.renderer.ctx);
 	        ShaderMaterial earthMat = new ShaderMaterial();
 	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
-	        earthMat.setTexture("AMBIENT", "jvr_Texture0", texture);
+	        earthMat.setUniform("LIGHTING", "waterLevel", new UniformFloat(WATERLEVEL));
+	 	   
+	        //earthMat.setTexture("AMBIENT", "jvr_Texture0", textureHigh);
+	        earthMat.setTexture("LIGHTING", "jvr_TextureHigh", textureHigh);
+	        earthMat.setTexture("LIGHTING", "jvr_TextureMiddle", textureMiddle);
+	        earthMat.setTexture("LIGHTING", "jvr_TextureLow", textureLow);
+			       
 	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 	        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 	

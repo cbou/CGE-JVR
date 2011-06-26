@@ -27,7 +27,7 @@ public class World {
     final Flyer flyer;
     final Skybox skybox;
 
-	public Terrain terrain = new Terrain(this);
+	public Terrain terrain = new Terrain();
 	private boolean refreshShader = true;
 
     /**
@@ -96,7 +96,7 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 20, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
-        add(Entity.makeCube(new Vector3(500, 1, 500), 0, Matrix4.translate(0, -0.1f, 0)));
+//        add(Entity.makeCube(new Vector3(500, 1, 500), 0, Matrix4.translate(0, -0.1f, 0)));
         // the big one
         add(Entity.makeCube(new Vector3(2, 2, 2), 1, Matrix4.translate(0, 10f, 0)));
         // the small one
@@ -118,8 +118,6 @@ public class World {
     	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
     	flyer.node.addChildNode(zepSpot);
 
-
-    
         simulator.addCollisionListener(flyer, new CollisionListener() {
             @Override
             public void response(Entity e0, Entity e1) {
