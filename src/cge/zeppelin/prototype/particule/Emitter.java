@@ -80,7 +80,7 @@ public class Emitter {
 
         radius = new ArrayList<Float>(count);
         for (int i = 0; i != count; i++)
-        	radius.add(noiseMaker.random(1,2));
+        	radius.add(noiseMaker.random(1,300));
         
         cloud.setAttribute("partPosition", new AttributeVector3(position));
     }
@@ -89,7 +89,6 @@ public class Emitter {
 
         for (int i = 0; i != count; i++) {
             age.set(i, age.get(i) + elapsed*50);
-            
             if (age.get(i) > 360) {
             	age.set(i, (float) 0);
             }
