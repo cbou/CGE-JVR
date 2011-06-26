@@ -102,7 +102,7 @@ public class Checkpoint extends Entity {
 
         for (int i = 0; i != count; i++) {
             age.set(i, age.get(i) + elapsed*50);
-            System.out.println(age.get(i));
+
             if (age.get(i) > 360) {
             	age.set(i, (float) 0);
             }
