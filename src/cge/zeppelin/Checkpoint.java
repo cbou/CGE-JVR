@@ -61,10 +61,11 @@ public class Checkpoint extends Entity {
 	        cloud = new AttributeCloud(count, GL.GL_POINTS);
 
 			node.addChildNode(particuleShapeNode);
-			node.setTransform(Transform.translate(start));
 			n.addChildNode(particuleShapeNode);
 			initParticules();			
 		}
+		
+		node.setTransform(Transform.translate(start));
 	}
 
 	protected void initParticules() {
