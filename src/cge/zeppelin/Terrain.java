@@ -76,12 +76,12 @@ public class Terrain extends Entity{
 			} else {
 				float x = positions[i];
 				float z = positions[i+2];
-				float xDiff = getElevation((x+grid),z)-getElevation((x-grid), z);
-				float zDiff = getElevation(x,(z+grid))-getElevation(x, (z-grid));
-
-				tmp[i]   = xDiff;
-				tmp[i+1] = 1.0f;
-				tmp[i+2] = zDiff;
+				float xDiff = getElevation((x-grid),z)-getElevation((x+grid), z);
+				float zDiff = getElevation(x,(z-grid))-getElevation(x, (z+grid));
+				Vector3 n = new Vector3(xDiff,amplitude,zDiff);
+				tmp[i]   = (float) Math.sin(n.normalize().x()*Math.PI);
+				tmp[i+1] = 1;//n.normalize().y();
+				tmp[i+2] = (float) Math.sin(n.normalize().z()*Math.PI);
 			}
 		}
 		return tmp;
@@ -132,37 +132,46 @@ public class Terrain extends Entity{
 		return shape.getMaterial();
 	}
 
-	private float getElevation(float x, float y){
+	public float getElevation(float x, float y){
+//		return (float) (amplitude*(1+Math.sin(x)) +  (amplitude*(1+Math.sin(y))));
 		return (float) (amplitude*noise(x,y) + 100*bigNoise(x, y));
 	}
-	
+
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
 
 		float[] tmp  = new float[triangles*9];
+		float[] nor  = new float[triangles*9];
 		
 		for (int i=0;i<triangles/2;i++){
 			
 			int triPair    = i*18;
+			
+			/* 1 */
 			tmp[triPair]   = x+i*h;
 			tmp[triPair+1] = getElevation(x+i*h,z);
 			tmp[triPair+2] = z;
 			
+			/* 2 */
 			tmp[triPair+3] = x+i*h;
 			tmp[triPair+4] = getElevation(x+i*h,z+h);
 			tmp[triPair+5] = z+h;
-
+			
+			/* 3 */
 			tmp[triPair+6] = x+i*h+h;
 			tmp[triPair+7] = getElevation(x+i*h+h,z);
 			tmp[triPair+8] = z;
 
+			/* 4 */
 			tmp[triPair+9]  = x+i*h;
 			tmp[triPair+10] = tmp[triPair+4];
 			tmp[triPair+11] = z+h;
-
+			
+			/* 5 */
 			tmp[triPair+12] = x+i*h+h;
 			tmp[triPair+13] = getElevation(x+i*h+h,z+h);
 			tmp[triPair+14] = z+h;
-
+			
+			/* 6 */
 			tmp[triPair+15] = x+i*h+h;
 			tmp[triPair+16] = tmp[triPair+7];
 			tmp[triPair+17] = z;
@@ -179,7 +188,6 @@ public class Terrain extends Entity{
 	private float bigNoise(float x, float y) {
 		noiseMaker.noiseDetail(4,0.1f);
 		float n = noiseMaker.noise(x/100,y/100);
-//		return (float) n < 0.3f ? 0 : n;
 		return 0;
 	}
 
@@ -187,10 +195,6 @@ public class Terrain extends Entity{
 	    float[] textCoords;
 		float[] positions ;
 		float[] normals ;
-	}
-
-	public float getHeight(float x, float y) {
-		return amplitude*noise(x, y);
 	}
 
 	public void postPosition(Vector3 translation) {
@@ -220,21 +224,17 @@ public class Terrain extends Entity{
 			textureHigh    = new Texture2D(Helper.getFileResource("textures/snow.jpg"));
 			textureMiddle  = new Texture2D(Helper.getFileResource("textures/rock.jpg"));
 			textureLow     = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
-			
-	       // textureHigh.bind(world.renderer.ctx);
-	        
+		    
 			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/terrainambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
-	        
 	        ShaderMaterial earthMat = new ShaderMaterial();
 	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "waterLevel", new UniformFloat(WATERLEVEL));
-	 	   
 	        //earthMat.setTexture("AMBIENT", "jvr_Texture0", textureHigh);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureHigh", textureHigh);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureMiddle", textureMiddle);

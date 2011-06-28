@@ -59,7 +59,6 @@ public class Renderer {
     	GL2GL3 gl = drawable.getGL().getGL2GL3();
         gl.setSwapInterval(1);
         ctx = new Context(gl);
-
         
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
         switchAmbientCamCmd = pipeline.switchCamera(camera);
@@ -74,8 +73,7 @@ public class Renderer {
         ll.switchFrameBufferObject(null);
         switchLightCamCmd = ll.switchCamera(camera);
         ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
-        ll.drawGeometry("LIGHTING", null);        
-        
+        ll.drawGeometry("LIGHTING", null);   
     }
     
     

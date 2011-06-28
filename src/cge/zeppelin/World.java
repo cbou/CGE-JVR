@@ -109,14 +109,14 @@ public class World {
         add(flyer);
         add(skybox);
         
-    	SpotLightNode zepSpot = new SpotLightNode();
-    	zepSpot.setCastShadow(true);
-    	zepSpot.setSpotCutOff(30);
-    	zepSpot.setShadowBias(0.3f);
-    	zepSpot.setIntensity(0.8f);
-    	zepSpot.setSpecularColor(new Color(0.8f, 0.5f, 0.8f));
-    	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
-    	flyer.node.addChildNode(zepSpot);
+//    	SpotLightNode zepSpot = new SpotLightNode();
+//    	zepSpot.setCastShadow(true);
+//    	zepSpot.setSpotCutOff(30);
+//    	zepSpot.setShadowBias(0.3f);
+//    	zepSpot.setIntensity(0.8f);
+//    	zepSpot.setSpecularColor(new Color(0.8f, 0.5f, 0.8f));
+//    	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
+//    	flyer.node.addChildNode(zepSpot);
 
         simulator.addCollisionListener(flyer, new CollisionListener() {
             @Override

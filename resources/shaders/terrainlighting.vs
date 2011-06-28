@@ -19,6 +19,11 @@ void main(void)
   eyeDirV = -vertexV;
   lightDirV = jvr_LightSource_Position.xyz - vertexV;
   normalV = normalize(jvr_NormalMatrix * jvr_Normal);
+  
+  /* Normal shader*/	
+  //normalV = jvr_Normal;
+	
+  
   gl_Position = jvr_ModelViewProjectionMatrix * jvr_Vertex;
   positionV = jvr_Vertex;
   texture_coordinate = jvr_TexCoord;

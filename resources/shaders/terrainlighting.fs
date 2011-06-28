@@ -32,20 +32,26 @@ void main (void)
   if (positionV.y > high)  {
 	  	if (positionV.y < high + blend){
 	  		float diff = (positionV.y - high)*diffFact;
-	  		gl_FragColor = intensity * ( diff * texture2D(jvr_TextureHigh, texture_coordinate) + (1.0-diff) * texture2D(jvr_TextureMiddle, texture_coordinate));
+	  		gl_FragColor = ( diff * texture2D(jvr_TextureHigh, texture_coordinate) + (1.0-diff) * texture2D(jvr_TextureMiddle, texture_coordinate));
 	  	} else {
-	  		gl_FragColor = intensity * texture2D(jvr_TextureHigh, texture_coordinate);
+	  		gl_FragColor = texture2D(jvr_TextureHigh, texture_coordinate);
 	  	}
   } else if (positionV.y > middle){
 	   if (positionV.y < middle + blend){
 	  		float diff = (positionV.y - middle)*diffFact;
-	  		gl_FragColor = intensity * (diff * texture2D(jvr_TextureMiddle, texture_coordinate) +  (1.0-diff) * texture2D(jvr_TextureLow, texture_coordinate));
+	  		gl_FragColor = (diff * texture2D(jvr_TextureMiddle, texture_coordinate) +  (1.0-diff) * texture2D(jvr_TextureLow, texture_coordinate));
 	    } else {
-	  		gl_FragColor = intensity * texture2D(jvr_TextureMiddle, texture_coordinate);
+	  		gl_FragColor = texture2D(jvr_TextureMiddle, texture_coordinate);
 	  	}
   } else {
-   	gl_FragColor = intensity * texture2D(jvr_TextureLow, texture_coordinate);
+   		gl_FragColor = texture2D(jvr_TextureLow, texture_coordinate);
   }
+   
+  gl_FragColor = 0.1*gl_FragColor + 0.9*intensity*gl_FragColor ;
+  
+  /* Normal Shader*/
+  //gl_FragColor.rgb = normalV;
+  //gl_FragColor.rgb = intensity * vec3(1,1,1);
   
    /* Water */
   if (intensity > 0.0) {
