@@ -19,7 +19,7 @@ void main (void)
   float intensity = dot(L, N);
 
   if (intensity > 0.9)
-    color = 0.75 * toonColor * jvr_LightSource_Diffuse.rgb;
+    color = vec3(1,0,0);//0.75 * toonColor * jvr_LightSource_Diffuse.rgb;
   else if (intensity > 0.6)
     color = 0.50 * toonColor * jvr_LightSource_Diffuse.rgb;
   else if (intensity > 0.3)
@@ -33,7 +33,7 @@ void main (void)
       color = jvr_LightSource_Specular.rgb;
   }
   
-  //gl_FragColor.rgb = vec3(1,1,0);
+ // gl_FragColor.rgb = vec3(1,0,0);
   gl_FragColor.rgb = color;
   gl_FragColor.a = 1.0;
 }
