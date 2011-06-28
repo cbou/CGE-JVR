@@ -53,26 +53,32 @@ public class Checkpoint extends Entity {
 			try {
 				sphereModel   = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
 				arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
-
-				node.setTransform(Transform.translate(start));
-				sphereModel.setTransform(Transform.scale(size, size, size));
-				
-		    	
-			} catch (Exception e) {
-				// TODO Auto-generated catch block	 	
+			} catch (Exception e) { 	
 				e.printStackTrace();
 			}
-			node.addChildNodes(sphereModel, arrowModel);
+			node.setTransform(Transform.translate(start));
+			sphereModel.setTransform(Transform.scale(size, size, size));
+			
+			node.addChildNodes(sphereModel);
 			n.addChildNode(node);
 		} else {
 	        particuleShapeNode = new ShapeNode("Emitter");
 	        cloud = new AttributeCloud(count, GL.GL_POINTS);
 
+			node.setTransform(Transform.translate(start));
 			node.addChildNode(particuleShapeNode);
 			n.addChildNode(particuleShapeNode);
 			initParticules();			
 		}
 		
+	}
+	
+	public void deactivateArrow() {
+		node.removeChildNode(arrowModel);
+	}
+	
+	public void activateArrow() {
+		node.addChildNode(arrowModel);
 	}
 
 	protected void initParticules() {
