@@ -35,6 +35,7 @@ vec4 blur()
    	}
 
 	final_color /= float(iteration + 1) * float(iteration + 1); 
+   	final_color = texture2D(jvr_Texture0, texCoord);
    	
    	final_color.w = 1.0;
 	return final_color;
