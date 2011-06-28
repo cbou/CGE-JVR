@@ -39,22 +39,30 @@ public class Checkpoint extends Entity {
 	private PApplet noiseMaker = new PApplet();
 	
 	final private boolean oldCheckpoint = true;
+	private Vector3 startPos;
+	private SceneNode arrowModel;
     
 	public Checkpoint(GroupNode n, float s, Vector3 start){
 		//node;
 		size = s;
+		startPos = start;
 		count = 100;
 		node = new GroupNode();
 
 		if (oldCheckpoint) {
 			try {
 				sphereModel   = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
+				arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
+
+				node.setTransform(Transform.translate(start));
+				sphereModel.setTransform(Transform.scale(size, size, size));
+				
+		    	
 			} catch (Exception e) {
 				// TODO Auto-generated catch block	 	
 				e.printStackTrace();
 			}
-			sphereModel.setTransform(Transform.scale(size, size, size));
-			node.addChildNode(sphereModel);
+			node.addChildNodes(sphereModel, arrowModel);
 			n.addChildNode(node);
 		} else {
 	        particuleShapeNode = new ShapeNode("Emitter");
@@ -65,7 +73,6 @@ public class Checkpoint extends Entity {
 			initParticules();			
 		}
 		
-		node.setTransform(Transform.translate(start));
 	}
 
 	protected void initParticules() {
@@ -118,6 +125,8 @@ public class Checkpoint extends Entity {
 	}
 
     public void manipulate(float elapsed) {
+    	arrowModel.setTransform(Transform.rotateZDeg(-90).mul(Transform.translate(-20,-3,-1.5f)));
+    	
 		if (!oldCheckpoint) {
 	        for (int i = 0; i != count; i++) {
 	            age.set(i, age.get(i) + elapsed*50);
