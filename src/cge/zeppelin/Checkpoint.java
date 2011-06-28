@@ -10,8 +10,10 @@ import javax.media.opengl.GL3;
 
 import processing.core.PApplet;
 import cge.zeppelin.util.Helper;
+import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.AttributeCloud;
 import de.bht.jvr.core.GroupNode;
+import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
 import de.bht.jvr.core.ShaderMaterial;
 import de.bht.jvr.core.ShaderProgram;
@@ -24,10 +26,10 @@ import de.bht.jvr.math.Vector3;
 public class Checkpoint extends Entity {
 	
 	float size;
-	private ShapeNode emitter;
+	private SceneNode sphereModel;
+	private ShapeNode particuleShapeNode;
     private AttributeCloud cloud;
     private int count;
-
 
     private ArrayList<Vector3> position;
     private ArrayList<Float> age;
@@ -35,21 +37,34 @@ public class Checkpoint extends Entity {
     private ArrayList<Float> radius;
 
 	private PApplet noiseMaker = new PApplet();
+	
+	final private boolean oldCheckpoint = true;
     
 	public Checkpoint(GroupNode n, float s, Vector3 start){
 		//node;
 		size = s;
 		count = 100;
+		node = new GroupNode();
 
-        emitter = new ShapeNode("Emitter");
-        cloud = new AttributeCloud(count, GL.GL_POINTS);
+		if (oldCheckpoint) {
+			try {
+				sphereModel   = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block	 	
+				e.printStackTrace();
+			}
+			sphereModel.setTransform(Transform.scale(size, size, size));
+			node.addChildNode(sphereModel);
+			n.addChildNode(node);
+		} else {
+	        particuleShapeNode = new ShapeNode("Emitter");
+	        cloud = new AttributeCloud(count, GL.GL_POINTS);
 
-		node 	= new GroupNode();
-		node.addChildNode(emitter);
-		node.setTransform(Transform.translate(start));
-		n.addChildNode(emitter);
-		
-		initParticules();
+			node.addChildNode(particuleShapeNode);
+			node.setTransform(Transform.translate(start));
+			n.addChildNode(particuleShapeNode);
+			initParticules();			
+		}
 	}
 
 	protected void initParticules() {
@@ -73,49 +88,53 @@ public class Checkpoint extends Entity {
         	radius.add(noiseMaker.random(1,2));
         
         cloud.setAttribute("partPosition", new AttributeVector3(position));
+        
 	}
 	
 	void refreshShader() {
-        ShaderProgram shader = null;
-        try {
-            Shader vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
-            Shader geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
-            Shader frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
-
-            shader = new ShaderProgram(vert, frag, geom);            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        shader.setParameter(GL2GL3.GL_GEOMETRY_INPUT_TYPE_ARB, GL.GL_POINTS);
-        shader.setParameter(GL2GL3.GL_GEOMETRY_OUTPUT_TYPE_ARB, GL2.GL_QUADS);
-        shader.setParameter(GL2GL3.GL_GEOMETRY_VERTICES_OUT_ARB, 4);
-
-        ShaderMaterial material = new ShaderMaterial("AMBIENT", shader);
-        material.setMaterialClass("PARTICLE");
-
-        emitter.setGeometry(cloud);
-        emitter.setMaterial(material);
+		if (!oldCheckpoint) {
+	        ShaderProgram shader = null;
+	        try {
+	            Shader vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
+	            Shader geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
+	            Shader frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
+	
+	            shader = new ShaderProgram(vert, frag, geom);            
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	
+	        shader.setParameter(GL2GL3.GL_GEOMETRY_INPUT_TYPE_ARB, GL.GL_POINTS);
+	        shader.setParameter(GL2GL3.GL_GEOMETRY_OUTPUT_TYPE_ARB, GL2.GL_QUADS);
+	        shader.setParameter(GL2GL3.GL_GEOMETRY_VERTICES_OUT_ARB, 4);
+	
+	        ShaderMaterial material = new ShaderMaterial("AMBIENT", shader);
+	        material.setMaterialClass("PARTICLE");
+	
+	        particuleShapeNode.setGeometry(cloud);
+	        particuleShapeNode.setMaterial(material);
+		}
 	}
 
     public void manipulate(float elapsed) {
-
-        for (int i = 0; i != count; i++) {
-            age.set(i, age.get(i) + elapsed*50);
-
-            if (age.get(i) > 360) {
-            	age.set(i, (float) 0);
-            }
-
-            float n = (float) noiseMaker.noise(age.get(i));
-            
-        	float r = age.get(i);
-            float x1 = (float) (1 + Math.cos(PApplet.radians(r + startAngle.get(i))) * (radius.get(i)+n/30));
-            float y1 = (float) (1 + Math.sin(PApplet.radians(r + startAngle.get(i))) * (radius.get(i)+n/30));
-            position.set(i, new Vector3(x1,y1,1));
-        }
-        // Set
-        cloud.setAttribute("partPosition", new AttributeVector3(position));
-        cloud.setAttribute("partRadius", new AttributeFloat(radius));
+		if (!oldCheckpoint) {
+	        for (int i = 0; i != count; i++) {
+	            age.set(i, age.get(i) + elapsed*50);
+	
+	            if (age.get(i) > 360) {
+	            	age.set(i, (float) 0);
+	            }
+	
+	            float n = (float) noiseMaker.noise(age.get(i));
+	            
+	        	float r = age.get(i);
+	            float x1 = (float) (1 + Math.cos(PApplet.radians(r + startAngle.get(i))) * (radius.get(i)+n/30));
+	            float y1 = (float) (1 + Math.sin(PApplet.radians(r + startAngle.get(i))) * (radius.get(i)+n/30));
+	            position.set(i, new Vector3(x1,y1,1));
+	        }
+	        // Set
+	        cloud.setAttribute("partPosition", new AttributeVector3(position));
+	        cloud.setAttribute("partRadius", new AttributeFloat(radius));
+		}
     }
 }
