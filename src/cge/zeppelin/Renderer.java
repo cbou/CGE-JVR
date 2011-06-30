@@ -93,7 +93,7 @@ public class Renderer {
 
     		ll.drawGeometry("LIGHTING", null);  
 
-    		/* Wieder zurück auf Screen */   
+    		/* Auf Screen zeichnen */   
     		pipeline.switchFrameBufferObject(null);
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
 

@@ -27,9 +27,9 @@ public class RaceManager {
 	
 	public void populate() {
 		addCheckpoint(new Checkpoint(node, 3, new Vector3(3,10,-10)));
-		addCheckpoint(new Checkpoint(node, 3, new Vector3(2,8,-20)));
-		addCheckpoint(new Checkpoint(node, 3, new Vector3(-6, 6,-30)));
-		addCheckpoint(new Checkpoint(node, 3, new Vector3(-14, 4,-30)));
+		addCheckpoint(new Checkpoint(node, 3, new Vector3(2, 18,-50)));
+		addCheckpoint(new Checkpoint(node, 3, new Vector3(-6, 19,-80)));
+		addCheckpoint(new Checkpoint(node, 3, new Vector3(-14, 21,-100)));
 		
 		checkpoints.get(0).activateArrow();
 	}
