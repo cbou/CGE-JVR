@@ -76,13 +76,12 @@ public class JVRParticleExampleBlur {
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
      
         /* Alles auf Screen*/
-        float intensity = 2;
+        float intensity = 5;
         PipelineCommandPtr ptr = pipeline.setUniform("intensity", new UniformFloat(intensity)); // set the blur intensity
         pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
         pipeline.bindDepthBuffer("jvr_Texture0", "SceneMap"); // bind depth buffer from fbo to uniform
         // render quad with dof shader
         pipeline.drawQuad(sm, "DOFPass");
-     
         
         
         InputState input = new InputState();

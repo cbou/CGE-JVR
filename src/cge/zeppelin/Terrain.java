@@ -133,8 +133,8 @@ public class Terrain extends Entity{
 	}
 
 	public float getElevation(float x, float y){
-//		return (float) (amplitude*(1+Math.sin(x)) +  (amplitude*(1+Math.sin(y))));
-		return (float) (amplitude*noise(x,y) + 100*bigNoise(x, y));
+		float sin = (float) (amplitude*(1+Math.sin(x)) +  (amplitude*(1+Math.sin(y))));
+		return (float) (amplitude*5*noise(x,y) + 100*bigNoise(x, y)+sin);
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){

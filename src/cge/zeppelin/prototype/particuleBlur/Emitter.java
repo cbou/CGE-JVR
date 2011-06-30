@@ -80,7 +80,7 @@ public class Emitter {
 
         radius = new ArrayList<Float>(count);
         for (int i = 0; i != count; i++)
-        	radius.add(noiseMaker.random(1,300));
+        	radius.add(noiseMaker.random(1,1.5f));
         
         cloud.setAttribute("partPosition", new AttributeVector3(position));
     }

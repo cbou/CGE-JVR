@@ -80,7 +80,7 @@ public class Emitter {
 
         radius = new ArrayList<Float>(count);
         for (int i = 0; i != count; i++)
-        	radius.add(noiseMaker.random(1,300));
+        	radius.add(noiseMaker.random(1,1.5f));
         
         cloud.setAttribute("partPosition", new AttributeVector3(position));
     }
@@ -105,17 +105,7 @@ public class Emitter {
         cloud.setAttribute("partRadius", new AttributeFloat(radius));
     }
 
-    private static Random random = new Random();
-
-    private float randomValue(float min, float max) {
-        return min + random.nextFloat() * (max - min);
-    }
-
-    private Vector3 randomVector3(Vector3 min, Vector3 max) {
-        return new Vector3(randomValue(min.x(), max.x()), randomValue(min.y(), max.y()),
-                randomValue(min.z(), max.z()));
-    }
-
+     
     public void refreshShader(){
     	ShaderProgram shader = null;
     	     
