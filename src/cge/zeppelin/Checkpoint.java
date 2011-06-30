@@ -38,7 +38,7 @@ public class Checkpoint extends Entity {
 
 	private PApplet noiseMaker = new PApplet();
 	
-	final private boolean oldCheckpoint = true;
+	final private boolean oldCheckpoint = false;
 	private Vector3 startPos;
 	private SceneNode arrowModel;
     
@@ -46,7 +46,7 @@ public class Checkpoint extends Entity {
 		//node;
 		size = s;
 		startPos = start;
-		count = 100;
+		count = 1000;
 		node = new GroupNode();
 
 		if (oldCheckpoint) {
@@ -62,6 +62,11 @@ public class Checkpoint extends Entity {
 			node.addChildNodes(sphereModel);
 			n.addChildNode(node);
 		} else {
+			try {
+				arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
+			} catch (Exception e) { 	
+				e.printStackTrace();
+			}
 	        particuleShapeNode = new ShapeNode("Emitter");
 	        cloud = new AttributeCloud(count, GL.GL_POINTS);
 

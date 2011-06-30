@@ -1,5 +1,8 @@
 package cge.zeppelin;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -7,9 +10,12 @@ import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
+import de.bht.jvr.core.ShaderMaterial;
+import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.pipeline.Pipeline;
 import de.bht.jvr.core.pipeline.PipelineCommandPtr;
+import de.bht.jvr.core.uniforms.UniformFloat;
 import de.bht.jvr.util.Color;
 
 /**
@@ -57,24 +63,50 @@ public class Renderer {
      */
     void init(GLAutoDrawable drawable) {
     	GL2GL3 gl = drawable.getGL().getGL2GL3();
-        gl.setSwapInterval(1);
-        ctx = new Context(gl);
-        
-        pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-        switchAmbientCamCmd = pipeline.switchCamera(camera);
-        pipeline.drawGeometry("AMBIENT", null);
-       
-        Pipeline ll = pipeline.doLightLoop(false, true);
-        ll.switchLightCamera();
-        ll.createFrameBufferObject("ShadowMap", true, 0, 2048, 2048, 0);
-        ll.switchFrameBufferObject("ShadowMap");
-        ll.clearBuffers(true, false, null);
-        ll.drawGeometry("AMBIENT", null);
-        ll.switchFrameBufferObject(null);
-        switchLightCamCmd = ll.switchCamera(camera);
-        ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
-        
-        ll.drawGeometry("LIGHTING", null);   
+    	gl.setSwapInterval(1);
+    	ctx = new Context(gl);
+
+    	ShaderProgram sp;
+    	try {
+    		sp = new ShaderProgram(new File("./resources/prototype/blur/ambient.vs"), new File("./resources/prototype/blur/blur.fs"));
+    		ShaderMaterial sm = new ShaderMaterial("DOFPass", sp);
+
+    		/* Alles in SceneMap rendern*/
+    		pipeline.createFrameBufferObject("SceneMap", true, 1, 1.0f, 0);
+    		pipeline.switchFrameBufferObject("SceneMap");
+
+    		pipeline.setUniform("intensity", new UniformFloat(4)); // set the blur intensity
+
+    		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
+    		switchAmbientCamCmd = pipeline.switchCamera(camera);
+    		pipeline.drawGeometry("AMBIENT", null);
+
+    		Pipeline ll = pipeline.doLightLoop(false, true);
+    		ll.switchLightCamera();
+    		ll.createFrameBufferObject("ShadowMap", true, 0, 2048, 2048, 0);
+    		ll.switchFrameBufferObject("ShadowMap");
+    		ll.clearBuffers(true, false, null);
+    		ll.drawGeometry("AMBIENT", null);
+    		ll.switchFrameBufferObject(null);
+    		switchLightCamCmd = ll.switchCamera(camera);
+    		ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
+
+    		ll.drawGeometry("LIGHTING", null);  
+
+    		/* Wieder zurück auf Screen */   
+    		pipeline.switchFrameBufferObject(null);
+    		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
+
+    		pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
+    		pipeline.bindDepthBuffer("jvr_Texture0", "SceneMap"); // bind depth buffer from fbo to uniform
+    		// render quad with dof shader
+    		pipeline.drawQuad(sm, "DOFPass");
+    	} catch (IOException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+
+
     }
     
     
