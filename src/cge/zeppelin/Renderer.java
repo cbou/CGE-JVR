@@ -73,6 +73,7 @@ public class Renderer {
         ll.switchFrameBufferObject(null);
         switchLightCamCmd = ll.switchCamera(camera);
         ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
+        
         ll.drawGeometry("LIGHTING", null);   
     }
     

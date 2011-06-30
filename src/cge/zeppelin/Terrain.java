@@ -29,7 +29,7 @@ public class Terrain extends Entity{
 	private TriangleMesh triangleMesh;
 	private ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
-	private float amplitude = 10;
+	private float amplitude = 4;
 	private Material mat;
 	private int[] indices;
 	private terrainMesh mesh;
@@ -76,12 +76,40 @@ public class Terrain extends Entity{
 			} else {
 				float x = positions[i];
 				float z = positions[i+2];
-				float xDiff = getElevation((x-grid),z)-getElevation((x+grid), z);
-				float zDiff = getElevation(x,(z-grid))-getElevation(x, (z+grid));
-				Vector3 n = new Vector3(xDiff,amplitude,zDiff);
-				tmp[i]   = (float) Math.sin(n.normalize().x()*Math.PI);
-				tmp[i+1] = 1;//n.normalize().y();
-				tmp[i+2] = (float) Math.sin(n.normalize().z()*Math.PI);
+//				/*
+				float x1Diff = getElevation(x,z)-getElevation((x+grid), z);
+				float z1Diff = getElevation(x,z)-getElevation(x, (z+grid));
+		
+				Vector3 nx1 = new Vector3(-x1Diff,1,0);
+				Vector3 nz1 = new Vector3(0,1,-z1Diff);	
+				
+				float x2Diff = getElevation(x,z)-getElevation((x-grid), z);
+				float z2Diff = getElevation(x,z)-getElevation(x, (z-grid));
+				
+				Vector3 nx2 = new Vector3(-x2Diff,1,0);
+				Vector3 nz2 = new Vector3(0,1,-z2Diff);	
+				
+				Vector3 n1 = nx1.add(nx2);
+				n1 = n1.add(nz1).add(nz2);
+//					*/
+//				float y1 = getElevation(x,z) - getElevation(x-grid, z);
+//				float y2 = getElevation(x,z) - getElevation(x, z+grid);
+//				float y3 = getElevation(x,z) - getElevation(x+grid, z);
+//				float y4 = getElevation(x,z) - getElevation(x, z-grid);
+//				
+//				Vector3 v1 = new Vector3(-grid, -y1, 0);
+//				Vector3 v2 = new Vector3(0, -y2, +grid);
+//				Vector3 v3 = new Vector3(+grid, -y3, 0);
+//				Vector3 v4 = new Vector3(0, -y4, -grid);
+//				
+//				Vector3 n1 = v1.cross(v2).cross(v3).cross(v4);
+				
+//				float xDiff = getElevation((x-grid),z)-getElevation((x+grid), z);
+//				float zDiff = getElevation(x,(z-grid))-getElevation(x, (z+grid));
+				n1=n1.normalize();
+				tmp[i]   = n1.x();
+				tmp[i+1] = n1.y();
+				tmp[i+2] = n1.z();
 			}
 		}
 		return tmp;
@@ -134,7 +162,8 @@ public class Terrain extends Entity{
 
 	public float getElevation(float x, float y){
 		float sin = (float) (amplitude*(1+Math.sin(x)) +  (amplitude*(1+Math.sin(y))));
-		return (float) (amplitude*5*noise(x,y) + 100*bigNoise(x, y)+sin);
+//		return sin;
+		return (float) (amplitude*5*noise(x,y) + 100*bigNoise(x, y));
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
@@ -251,5 +280,6 @@ public class Terrain extends Entity{
 	    	System.out.println("Can not compile shader!");
 		}
 	}
+
 
 }

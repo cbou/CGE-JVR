@@ -50,7 +50,7 @@ void main (void)
   gl_FragColor = 0.1*gl_FragColor + 0.9*intensity*gl_FragColor ;
   
   /* Normal Shader*/
-  gl_FragColor.rgb = normalV;
+  //gl_FragColor.rgb = normalV;
   //gl_FragColor.rgb = intensity * vec3(1,1,1);
   
    /* Water */

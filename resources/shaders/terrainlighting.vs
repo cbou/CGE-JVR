@@ -21,7 +21,7 @@ void main(void)
   normalV = normalize(jvr_NormalMatrix * jvr_Normal);
   
   /* Normal shader*/	
-  normalV = jvr_Normal;
+  //normalV = jvr_Normal;
 	
   
   gl_Position = jvr_ModelViewProjectionMatrix * jvr_Vertex;
