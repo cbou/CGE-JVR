@@ -215,8 +215,9 @@ public class Terrain extends Entity{
 	}
 
 	private float bigNoise(float x, float y) {
-		noiseMaker.noiseDetail(4,0.1f);
-		float n = noiseMaker.noise(x/100,y/100);
+		noiseMaker.noiseDetail(1,0.1f);
+		float n = noiseMaker.noise(x/100f,y/100f);
+		System.out.println(x+" "+y);
 		return 0;
 	}
 

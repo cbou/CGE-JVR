@@ -39,10 +39,9 @@ public class JVRParticleExampleBlur {
         ShaderProgram sp = new ShaderProgram(new File("./resources/prototype/blur/ambient.vs"), new File("./resources/prototype/blur/blur.fs"));
         ShaderMaterial sm = new ShaderMaterial("DOFPass", sp);
         
-        
         SceneNode ground = ColladaLoader.load(Helper.getFileResource("/prototype/particule/box.dae"));
         ground.setTransform(Transform.translate(0f, -1f, 0f).mul(Transform.scale(10f, 0.1f, 10f)));
-        
+
         GroupNode emitterPos = new GroupNode();
         emitterPos.setTransform(Transform.translate(0, -0.5f, 0));
         GroupNode emitterDir = new GroupNode();
@@ -60,29 +59,35 @@ public class JVRParticleExampleBlur {
         Printer.print(root);
 
         Pipeline pipeline = new Pipeline(root);
+        pipeline.switchCamera(camera);
+     
         
         /* Alles in SceneMap rendern*/
         pipeline.createFrameBufferObject("SceneMap", true, 1, 1.0f, 0);
 		pipeline.switchFrameBufferObject("SceneMap");
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-        pipeline.switchCamera(camera);
+        // Render the particles unlit and last, because of transparency.
         pipeline.drawGeometry("AMBIENT", null);
         pipeline.doLightLoop(true, true).drawGeometry("LIGHTING", null);
-        // Render the particles unlit and last, because of transparency.
+    
+        pipeline.createFrameBufferObject("Particles", true, 1, 1.0f, 0);
+		pipeline.switchFrameBufferObject("Particles");
+		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
         pipeline.drawGeometry("AMBIENT", "PARTICLE");
 
-        
         pipeline.switchFrameBufferObject(null);
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-     
         /* Alles auf Screen*/
         float intensity = 5;
         PipelineCommandPtr ptr = pipeline.setUniform("intensity", new UniformFloat(intensity)); // set the blur intensity
         pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
-        pipeline.bindDepthBuffer("jvr_Texture0", "SceneMap"); // bind depth buffer from fbo to uniform
-        // render quad with dof shader
-        pipeline.drawQuad(sm, "DOFPass");
+        pipeline.bindDepthBuffer("jvr_SzeneZ", "SceneMap"); // bind depth buffer from fbo to uniform
+        pipeline.bindDepthBuffer("jvr_ParticleZ", "Particles"); // bind depth buffer from fbo to uniform
         
+        // render quad with dof shader
+
+        pipeline.drawQuad(sm, "DOFPass");
+      
         
         InputState input = new InputState();
         RenderWindow win = new AwtRenderWindow(pipeline, 800, 600);

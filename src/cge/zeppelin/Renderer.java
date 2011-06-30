@@ -75,12 +75,10 @@ public class Renderer {
     		pipeline.createFrameBufferObject("SceneMap", true, 1, 1.0f, 0);
     		pipeline.switchFrameBufferObject("SceneMap");
 
-    		pipeline.setUniform("intensity", new UniformFloat(4)); // set the blur intensity
-
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
     		switchAmbientCamCmd = pipeline.switchCamera(camera);
     		pipeline.drawGeometry("AMBIENT", null);
-
+    		
     		Pipeline ll = pipeline.doLightLoop(false, true);
     		ll.switchLightCamera();
     		ll.createFrameBufferObject("ShadowMap", true, 0, 2048, 2048, 0);
@@ -90,17 +88,26 @@ public class Renderer {
     		ll.switchFrameBufferObject(null);
     		switchLightCamCmd = ll.switchCamera(camera);
     		ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
-
     		ll.drawGeometry("LIGHTING", null);  
+
+    		/* Partikel in Framebuffer*/
+    		pipeline.createFrameBufferObject("Particles", true, 1, 1.0f, 0);
+    		pipeline.switchFrameBufferObject("Particles");
+    		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
+    		pipeline.drawGeometry("AMBIENT", "PARTICLE");
 
     		/* Auf Screen zeichnen */   
     		pipeline.switchFrameBufferObject(null);
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-
+    		pipeline.setUniform("intensity", new UniformFloat(4)); // set the blur intensity
     		pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
-    		pipeline.bindDepthBuffer("jvr_Texture0", "SceneMap"); // bind depth buffer from fbo to uniform
+    		pipeline.bindDepthBuffer("jvr_SzeneZ", "SceneMap"); // bind depth buffer from fbo to uniform
+    		pipeline.bindDepthBuffer("jvr_ParticleZ", "Particles"); // bind depth buffer from fbo to uniform
+    	     
     		// render quad with dof shader
     		pipeline.drawQuad(sm, "DOFPass");
+    		
+    		
     	} catch (IOException e) {
     		// TODO Auto-generated catch block
     		e.printStackTrace();

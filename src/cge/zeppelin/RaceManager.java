@@ -35,14 +35,6 @@ public class RaceManager {
 	}
 	
 	public void update(float elapsed) {
-		// uncomment this to modify position in debug mode
-		/*
-		checkpoints.get(0).node.setTransform(Transform.translate(3,10,-10));
-		checkpoints.get(1).node.setTransform(Transform.translate(2,8,-20));
-		checkpoints.get(2).node.setTransform(Transform.translate(-6, 6,-30));
-		checkpoints.get(3).node.setTransform(Transform.translate(-14, 4,-30));
-		*/
-		
 		Checkpoint currentCheckpoint = null, nextCheckpoint = null;
 		
 		currentCheckpoint = checkpoints.get(status);

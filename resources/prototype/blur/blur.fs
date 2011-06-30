@@ -1,8 +1,17 @@
-uniform sampler2D jvr_Texture0;
+uniform sampler2D jvr_SzeneZ;
 uniform sampler2D jvr_Texture1;
+uniform sampler2D jvr_ParticleZ;
+
 uniform float intensity;
 varying vec2 texCoord;
 
+float linearizeDepth(sampler2D buffer)
+{
+  float n = 0.1;
+  float f = 10.0;
+  float z = texture2D(buffer, texCoord).r;
+  return (2.0 * n) / (f + n - z * (f - n));
+}
 
 vec4 blur()
 {   	
@@ -14,29 +23,32 @@ vec4 blur()
    	{
    		for(int y=-iteration/2; y<iteration/2+1; y++)
    		{
-   			vec3 yellow = vec3(1,0,0);
-   			vec4 originalColor = texture2D(jvr_Texture1, texCoord);
-   		
-   			float simil = dot(yellow, originalColor.rgb);
+   			//vec4 originalColor = texture2D(jvr_Texture1, texCoord);
+   			
+   			float particleZ    = texture2D(jvr_ParticleZ, texCoord).r;
+   			float szeneZ       = texture2D(jvr_SzeneZ, texCoord).r;
    			
    			vec2 offset = intensity *  vec2(float(x)/1024.0, float(y)/1024.0);
    			vec2 texC = texCoord;
    			
    			if(!(texC.x>1.0 || texC.x<0.0 || texC.y>1.0 || texC.y<0.0))
    			{
-	   			if((originalColor.r >= 0.9) && (originalColor.g <= 0.5) && (originalColor.b <= 0.5))
+	   			//if((originalColor.r >= 0.9) && (originalColor.g <= 0.5) && (originalColor.b <= 0.5))
+	   			
+	   			/* Only blur if the particle is visible */
+	   			if ((particleZ <= szeneZ) && (szeneZ<1.0))
 	   			{
 	   				texC = texCoord+offset;
 	   			}
    			}
    			final_color += texture2D(jvr_Texture1, texC);
-   			//final_color = (float(y)+2.0)* texture2D(jvr_Texture1, texCoord) + (float(iteration - y)+2.0) * texture2D(jvr_Texture1, texC);
+   			
+   			/*Debug*/
+   			//if ((particleZ <= szeneZ) && (szeneZ<1.0))final_color = vec4(0,1,0,1);
    		}
    	}
 
 	final_color /= float(iteration + 1) * float(iteration + 1); 
-  // 	final_color = texture2D(jvr_Texture0, texCoord);
-   	
    	final_color.w = 1.0;
 	return final_color;
 }
