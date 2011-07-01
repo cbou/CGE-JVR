@@ -99,7 +99,9 @@ public class Renderer {
     		/* Auf Screen zeichnen */   
     		pipeline.switchFrameBufferObject(null);
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-    		pipeline.setUniform("intensity", new UniformFloat(4)); // set the blur intensity
+    		pipeline.setUniform("intensity", new UniformFloat(2)); // set the blur intensity
+    		pipeline.setUniform("dofIntensity", new UniformFloat(1)); // set the blur intensity
+    		
     		pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
     		pipeline.bindDepthBuffer("jvr_SzeneZ", "SceneMap"); // bind depth buffer from fbo to uniform
     		pipeline.bindDepthBuffer("jvr_ParticleZ", "Particles"); // bind depth buffer from fbo to uniform

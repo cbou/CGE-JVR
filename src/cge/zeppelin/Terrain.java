@@ -210,15 +210,15 @@ public class Terrain extends Entity{
 	}
 
 	private float noise(float x, float y) {
-		noiseMaker.noiseDetail(4,0.1f);
+		noiseMaker.noiseDetail(2,0.1f);
 		return (float) noiseMaker.noise(x,y);
 	}
 
 	private float bigNoise(float x, float y) {
 		noiseMaker.noiseDetail(1,0.1f);
 		float n = noiseMaker.noise(x/100f,y/100f);
-		System.out.println(x+" "+y);
-		return 0;
+		float f = ((x-200)/400f)*((x-200)/400f)+((y-200)/400f)*((y-200)/400f);
+		return n*f;
 	}
 
 	class terrainMesh{

@@ -33,7 +33,10 @@ import de.bht.jvr.util.StopWatch;
 
 public class JVRParticleExampleBlur {
 
-    public static void main(String[] args) throws Exception {
+    private static float dofIntensity = 1f;
+    private static float intensity = 5;
+    
+	public static void main(String[] args) throws Exception {
         GroupNode root = new GroupNode("scene root");
 
         ShaderProgram sp = new ShaderProgram(new File("./resources/prototype/blur/ambient.vs"), new File("./resources/prototype/blur/blur.fs"));
@@ -78,8 +81,9 @@ public class JVRParticleExampleBlur {
         pipeline.switchFrameBufferObject(null);
         pipeline.clearBuffers(true, true, new Color(0, 0, 0));
         /* Alles auf Screen*/
-        float intensity = 5;
-        PipelineCommandPtr ptr = pipeline.setUniform("intensity", new UniformFloat(intensity)); // set the blur intensity
+        PipelineCommandPtr setIntensity = pipeline.setUniform("intensity", new UniformFloat(intensity)); // set the blur intensity
+        PipelineCommandPtr setDofIntensity = pipeline.setUniform("dofIntensity", new UniformFloat(dofIntensity)); // set the blur intensity
+        
         pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
         pipeline.bindDepthBuffer("jvr_SzeneZ", "SceneMap"); // bind depth buffer from fbo to uniform
         pipeline.bindDepthBuffer("jvr_ParticleZ", "Particles"); // bind depth buffer from fbo to uniform
@@ -111,11 +115,25 @@ public class JVRParticleExampleBlur {
                 angleY += elapsed * speed;
             if (input.isOneDown('A', java.awt.event.KeyEvent.VK_LEFT))
                 angleY -= elapsed * speed;
+            
+            if (input.isOneDown('N'))
+                intensity++;
+            if (input.isOneDown('M'))
+                intensity--;
+            
+            if (input.isOneDown('V'))
+            	dofIntensity ++;
+            if (input.isOneDown('B'))
+                dofIntensity--;
+                  
             if (input.isOneDown('R'))
             	emitter.refreshShader();
             if (input.isDown('Q'))
                 System.exit(0);
 
+            setDofIntensity.setUniform("dofIntensity", new UniformFloat(dofIntensity));
+            setIntensity.setUniform("intensity", new UniformFloat(intensity));
+            System.out.println(dofIntensity+" "+intensity);
             emitterDir.setTransform(Transform.rotate(Vector3.X, angleX).mul(Transform.rotate(Vector3.Y, angleY)));
             emitter.simulate(elapsed);
             

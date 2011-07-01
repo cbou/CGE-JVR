@@ -7,11 +7,8 @@ import javax.media.opengl.GLAutoDrawable;
 
 import cge.zeppelin.environnement.EnvironnementManager;
 import de.bht.jvr.core.Printer;
-import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
-import de.bht.jvr.math.Matrix4;
 import de.bht.jvr.math.Vector3;
-import de.bht.jvr.util.Color;
 import de.bht.jvr.util.awt.InputState;
 
 /**
@@ -96,12 +93,7 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 20, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
-//        add(Entity.makeCube(new Vector3(500, 1, 500), 0, Matrix4.translate(0, -0.1f, 0)));
-        // the big one
-        add(Entity.makeCube(new Vector3(2, 2, 2), 1, Matrix4.translate(0, 10f, 0)));
-        // the small one
-        add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(0, 7f, 0)));
-        
+        terrain.node.setTransform(Transform.translate(-300,0,-300));
         add(terrain);
         
         renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));

@@ -1,8 +1,9 @@
 uniform sampler2D jvr_SzeneZ;
 uniform sampler2D jvr_Texture1;
 uniform sampler2D jvr_ParticleZ;
-
 uniform float intensity;
+uniform float dofIntensity;
+
 varying vec2 texCoord;
 
 float linearizeDepth(sampler2D buffer)
@@ -39,7 +40,13 @@ vec4 blur()
 	   			if ((particleZ <= szeneZ) && (szeneZ<1.0))
 	   			{
 	   				texC = texCoord+offset;
-	   			}
+	   			} else {
+	   				texC = texCoord+ (dofIntensity*vec2(float(x)/1024.0, float(y)/1024.0)*linearizeDepth(jvr_SzeneZ));
+	 			}
+	 			
+	 			/* Fog */
+	 			//final_color += linearizeDepth(jvr_SzeneZ) * vec4(1,1,1,0.4) * 0.1;
+	 			
    			}
    			final_color += texture2D(jvr_Texture1, texC);
    			
