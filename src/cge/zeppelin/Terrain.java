@@ -161,6 +161,7 @@ public class Terrain extends Entity{
 	}
 
 	public float getElevation(float x, float y){
+//		System.out.println("ELE "+x+" "+y);
 		float sin = (float) (amplitude*(1+Math.sin(x)) +  (amplitude*(1+Math.sin(y))));
 //		return sin;
 		return (float) (amplitude*5*noise(x,y) + 100*bigNoise(x, y));

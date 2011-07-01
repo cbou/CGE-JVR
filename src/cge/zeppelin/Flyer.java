@@ -79,7 +79,8 @@ public class Flyer extends Entity {
 		float overAllGravity = gravity+gas-load;
 		
 		Vector3 position = translation.extractTranslation().getMatrix().translation();
-		if (position.y()<=terrain.getElevation(position.x(),position.y())+1){
+		/* +300 wegen Translate des GelŠndes */
+		if (position.y()<=terrain.getElevation(position.x()+300,position.z()+300)+3){
 			//TODO wenn das Terrain steigt, sollte man wieder hochkommen
 			overAllGravity = Math.max(0, overAllGravity);
 		}
@@ -106,7 +107,7 @@ public class Flyer extends Entity {
 		
 		zeppelin.updateState(gas,load);
 		terrain.postPosition(translation.extractTranslation().getMatrix().translation());
-//		printState(); 
+
 	}
 
 	public void accelerate(float direction) {
@@ -139,14 +140,7 @@ public class Flyer extends Entity {
     	rotation = Transform.rotate(new Vector3(0, 1, 0), 0);
     	velocity = xRotVelocity = yRotVelocity = 0;
     
-    	update();
-    
+    	update();    
 	}
 
-	private void printState() {
-		float yaw 	= (float) Math.acos(xform.extractRotation().getMatrix().get(0, 0));
-		float pitch = (float) Math.acos(xform.extractRotation().getMatrix().get(1, 1));
-		//System.out.println(String.format("Velocity %2.2f Pitch %2.2f Yaw %2.2f",velocity, Math.toDegrees(pitch),Math.toDegrees(yaw)));
-		//System.out.println(String.format("Gas %2.2f Load %2.2f",gas, load));
-	}
 }
