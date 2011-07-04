@@ -2,6 +2,7 @@ package cge.zeppelin;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -12,6 +13,8 @@ import processing.core.PApplet;
 import cge.zeppelin.util.Helper;
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.AttributeCloud;
+import de.bht.jvr.core.Finder;
+import de.bht.jvr.core.Geometry;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
@@ -38,21 +41,30 @@ public class Checkpoint extends Entity {
 
 	private PApplet noiseMaker = new PApplet();
 	
-	final private boolean oldCheckpoint = false;
+	final private boolean oldCheckpoint = true;
 	private Vector3 startPos;
 	private SceneNode arrowModel;
-    
+	private ShapeNode arrowShapeNode;
+
 	public Checkpoint(GroupNode n, float s, Vector3 start){
-		//node;
 		size = s;
 		startPos = start;
 		count = 1000;
 		node = new GroupNode();
 
+		try {
+			arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
+
+			arrowShapeNode = new ShapeNode("Arrow");
+	        Geometry arrowGeom = Finder.findGeometry(arrowModel, null);
+	        arrowShapeNode.setGeometry(arrowGeom);
+		} catch (Exception e) { 	
+			e.printStackTrace();
+		}
+		
 		if (oldCheckpoint) {
 			try {
 				sphereModel   = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
-				arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
 			} catch (Exception e) { 	
 				e.printStackTrace();
 			}
@@ -62,28 +74,23 @@ public class Checkpoint extends Entity {
 			node.addChildNodes(sphereModel);
 			n.addChildNode(node);
 		} else {
-			try {
-				arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
-			} catch (Exception e) { 	
-				e.printStackTrace();
-			}
+
 	        particuleShapeNode = new ShapeNode("Emitter");
 	        cloud = new AttributeCloud(count, GL.GL_POINTS);
 
 			node.setTransform(Transform.translate(start));
 			node.addChildNode(particuleShapeNode);
-			n.addChildNode(particuleShapeNode);
 			initParticules();			
 		}
 		
 	}
 	
 	public void deactivateArrow() {
-		node.removeChildNode(arrowModel);
+		node.removeChildNode(arrowShapeNode);
 	}
 	
 	public void activateArrow() {
-		node.addChildNode(arrowModel);
+		node.addChildNode(arrowShapeNode);
 	}
 
 	protected void initParticules() {
@@ -111,12 +118,18 @@ public class Checkpoint extends Entity {
 	}
 	
 	void refreshShader() {
+		ShaderProgram shader = null;
+		ShaderMaterial material = null;
+		Shader vert = null;
+        Shader frag = null;
+        Shader geom = null;
+        
 		if (!oldCheckpoint) {
-	        ShaderProgram shader = null;
+	        shader = null;
 	        try {
-	            Shader vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
-	            Shader geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
-	            Shader frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
+	            vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
+	            geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
+	            frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
 	
 	            shader = new ShaderProgram(vert, frag, geom);            
 	        } catch (IOException e) {
@@ -127,17 +140,33 @@ public class Checkpoint extends Entity {
 	        shader.setParameter(GL2GL3.GL_GEOMETRY_OUTPUT_TYPE_ARB, GL2.GL_QUADS);
 	        shader.setParameter(GL2GL3.GL_GEOMETRY_VERTICES_OUT_ARB, 4);
 	
-	        ShaderMaterial material = new ShaderMaterial("AMBIENT", shader);
+	        material = new ShaderMaterial("AMBIENT", shader);
 	        material.setMaterialClass("PARTICLE");
 	
 	        particuleShapeNode.setGeometry(cloud);
 	        particuleShapeNode.setMaterial(material);
 		}
+		
+		shader = null;
+		
+        try {
+            vert = new Shader(Helper.getInputStreamResource("/shaders/arrow.vs"), GL3.GL_VERTEX_SHADER);
+            frag = new Shader(Helper.getInputStreamResource("/shaders/arrow.fs"), GL3.GL_FRAGMENT_SHADER);
+
+            shader = new ShaderProgram(vert, frag);            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        material = new ShaderMaterial("AMBIENT", shader);
+        
+        arrowShapeNode.setMaterial(material);
+        
 	}
 
     public void manipulate(float elapsed) {
-    	arrowModel.setTransform(Transform.rotateZDeg(-90).mul(Transform.translate(-20,-3,-1.5f)));
-    	
+
+    	arrowShapeNode.setTransform(Transform.rotateZDeg(-90).mul(Transform.translate(-17,-3,-1.5f)).mul(Transform.scale(0.2f)));
 		if (!oldCheckpoint) {
 	        for (int i = 0; i != count; i++) {
 	            age.set(i, age.get(i) + elapsed*50);
