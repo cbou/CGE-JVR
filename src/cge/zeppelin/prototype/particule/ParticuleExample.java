@@ -25,7 +25,7 @@ import de.bht.jvr.util.StopWatch;
  * @author Henrik Tramberend
  */
 
-public class JVRParticleExample {
+public class ParticuleExample {
 
     public static void main(String[] args) throws Exception {
         GroupNode root = new GroupNode("scene root");

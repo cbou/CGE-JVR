@@ -31,7 +31,7 @@ import de.bht.jvr.util.StopWatch;
  * @author Henrik Tramberend
  */
 
-public class JVRParticleExampleBlur {
+public class ParticuleExampleBlur {
 
     private static float dofIntensity = 1f;
     private static float intensity = 5;
