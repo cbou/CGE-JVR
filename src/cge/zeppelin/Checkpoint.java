@@ -2,7 +2,6 @@ package cge.zeppelin;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -127,9 +126,9 @@ public class Checkpoint extends Entity {
 		if (!oldCheckpoint) {
 	        shader = null;
 	        try {
-	            vert = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.vs"), GL3.GL_VERTEX_SHADER);
-	            geom = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.gs"), GL3.GL_GEOMETRY_SHADER);
-	            frag = new Shader(Helper.getInputStreamResource("/prototype/particule/sparks.fs"), GL3.GL_FRAGMENT_SHADER);
+	            vert = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.vs"), GL3.GL_VERTEX_SHADER);
+	            geom = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.gs"), GL3.GL_GEOMETRY_SHADER);
+	            frag = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.fs"), GL3.GL_FRAGMENT_SHADER);
 	
 	            shader = new ShaderProgram(vert, frag, geom);            
 	        } catch (IOException e) {
@@ -150,8 +149,8 @@ public class Checkpoint extends Entity {
 		shader = null;
 		
         try {
-            vert = new Shader(Helper.getInputStreamResource("/shaders/arrow.vs"), GL3.GL_VERTEX_SHADER);
-            frag = new Shader(Helper.getInputStreamResource("/shaders/arrow.fs"), GL3.GL_FRAGMENT_SHADER);
+            vert = new Shader(Helper.getInputStreamResource("shaders/arrow.vs"), GL3.GL_VERTEX_SHADER);
+            frag = new Shader(Helper.getInputStreamResource("shaders/arrow.fs"), GL3.GL_FRAGMENT_SHADER);
 
             shader = new ShaderProgram(vert, frag);            
         } catch (IOException e) {
