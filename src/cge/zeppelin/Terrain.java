@@ -20,6 +20,7 @@ import de.bht.jvr.core.TriangleMesh;
 import de.bht.jvr.core.attributes.AttributeVector3;
 import de.bht.jvr.core.uniforms.UniformFloat;
 import de.bht.jvr.core.uniforms.UniformVector3;
+import de.bht.jvr.math.Vector2;
 import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
@@ -44,9 +45,15 @@ public class Terrain extends Entity{
 	private Texture2D textureMiddle;
 	private Texture2D textureLow;
 	private float textureScaling = 2f;
+	private int basinX;
+	private int basinZ;
 	
 	Terrain() {
 		try {
+			
+			basinX = 100;//(int) (Math.random()*xSize*grid);
+			basinZ = 100;//(int) (Math.random()*zSize*grid);
+					
 			mesh = createTriangleArea(xSize,zSize, xOffset,zOffset);
 
 			indices = new int[mesh.positions.length];		
@@ -68,6 +75,7 @@ public class Terrain extends Entity{
 	
 	public void resetTerrain(){
 		try {
+			System.out.println(WATERLEVEL);
 			//Dauer 9-24 milliSekunden
 			mesh  = createTriangleArea(xSize,zSize, 
 					(int)(Math.round(xOffset/grid)*grid)-xSize*5, 
@@ -105,7 +113,6 @@ public class Terrain extends Entity{
 				Vector3 n1 = nx1.add(nx2);
 				n1 = n1.add(nz1).add(nz2);
 
-				
 				n1=n1.normalize();
 				tmp[i]   = n1.x();
 				tmp[i+1] = n1.y();
@@ -160,11 +167,18 @@ public class Terrain extends Entity{
 		return shape.getMaterial();
 	}
 
-	public float getElevation(float x, float y){
-		float sin = (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(y*100f))));
+	public float getElevation(float x, float z){
+		float sin = (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(z*100f))));
 //		return sin;
+		basinX = 100;
+		basinZ = 100;
+		Vector2 basinDistance = new Vector2(x-basinX,z-basinZ);
+	//	System.out.println(basinDistance);
+		float influence =  basinDistance.length() < 100 ? 100-basinDistance.length() : 0;
+		//System.out.println(influence);
+		
 		//TODO RICHTIG machen
-		return (float) (5*amplitude*noise(x,y) + 100*bigNoise(x, y));
+		return (float) (5*amplitude*noise(x,z) + 100*bigNoise(x, z) - influence);
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
@@ -218,7 +232,8 @@ public class Terrain extends Entity{
 	private float bigNoise(float x, float y) {
 		noiseMaker.noiseDetail(1,0.1f);
 		float n = noiseMaker.noise(x/100f,y/100f);
-		float f = ((x-200)/400f)*((x-200)/400f)+((y-200)/400f)*((y-200)/400f);
+		float f = ((x-200)/400f)*((x-200)/400f)+
+				  ((y-200)/400f)*((y-200)/400f);
 		return n*f;
 	}
 
