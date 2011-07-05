@@ -9,10 +9,10 @@ void quadVertex(float dx, float dy) {
 
 void main(void)
 {
-  quadVertex(-hs, 8*-hs);
-  quadVertex( hs, 8*-hs);
-  quadVertex(-hs,  8*hs);
-  quadVertex( hs,  8*hs);
+  quadVertex(-hs, 8.0*-hs);
+  quadVertex( hs, 8.0*-hs);
+  quadVertex(-hs,  8.0*hs);
+  quadVertex( hs,  8.0*hs);
   EndPrimitive();
 
 }

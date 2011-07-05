@@ -59,8 +59,6 @@ public class Terrain extends Entity{
 			indices = new int[mesh.positions.length];		
 			for (int i=0;i<mesh.positions.length;indices[i]=i++);
 
-			box 		 = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
-			mat 		 = fetchMat(box,"null_Shape");
 			triangleMesh = new TriangleMesh(indices, mesh.positions, mesh.normals, mesh.textCoords, null, null);
 			meshNode 	 = new ShapeNode("terrain",triangleMesh, mat);
 			node 		 = new GroupNode();
@@ -160,11 +158,7 @@ public class Terrain extends Entity{
 		return tmp;
 	}
 
-	private Material fetchMat(SceneNode node,String name) {
-		ShapeNode shape = Finder.find(node, ShapeNode.class, name);
-		return shape.getMaterial();
-	}
-
+	
 	public float getElevation(float x, float z){
 		float sin = (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(z*100f))));
 //		return sin;
@@ -274,10 +268,9 @@ public class Terrain extends Entity{
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 	        ShaderMaterial earthMat = new ShaderMaterial();
-	        earthMat.setUniform("AMBIENT", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
+	        
 	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "waterLevel", new UniformFloat(WATERLEVEL));
-	        //earthMat.setTexture("AMBIENT", "jvr_Texture0", textureHigh);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureHigh", textureHigh);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureMiddle", textureMiddle);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureLow", textureLow);

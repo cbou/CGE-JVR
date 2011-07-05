@@ -21,7 +21,7 @@ public class Zeppelin extends Entity {
 		try {
 			node = n;
 			//TODO Modell
-			hull 	= ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
+			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 

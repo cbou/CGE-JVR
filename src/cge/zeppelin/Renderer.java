@@ -68,7 +68,7 @@ public class Renderer {
 
     	ShaderProgram sp;
     	try {
-    		sp = new ShaderProgram(new File("./resources/prototype/blur/ambient.vs"), new File("./resources/prototype/blur/blur.fs"));
+    		sp = new ShaderProgram(new File("./resources/shaders/ambient.vs"), new File("./resources/shaders/blur.fs"));
     		ShaderMaterial sm = new ShaderMaterial("DOFPass", sp);
 
     		/* Alles in SceneMap rendern*/

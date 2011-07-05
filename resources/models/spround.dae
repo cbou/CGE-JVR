@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.58.1 r38019</authoring_tool>
+    </contributor>
+    <created>2011-07-05T23:42:15</created>
+    <modified>2011-07-05T23:42:15</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_cameras>
+    <camera id="Camera-camera" name="Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov>49.13434</xfov>
+            <aspect_ratio>1.777778</aspect_ratio>
+            <znear>0.1</znear>
+            <zfar>100</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
+  </library_cameras>
+  <library_lights>
+    <light id="Lamp-light" name="Lamp">
+      <technique_common>
+        <point>
+          <color>1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.00111109</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <adapt_thresh>0.000999987</adapt_thresh>
+          <area_shape>0</area_shape>
+          <area_size>1</area_size>
+          <area_sizey>1</area_sizey>
+          <area_sizez>1</area_sizez>
+          <atm_distance_factor>1</atm_distance_factor>
+          <atm_extinction_factor>1</atm_extinction_factor>
+          <atm_turbidity>2</atm_turbidity>
+          <att1>0</att1>
+          <att2>1</att2>
+          <backscattered_light>1</backscattered_light>
+          <bias>1</bias>
+          <blue>1</blue>
+          <buffers>1</buffers>
+          <bufflag>0</bufflag>
+          <bufsize>2880</bufsize>
+          <buftype>2</buftype>
+          <clipend>30.002</clipend>
+          <clipsta>1.000799</clipsta>
+          <compressthresh>0.04999995</compressthresh>
+          <dist>29.99998</dist>
+          <energy>1</energy>
+          <falloff_type>2</falloff_type>
+          <filtertype>0</filtertype>
+          <flag>0</flag>
+          <gamma>1</gamma>
+          <green>1</green>
+          <halo_intensity>1</halo_intensity>
+          <horizon_brightness>1</horizon_brightness>
+          <mode>8192</mode>
+          <ray_samp>1</ray_samp>
+          <ray_samp_method>1</ray_samp_method>
+          <ray_samp_type>0</ray_samp_type>
+          <ray_sampy>1</ray_sampy>
+          <ray_sampz>1</ray_sampz>
+          <red>1</red>
+          <samp>3</samp>
+          <shadhalostep>0</shadhalostep>
+          <shadow_b>0</shadow_b>
+          <shadow_g>0</shadow_g>
+          <shadow_r>0</shadow_r>
+          <shadspotsize>45</shadspotsize>
+          <sky_colorspace>0</sky_colorspace>
+          <sky_exposure>1</sky_exposure>
+          <skyblendfac>1</skyblendfac>
+          <skyblendtype>1</skyblendtype>
+          <soft>3</soft>
+          <spotblend>0.15</spotblend>
+          <spotsize>75</spotsize>
+          <spread>1</spread>
+          <sun_brightness>1</sun_brightness>
+          <sun_effect_type>0</sun_effect_type>
+          <sun_intensity>1</sun_intensity>
+          <sun_size>1</sun_size>
+          <type>0</type>
+        </technique>
+      </extra>
+    </light>
+  </library_lights>
+  <library_effects>
+    <effect id="Matred-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color>0.8 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color>0.512 0 0 1</color>
+            </diffuse>
+            <specular>
+              <color>0.25 0.25 0.25 1</color>
+            </specular>
+            <shininess>
+              <float>50</float>
+            </shininess>
+            <index_of_refraction>
+              <float>1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+      <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Matred-material" name="Matred">
+      <instance_effect url="#Matred-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Icosphere-mesh-mesh">
+      <mesh>
+        <source id="Icosphere-mesh-mesh-positions">
+          <float_array id="Icosphere-mesh-mesh-positions-array" count="126">0 0 -1 0.7236 -0.52572 -0.447215 -0.276385 -0.85064 -0.447215 -0.894425 0 -0.447215 -0.276385 0.85064 -0.447215 0.7236 0.52572 -0.447215 0.276385 -0.85064 0.447215 -0.7236 -0.52572 0.447215 -0.7236 0.52572 0.447215 0.276385 0.85064 0.447215 0.894425 0 0.447215 0 0 1 0.4253227 -0.3090114 -0.8506542 -0.1624554 -0.4999952 -0.8506544 0.2628688 -0.8090116 -0.5257377 0.4253227 0.3090114 -0.8506542 0.8506479 0 -0.5257359 -0.5257298 0 -0.8506516 -0.6881894 -0.4999969 -0.5257362 -0.1624554 0.4999952 -0.8506544 -0.6881894 0.4999969 -0.5257362 0.2628688 0.8090116 -0.5257377 0.9510579 0.3090126 0 0.9510579 -0.3090126 0 0.5877856 -0.8090167 0 0 -1 0 -0.5877856 -0.8090167 0 -0.9510579 -0.3090126 0 -0.9510579 0.3090126 0 -0.5877856 0.8090167 0 0 1 0 0.5877856 0.8090167 0 0.6881894 -0.4999969 0.5257362 -0.2628688 -0.8090116 0.5257377 -0.8506479 0 0.5257359 -0.2628688 0.8090116 0.5257377 0.6881894 0.4999969 0.5257362 0.5257298 0 0.8506517 0.1624554 -0.4999952 0.8506544 -0.4253226 -0.3090113 0.8506542 -0.4253226 0.3090113 0.8506542 0.1624554 0.4999952 0.8506544</float_array>
+          <technique_common>
+            <accessor source="#Icosphere-mesh-mesh-positions-array" count="42" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Icosphere-mesh-mesh-normals">
+          <float_array id="Icosphere-mesh-mesh-normals-array" count="126">0.2628559 -0.8089846 -0.5257118 0.425306 -0.3089999 -0.8506425 0.7235938 -0.5257118 -0.4471877 -0.16245 -0.4999848 -0.8506425 -0.2763756 -0.8506425 -0.4472182 0 0 -1 0.8506425 0 -0.5257118 0.425306 0.3089999 -0.8506425 0.7235938 0.5257118 -0.4471877 -0.6881619 -0.4999848 -0.5257118 -0.5257118 0 -0.8506425 -0.894406 0 -0.4471877 -0.6881619 0.4999848 -0.5257118 -0.16245 0.4999848 -0.8506425 -0.2763756 0.8506425 -0.4472182 0.2628559 0.8089846 -0.5257118 0.9510483 -0.3089999 0 0.9510483 0.3089999 0 0.894406 0 0.4471877 0 -1 0 0.587756 -0.8090152 0 0.2763756 -0.8506425 0.4472182 -0.9510483 -0.3089999 0 -0.587756 -0.8090152 0 -0.7235938 -0.5257118 0.4471877 -0.587756 0.8090152 0 -0.9510483 0.3089999 0 -0.7235938 0.5257118 0.4471877 0.587756 0.8090152 0 0 1 0 0.2763756 0.8506425 0.4472182 0.6881619 -0.4999848 0.5257118 -0.2628559 -0.8089846 0.5257118 -0.8506425 0 0.5257118 -0.2628559 0.8089846 0.5257118 0.6881619 0.4999848 0.5257118 0.16245 -0.4999848 0.8506425 0.5257118 0 0.8506425 0 0 1 -0.425306 -0.3089999 0.8506425 -0.425306 0.3089999 0.8506425 0.16245 0.4999848 0.8506425</float_array>
+          <technique_common>
+            <accessor source="#Icosphere-mesh-mesh-normals-array" count="42" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Icosphere-mesh-mesh-vertices">
+          <input semantic="POSITION" source="#Icosphere-mesh-mesh-positions"/>
+        </vertices>
+        <polylist material="Matred1" count="80">
+          <input semantic="VERTEX" source="#Icosphere-mesh-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Icosphere-mesh-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>14 0 12 1 1 2 12 1 14 0 13 3 2 4 13 3 14 0 13 3 0 5 12 1 16 6 1 2 12 1 12 1 15 7 16 6 5 8 16 6 15 7 12 1 0 5 15 7 18 9 13 3 2 4 13 3 18 9 17 10 3 11 17 10 18 9 17 10 0 5 13 3 20 12 17 10 3 11 17 10 20 12 19 13 4 14 19 13 20 12 19 13 0 5 17 10 21 15 19 13 4 14 19 13 21 15 15 7 5 8 15 7 21 15 15 7 0 5 19 13 23 16 1 2 16 6 16 6 22 17 23 16 10 18 23 16 22 17 22 17 16 6 5 8 25 19 2 4 14 0 14 0 24 20 25 19 6 21 25 19 24 20 24 20 14 0 1 2 27 22 3 11 18 9 18 9 26 23 27 22 7 24 27 22 26 23 26 23 18 9 2 4 29 25 4 14 20 12 20 12 28 26 29 25 8 27 29 25 28 26 28 26 20 12 3 11 31 28 5 8 21 15 21 15 30 29 31 28 9 30 31 28 30 29 30 29 21 15 4 14 32 31 23 16 10 18 23 16 32 31 24 20 6 21 24 20 32 31 24 20 1 2 23 16 33 32 25 19 6 21 25 19 33 32 26 23 7 24 26 23 33 32 26 23 2 4 25 19 34 33 27 22 7 24 27 22 34 33 28 26 8 27 28 26 34 33 28 26 3 11 27 22 35 34 29 25 8 27 29 25 35 34 30 29 9 30 30 29 35 34 30 29 4 14 29 25 36 35 31 28 9 30 31 28 36 35 22 17 10 18 22 17 36 35 22 17 5 8 31 28 38 36 6 21 32 31 32 31 37 37 38 36 11 38 38 36 37 37 37 37 32 31 10 18 39 39 7 24 33 32 33 32 38 36 39 39 11 38 39 39 38 36 38 36 33 32 6 21 40 40 8 27 34 33 34 33 39 39 40 40 11 38 40 40 39 39 39 39 34 33 7 24 41 41 9 30 35 34 35 34 40 40 41 41 11 38 41 41 40 40 40 40 35 34 8 27 37 37 10 18 36 35 36 35 41 41 37 37 11 38 37 37 41 41 41 41 36 35 9 30</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Icosphere" type="NODE">
+        <translate sid="location">0.0 0.0 0.0</translate>
+        <rotate sid="rotationZ">0 0 1 0</rotate>
+        <rotate sid="rotationY">0 1 0 0</rotate>
+        <rotate sid="rotationX">1 0 0 0</rotate>
+        <scale sid="scale">0.5 0.5 0.5</scale>
+        <instance_geometry url="#Icosphere-mesh-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Matred1" target="#Matred-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="Lamp" type="NODE">
+        <translate sid="location">4.076245 1.005454 5.903862</translate>
+        <rotate sid="rotationZ">0 0 1 106.9363</rotate>
+        <rotate sid="rotationY">0 1 0 3.163707</rotate>
+        <rotate sid="rotationX">1 0 0 37.26105</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_light url="#Lamp-light"/>
+      </node>
+      <node id="Camera" type="NODE">
+        <translate sid="location">7.481132 -6.50764 5.343665</translate>
+        <rotate sid="rotationZ">0 0 1 46.69194</rotate>
+        <rotate sid="rotationY">0 1 0 0.6197679</rotate>
+        <rotate sid="rotationX">1 0 0 63.55929</rotate>
+        <scale sid="scale">1 1 1</scale>
+        <instance_camera url="#Camera-camera"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
