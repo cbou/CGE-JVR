@@ -8,6 +8,7 @@ uniform mat4 jvr_ModelViewMatrix;
 uniform mat4 jvr_ModelViewProjectionMatrix;
 
 varying vec3 normalV;
+varying vec3 objNormalV;
 varying vec3 lightDirV;
 varying vec3 eyeDirV;
 varying vec4 positionV;
@@ -19,9 +20,7 @@ void main(void)
   eyeDirV = -vertexV;
   lightDirV = jvr_LightSource_Position.xyz - vertexV;
   normalV = normalize(jvr_NormalMatrix * jvr_Normal);
-  
-  /* Normal shader*/	
-  //normalV = jvr_Normal;
+  objNormalV = jvr_Normal;
 	
   
   gl_Position = jvr_ModelViewProjectionMatrix * jvr_Vertex;

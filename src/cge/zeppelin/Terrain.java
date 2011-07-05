@@ -51,8 +51,8 @@ public class Terrain extends Entity{
 	Terrain() {
 		try {
 			
-			basinX = 100;//(int) (Math.random()*xSize*grid);
-			basinZ = 100;//(int) (Math.random()*zSize*grid);
+			basinX = (int) (Math.random()*100);
+			basinZ = (int) (Math.random()*100);
 					
 			mesh = createTriangleArea(xSize,zSize, xOffset,zOffset);
 
@@ -75,7 +75,6 @@ public class Terrain extends Entity{
 	
 	public void resetTerrain(){
 		try {
-			System.out.println(WATERLEVEL);
 			//Dauer 9-24 milliSekunden
 			mesh  = createTriangleArea(xSize,zSize, 
 					(int)(Math.round(xOffset/grid)*grid)-xSize*5, 
@@ -91,7 +90,6 @@ public class Terrain extends Entity{
 		float[] tmp = new float[positions.length];
 		for (int i=0;i<tmp.length;i+=3){
 			if (positions[i+1] <= WATERLEVEL){
-				System.out.println("WA");
 				tmp[i]   = 0;
 				tmp[i+1] = 1.0f;
 				tmp[i+2] = 0;
@@ -173,9 +171,7 @@ public class Terrain extends Entity{
 		basinX = 100;
 		basinZ = 100;
 		Vector2 basinDistance = new Vector2(x-basinX,z-basinZ);
-	//	System.out.println(basinDistance);
 		float influence =  basinDistance.length() < 100 ? 100-basinDistance.length() : 0;
-		//System.out.println(influence);
 		
 		//TODO RICHTIG machen
 		return (float) (5*amplitude*noise(x,z) + 100*bigNoise(x, z) - influence);

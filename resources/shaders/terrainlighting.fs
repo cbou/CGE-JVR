@@ -9,13 +9,14 @@ uniform sampler2D jvr_TextureLow;
 
 varying vec2 texture_coordinate;
 varying vec3 normalV;
+varying vec3 objNormalV;
 varying vec3 lightDirV;
 varying vec3 eyeDirV;
 varying vec4 positionV;
 
 float high 	 = 17.8;
 float middle = 14.2;
-float blend  = 0.7;
+float blend  = 1.7;
 
 void main (void)
 {
@@ -25,9 +26,13 @@ void main (void)
   vec3 N = normalize(normalV);
   vec3 L = normalize(lightDirV);
   vec3 E = normalize(eyeDirV);
+  vec3 oN = normalize(objNormalV);
   
   /* diffuse intensity */
   float intensity = dot(L, N);
+  
+  high 	 = high   + oN.x * 5.0;
+  middle = middle + oN.z * 5.0;
   
   if (positionV.y > high)  {
 	  	if (positionV.y < high + blend){
