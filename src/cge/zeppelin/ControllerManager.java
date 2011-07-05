@@ -71,6 +71,11 @@ public class ControllerManager {
         	world.switchRefreshShader();
         }
         
+        if (world.input.isTriggered('K')){
+        	world.terrain.resetTerrain();
+        }
+        
+        
 	}
 	
 }

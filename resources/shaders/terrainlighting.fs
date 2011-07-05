@@ -14,7 +14,7 @@ varying vec3 eyeDirV;
 varying vec4 positionV;
 
 float high 	 = 17.8;
-float middle = 12.2;
+float middle = 14.2;
 float blend  = 0.7;
 
 void main (void)
@@ -47,18 +47,18 @@ void main (void)
    		gl_FragColor = texture2D(jvr_TextureLow, texture_coordinate);
   }
    
-  gl_FragColor = 0.1*gl_FragColor + 0.9*intensity*gl_FragColor ;
+  gl_FragColor = 0.7*gl_FragColor + 0.3*intensity*gl_FragColor ;
   
   /* Normal Shader*/
   //gl_FragColor.rgb = normalV;
-  //gl_FragColor.rgb = intensity * vec3(1,1,1);
+  
   
    /* Water */
   if (intensity > 0.0) {
     vec3 R = reflect(-L, N);
     float specular = max(dot(R, E), 0.0);
-   // if (positionV.y <= waterLevel)
-   // 	gl_FragColor.rgb = gl_FragColor.rgb + specular * jvr_LightSource_Specular.rgb + vec3(0,0.2,0.2);
+    if (positionV.y <= waterLevel)
+    	gl_FragColor.rgb = gl_FragColor.rgb + specular * jvr_LightSource_Specular.rgb + vec3(0,0.2,0.2);
   }
   
   gl_FragColor.a = 1.0;

@@ -65,47 +65,47 @@ public class Terrain extends Entity{
 
 		body = null;
 	}
+	
+	public void resetTerrain(){
+		try {
+			//Dauer 9-24 milliSekunden
+			mesh  = createTriangleArea(xSize,zSize, 
+					(int)(Math.round(xOffset/grid)*grid)-xSize*5, 
+					(int)(Math.round(zOffset/grid)*grid)-zSize*2.5f);	
+			triangleMesh.setVertices(new TriangleMesh(indices, mesh.positions, mesh.normals, mesh.textCoords, null, null).getVertices());
+			triangleMesh.setAttribute("jvr_Normal",  new AttributeVector3(mesh.normals));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private float[] createNormals(float[] positions) {
 		float[] tmp = new float[positions.length];
 		for (int i=0;i<tmp.length;i+=3){
 			if (positions[i+1] <= WATERLEVEL){
+				System.out.println("WA");
 				tmp[i]   = 0;
 				tmp[i+1] = 1.0f;
 				tmp[i+2] = 0;
 			} else {
 				float x = positions[i];
 				float z = positions[i+2];
-//				/*
 				float x1Diff = getElevation(x,z)-getElevation((x+grid), z);
 				float z1Diff = getElevation(x,z)-getElevation(x, (z+grid));
 		
-				Vector3 nx1 = new Vector3(-x1Diff,1,0);
-				Vector3 nz1 = new Vector3(0,1,-z1Diff);	
+				Vector3 nx1 = new Vector3(-x1Diff,amplitude,0);
+				Vector3 nz1 = new Vector3(0,amplitude,-z1Diff);	
 				
 				float x2Diff = getElevation(x,z)-getElevation((x-grid), z);
 				float z2Diff = getElevation(x,z)-getElevation(x, (z-grid));
 				
-				Vector3 nx2 = new Vector3(-x2Diff,1,0);
-				Vector3 nz2 = new Vector3(0,1,-z2Diff);	
+				Vector3 nx2 = new Vector3(-x2Diff,amplitude,0);
+				Vector3 nz2 = new Vector3(0,amplitude,-z2Diff);	
 				
 				Vector3 n1 = nx1.add(nx2);
 				n1 = n1.add(nz1).add(nz2);
-//					*/
-//				float y1 = getElevation(x,z) - getElevation(x-grid, z);
-//				float y2 = getElevation(x,z) - getElevation(x, z+grid);
-//				float y3 = getElevation(x,z) - getElevation(x+grid, z);
-//				float y4 = getElevation(x,z) - getElevation(x, z-grid);
-//				
-//				Vector3 v1 = new Vector3(-grid, -y1, 0);
-//				Vector3 v2 = new Vector3(0, -y2, +grid);
-//				Vector3 v3 = new Vector3(+grid, -y3, 0);
-//				Vector3 v4 = new Vector3(0, -y4, -grid);
-//				
-//				Vector3 n1 = v1.cross(v2).cross(v3).cross(v4);
+
 				
-//				float xDiff = getElevation((x-grid),z)-getElevation((x+grid), z);
-//				float zDiff = getElevation(x,(z-grid))-getElevation(x, (z+grid));
 				n1=n1.normalize();
 				tmp[i]   = n1.x();
 				tmp[i+1] = n1.y();
@@ -161,10 +161,10 @@ public class Terrain extends Entity{
 	}
 
 	public float getElevation(float x, float y){
-//		System.out.println("ELE "+x+" "+y);
-		float sin = (float) (amplitude*(1+Math.sin(x)) +  (amplitude*(1+Math.sin(y))));
+		float sin = (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(y*100f))));
 //		return sin;
-		return (float) (amplitude*5*noise(x,y) + 100*bigNoise(x, y));
+		//TODO RICHTIG machen
+		return (float) (5*amplitude*noise(x,y) + 100*bigNoise(x, y));
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){

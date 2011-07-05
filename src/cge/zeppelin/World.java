@@ -90,7 +90,7 @@ public class World {
      */
     void populateWorld( int bullets, int boxes) {
     	
-        renderer.spot.setTransform(Transform.translate(20, 20, 20)
+        renderer.spot.setTransform(Transform.translate(20, 120, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
         terrain.node.setTransform(Transform.translate(-300,0,-300));
