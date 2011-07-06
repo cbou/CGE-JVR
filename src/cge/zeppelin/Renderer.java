@@ -100,6 +100,7 @@ public class Renderer {
     		ll.clearBuffers(true, false, null);
     		ll.drawGeometry("AMBIENT", null);
     		ll.switchFrameBufferObject(null);
+    		
     		switchLightCamCmd = ll.switchCamera(camera);
     		ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
     		ll.drawGeometry("LIGHTING", null);  

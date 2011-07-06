@@ -152,15 +152,13 @@ public class Checkpoint extends Entity {
             vert = new Shader(Helper.getInputStreamResource("shaders/arrow.vs"), GL3.GL_VERTEX_SHADER);
             frag = new Shader(Helper.getInputStreamResource("shaders/arrow.fs"), GL3.GL_FRAGMENT_SHADER);
 
-            shader = new ShaderProgram(vert, frag);            
+            shader = new ShaderProgram(vert, frag);  
+            material = new ShaderMaterial("AMBIENT", shader);
+            arrowShapeNode.setMaterial(material);
+         
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        material = new ShaderMaterial("AMBIENT", shader);
-        
-        arrowShapeNode.setMaterial(material);
-        
 	}
 
     public void manipulate(float elapsed) {

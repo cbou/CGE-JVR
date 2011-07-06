@@ -39,9 +39,9 @@ vec4 blur()
 	   			/* Only blur if the particle is visible */
 	   			if ((particleZ <= szeneZ) && (szeneZ<1.0))
 	   			{
-	   				texC = texCoord+offset;
+	   				texC = texCoord + offset;
 	   			} else {
-	   				texC = texCoord+ (dofIntensity*vec2(float(x)/1024.0, float(y)/1024.0)*linearizeDepth(jvr_SzeneZ));
+	   				texC = texCoord + (dofIntensity*vec2(float(x)/1024.0, float(y)/1024.0)*linearizeDepth(jvr_SzeneZ));
 	 			}
 	 			
 	 			/* Fog */

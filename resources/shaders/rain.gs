@@ -1,7 +1,7 @@
 uniform mat4 jvr_ProjectionMatrix;
 
 float hs = 0.002;
-float zFactor = 100;
+float zFactor = 100.0;
 
 void quadVertex(float dx, float dy) {
   gl_Position = jvr_ProjectionMatrix * (gl_PositionIn[0] + vec4(dx, dy, 0, 0));
