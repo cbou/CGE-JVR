@@ -1,9 +1,17 @@
 package cge.zeppelin;
 
+import javax.media.opengl.GL2GL3;
+
 import cge.zeppelin.util.Helper;
 import de.bht.jvr.collada14.loader.ColladaLoader;
+import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
+import de.bht.jvr.core.Shader;
+import de.bht.jvr.core.ShaderMaterial;
+import de.bht.jvr.core.ShaderProgram;
+import de.bht.jvr.core.ShapeNode;
+import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.Transform;
 
 public class Zeppelin extends Entity {
@@ -16,6 +24,9 @@ public class Zeppelin extends Entity {
 	private float gasMeterHeight = 0.04f;
 	private GroupNode loadNode;
 	private float loadRot;
+	private GroupNode boardNode;
+	private SceneNode board;
+	private ShapeNode sn;
 	
 	public Zeppelin(GroupNode n){
 		try {
@@ -24,30 +35,51 @@ public class Zeppelin extends Entity {
 			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
-
-			hull.setTransform(Transform.scale(1, 1, 6).mul(Transform.translate(0, 1f, 0)));
+			board   = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
+			
+			sn = Finder.find(board, ShapeNode.class, "Box01_Shape");
+	        
+			hull.setTransform(Transform.scale(1.2f, 1.2f, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
 		
 			GroupNode xformN 	= new GroupNode();
 			GroupNode sizeN 	= new GroupNode();
 		    gasNode 			= new GroupNode();
 		    loadNode 			= new GroupNode();
+		    boardNode 			= new GroupNode();
+		
+			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/20, gasMeterHeight, gasMeterHeight/20)));
 			
 			gasNode.setTransform(Transform.translate(-0.1f, -0.1f, -0.2f));
 			gasNode.addChildNode(gasMeter);
-			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/10, gasMeterHeight, gasMeterHeight/10)));
+			
+			boardNode.setTransform(Transform.translate(0.0f, -0.11f, -0.21f));
+			boardNode.addChildNode(sn);
+			sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.34f, 0.07f, 0.0001f)));
 			
 			loadNode.setTransform(Transform.translate(0.1f, -0.1f, -0.2f));
 			loadNode.addChildNode(gasMeter);
 
 			node.addChildNode(xformN);
 			xformN.addChildNode(sizeN);
-			
 			sizeN.addChildNode(hull);
 			sizeN.addChildNode(cockpit);
 
 			node.addChildNode(gasNode);
 			node.addChildNode(loadNode);
+			node.addChildNode(boardNode);
+			
+			Texture2D bk = new Texture2D(Helper.getFileResource("textures/wood.jpg"));
+			  
+			Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/minimal.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/phong.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
+	        ShaderMaterial boardMat = new ShaderMaterial();
+	        boardMat.setTexture("LIGHTING", "image", bk);
+		       
+	        boardMat.setShaderProgram("LIGHTING", lightingProgram);
+	        sn.setMaterial(boardMat);
+	        
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -45,7 +45,7 @@ vec4 blur()
 	 			}
 	 			
 	 			/* Fog */
-	 			final_color += linearizeDepth(jvr_SzeneZ) * vec4(1,1,1,0.2) * 0.1;
+	 			//final_color += linearizeDepth(jvr_SzeneZ) * vec4(1,1,1,0.2) * 0.1;
 	 			
    			}
    			final_color += texture2D(jvr_Texture1, texC);

@@ -6,9 +6,12 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import cge.zeppelin.environnement.EnvironnementManager;
+import de.bht.jvr.core.DirectionalLightNode;
 import de.bht.jvr.core.Printer;
+import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
+import de.bht.jvr.util.Color;
 import de.bht.jvr.util.awt.InputState;
 
 /**
@@ -93,6 +96,9 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 120, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
+        renderer.lightning.setTransform(Transform.translate(20, 120, 20)
+                .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
+        
         terrain.node.setTransform(Transform.translate(-300,0,-300));
         add(terrain);
         
@@ -100,6 +106,7 @@ public class World {
 
         add(flyer);
         add(skybox);
+        
         
 //    	SpotLightNode zepSpot = new SpotLightNode();
 //    	zepSpot.setCastShadow(true);
