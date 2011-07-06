@@ -69,7 +69,7 @@ public class Zeppelin extends Entity {
 			node.addChildNode(loadNode);
 			node.addChildNode(boardNode);
 			
-			Texture2D bk = new Texture2D(Helper.getFileResource("textures/wood.jpg"));
+			Texture2D bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
 			  
 			Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/minimal.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/phong.fs"), GL2GL3.GL_FRAGMENT_SHADER);

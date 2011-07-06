@@ -53,7 +53,8 @@ public class Renderer {
         spot.setIntensity(1f);
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
-      spot.setEnabled(false);
+        spot.setEnabled(true);
+        
         lightning.setCastShadow(true);
         lightning.setSpotCutOff(40);
         lightning.setShadowBias(0.3f);
@@ -61,7 +62,7 @@ public class Renderer {
         lightning.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         lightning.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
       
-        lightning.setEnabled(true);
+        lightning.setEnabled(false);
         lightning.setIntensity(1.0f);
         
         
@@ -144,8 +145,7 @@ public class Renderer {
      */
     void render(GLAutoDrawable drawable) {
         try {
-        	  lightning.setIntensity(100f);
-              lightning.setEnabled(true);
+        	  
             pipeline.update();
             pipeline.render(ctx);
         } catch (Exception e) {

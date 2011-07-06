@@ -22,7 +22,7 @@ void main (void)
 	/* diffuse intensity */
 	float intensity = dot(L, N);
 	vec3 color = vec3(texture2D(image, texCoord))*lightIntensity;
-	//vec3 color = ka * lightIntensity;
+
 	if (intensity > 0.0) {
 		/* diffuse reflectance */
 		color += kd * lightIntensity * intensity;
@@ -30,5 +30,5 @@ void main (void)
 		vec3 R = reflect(-L, N);
 		color += ks * lightIntensity * pow(max(dot(R, E), 0.0), ke );
 	}
-	gl_FragColor	=	vec4(color ,	1);
+	gl_FragColor	=	vec4(color ,texture2D(image, texCoord).a);
 }
