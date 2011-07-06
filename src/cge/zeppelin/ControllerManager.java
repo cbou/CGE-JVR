@@ -51,10 +51,6 @@ public class ControllerManager {
         if (world.input.isDown('N')){
         	world.renderer.zoomOut();
         }
-
-        if (world.input.isDown('J')){
-            world.add(Entity.makeCube(new Vector3(1, 1, 1), 0.1f, Matrix4.translate(3, 16, 0)));
-        }
         
         if (world.input.isTriggered('R')){
         	world.flyer.reset();
@@ -73,6 +69,10 @@ public class ControllerManager {
         
         if (world.input.isTriggered('K')){
         	world.terrain.resetTerrain();
+        }
+        
+        if (world.input.isTriggered('J')){
+        	world.environnement.rainEntity.reset();
         }
         
         

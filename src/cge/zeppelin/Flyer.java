@@ -50,7 +50,7 @@ public class Flyer extends Entity {
 	 * @see Entity#manipulate(float, World)
 	 */
 	@Override
-	void manipulate(float dt) {    
+	public void manipulate(float dt) {    
 		// Yaw Angle
 		rotation = Transform.rotate(new Vector3(0, 1, 0), yRotVelocity*dt).mul(rotation);
 

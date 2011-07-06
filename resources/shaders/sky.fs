@@ -12,5 +12,5 @@ void main (void)
 	if(texC.x<0.001)texC.x = 0.001;
 	if(texC.y<0.001)texC.y = 0.001;
 	
-	gl_FragColor = texture2D(jvr_Texture0, texC);
+	gl_FragColor = texture2D(jvr_Texture0, texC)  * 0.3;
 }
