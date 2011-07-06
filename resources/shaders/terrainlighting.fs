@@ -52,7 +52,8 @@ void main (void)
    		gl_FragColor = texture2D(jvr_TextureLow, texture_coordinate);
   }
    
-  gl_FragColor = 0.7*gl_FragColor + 0.3*intensity*gl_FragColor ;
+  //gl_FragColor = 0.7*gl_FragColor + 0.3*intensity*gl_FragColor ;
+  gl_FragColor = 0.3*gl_FragColor + 0.3*intensity*gl_FragColor ;
   
   /* Normal Shader*/
   //gl_FragColor.rgb = normalV;

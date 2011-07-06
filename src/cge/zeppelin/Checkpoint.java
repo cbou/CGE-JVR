@@ -116,7 +116,7 @@ public class Checkpoint extends Entity {
         
 	}
 	
-	void refreshShader() {
+	public void refreshShader() {
 		ShaderProgram shader = null;
 		ShaderMaterial material = null;
 		Shader vert = null;

@@ -34,7 +34,7 @@ public class World {
         input = i;
         simulator = s;
         renderer = r;
-        environnement = new EnvironnementManager(this);
+        environnement = new EnvironnementManager(this, renderer.zeppelinNode);
         
         flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
         skybox = new Skybox(this, renderer.skyboxNode); 
@@ -46,7 +46,7 @@ public class World {
     /**
      * Add an entity.
      */
-    void add(Entity... es) {
+    public void add(Entity... es) {
         for (Entity e : es) {
             entities.add(e);
             if (e.node != null)

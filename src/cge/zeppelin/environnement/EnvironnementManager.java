@@ -6,6 +6,7 @@ import java.util.Random;
 
 import cge.zeppelin.Flyer;
 import cge.zeppelin.World;
+import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
 /**
@@ -25,8 +26,11 @@ public class EnvironnementManager {
 	long rainLastTime = 0;
 	
 	public boolean disabled;
+	private GroupNode node;
+	public RainEntity rainEntity;
 	
-	public EnvironnementManager(World world) {
+	public EnvironnementManager(World world, GroupNode n) {
+		node = n;
         world.input.addKeyListener(KeyEvent.VK_P, new Runnable() {
 
             @Override
@@ -41,6 +45,9 @@ public class EnvironnementManager {
             	EnvironnementManager.this.makeRain();
             }
         });
+        
+        rainEntity = new RainEntity(node);
+        world.add(rainEntity);
 	}
 	
 	public void makeWind() {
@@ -51,6 +58,7 @@ public class EnvironnementManager {
 	
 	public void makeRain() {
 		rain = new Rain();
+		rainEntity.start();
     	rainLastTime = Calendar.getInstance().getTimeInMillis();
         System.out.println("Rain");
 	}
@@ -67,8 +75,9 @@ public class EnvironnementManager {
 	    	wind.update();
 	    	if (wind.stop()) {
 	    		wind = null;
+	        	windLastTime = Calendar.getInstance().getTimeInMillis();
 	    	}
-	    } else if (randomGenerator.nextInt(100) == 0) {
+	    } else if (randomGenerator.nextInt(200) == 0 && windLastTime + 10000 < (Calendar.getInstance().getTimeInMillis())) {
 	    	this.makeWind();
 	    }
 	    
@@ -76,8 +85,10 @@ public class EnvironnementManager {
     		rain.update();
 	    	if (rain.stop()) {
 	    		rain = null;
+	    		rainEntity.stop();
+	        	rainLastTime = Calendar.getInstance().getTimeInMillis();
 	    	}
-	    } else if (randomGenerator.nextInt(100) == 0) {
+	    } else if (randomGenerator.nextInt(200) == 0 && rainLastTime + 10000 < (Calendar.getInstance().getTimeInMillis())) {
 	    	this.makeRain();
 	    }
 	}
