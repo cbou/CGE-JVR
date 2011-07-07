@@ -33,14 +33,14 @@ public class EnvironnementManager {
 	public EnvironnementManager(World world, GroupNode n) {
 		node = n;
 		this.world = world;
-        world.input.addKeyListener(KeyEvent.VK_P, new Runnable() {
+        world.getInput().addKeyListener(KeyEvent.VK_P, new Runnable() {
 
             @Override
             public void run() {
             	EnvironnementManager.this.makeWind();
             }
         });
-        world.input.addKeyListener(KeyEvent.VK_O, new Runnable() {
+        world.getInput().addKeyListener(KeyEvent.VK_O, new Runnable() {
 
             @Override
             public void run() {
@@ -118,8 +118,8 @@ public class EnvironnementManager {
 		if (!(rain instanceof Rain)){
 			if (brightness<MAXBRIGHTNESS){
 				brightness+=0.01;
-				world.skybox.setBrightness(brightness);
-				world.terrain.setBrightness(brightness);
+				world.getSkybox().setBrightness(brightness);
+				world.getTerrain().setBrightness(brightness);
 			}
 			return;
 		}
@@ -129,8 +129,8 @@ public class EnvironnementManager {
 						Math.abs(brightness - 0.4f) < 0.01 | 
 						Math.abs(brightness - 0.2f) < 0.01 ) ? 10 : brightness;
 			
-			world.skybox.setBrightness(v);
-			world.terrain.setBrightness(v);
+			world.getSkybox().setBrightness(v);
+			world.getTerrain().setBrightness(v);
 			
 		}
 		

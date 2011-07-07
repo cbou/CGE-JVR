@@ -97,11 +97,13 @@ public class Flyer extends Entity {
 
 		xRotVelocity *= 1-(friction);//*Math.abs(xRotVelocity));
 		xRotVelocity = Math.abs(xRotVelocity) < 0.01 ? 0 : xRotVelocity;
+		
         update();
     }
 
 	
 	public void update() {
+		
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
 		
@@ -135,6 +137,7 @@ public class Flyer extends Entity {
 	public void reset(){
 		gas  = STARTGAS;
 		load = STARTLOAD;
+		
 		// Back to start
     	translation = Transform.translate(new Vector3(3, 10, 0));
     	rotation = Transform.rotate(new Vector3(0, 1, 0), 0);

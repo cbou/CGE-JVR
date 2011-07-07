@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import cge.zeppelin.environnement.EnvironnementManager;
-import de.bht.jvr.core.Printer;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
 import de.bht.jvr.util.awt.InputState;
@@ -17,28 +16,30 @@ import de.bht.jvr.util.awt.InputState;
 public class World {
 
     final Set<Entity> entities = Collections.synchronizedSet(new HashSet<Entity>());
-    public final InputState input;
-    final Simulator simulator;
+    final InputState input;
     final Renderer renderer;
     final EnvironnementManager environnement;
     final Flyer flyer;
-    public final Skybox skybox;
-
-	public Terrain terrain = new Terrain();
+    final Skybox skybox;
+	final Terrain terrain;
+	
 	private boolean refreshShader = true;
 
     /**
      * Create a new world.
      */
-    public World(InputState i, Simulator s, Renderer r) {
+    public World(InputState i, Renderer r) {
+    	
         input = i;
-        simulator = s;
         renderer = r;
         environnement = new EnvironnementManager(this, renderer.zeppelinNode);
-        
-        flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
+
+        terrain = new Terrain(this);
+        flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0), getTerrain()); 
         skybox = new Skybox(this, renderer.skyboxNode); 
+        
         populateWorld(50, 200);
+        
     }
     
 
@@ -50,8 +51,6 @@ public class World {
             entities.add(e);
             if (e.node != null)
                 renderer.add(e.node);
-            if (e.body != null)
-                simulator.add(e.body);
         }
     }
 
@@ -63,15 +62,15 @@ public class World {
             entities.remove(e);
             if (e.node != null)
                 renderer.remove(e.node);
-            if (e.body != null)
-                simulator.remove(e.body);
         }
     }
 
     void frame(float elapsed, GLAutoDrawable drawable) {
+    	
         renderer.cameraExtern.setTransform(Transform.translate(new Vector3(0,3.5f,+9)));
-    	skybox.update();
+    	getSkybox().update();
     	environnement.update();
+    	
         for (Entity e : entities) {
             e.manipulate(elapsed);
 
@@ -79,9 +78,10 @@ public class World {
             	e.refreshShader();
             }
         }
+        
         environnement.affect(flyer, elapsed);
-        input.frame(elapsed);
-        simulator.simulate(elapsed);
+        getInput().frame(elapsed);
+
         renderer.render(drawable);
     }
     
@@ -93,14 +93,14 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 120, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
-        terrain.node.setTransform(Transform.translate(-300,0,-300));
-        add(terrain);
+        getTerrain().node.setTransform(Transform.translate(-300,0,-300));
         
         renderer.cameraFixed.setTransform(Transform.translate(new Vector3(0,0,0)));
         renderer.cameraExtern.setTransform(Transform.translate(new Vector3(0,0,0)));
 
+        add(getTerrain());
         add(flyer);
-        add(skybox);
+        add(getSkybox());
         
         
 //    	SpotLightNode zepSpot = new SpotLightNode();
@@ -111,15 +111,14 @@ public class World {
 //    	zepSpot.setSpecularColor(new Color(0.8f, 0.5f, 0.8f));
 //    	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
 //    	flyer.node.addChildNode(zepSpot);
-
+/*
         simulator.addCollisionListener(flyer, new CollisionListener() {
             @Override
             public void response(Entity e0, Entity e1) {
                 System.out.println("Collision detected");
             }
         });
-        
-        Printer.print(renderer.root);
+        */
     }
 	
 	public void switchRefreshShader() {
@@ -129,5 +128,20 @@ public class World {
 		} else {
 			System.out.println("STOP REFRESH SHADER");
 		}
+	}
+
+
+	public InputState getInput() {
+		return input;
+	}
+
+
+	public Skybox getSkybox() {
+		return skybox;
+	}
+
+
+	public Terrain getTerrain() {
+		return terrain;
 	} 
 }

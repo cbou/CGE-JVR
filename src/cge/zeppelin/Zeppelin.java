@@ -1,6 +1,8 @@
 package cge.zeppelin;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import javax.media.opengl.GL2GL3;
 
@@ -32,78 +34,97 @@ public class Zeppelin extends Entity {
 	private ShapeNode sn;
 	
 	public Zeppelin(GroupNode n){
+		node = n;
+		
 		try {
-			node = n;
 			//TODO Modell
 			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			board   = ColladaLoader.load(Helper.getFileResource("models/cockpit.dae"));
 			
-			Printer.print(board);
 			sn = Finder.find(board, ShapeNode.class, "shape0_Shape");
 	        
 			hull.setTransform(Transform.scale(1.2f, 1.2f, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
 		
-			GroupNode xformN 	= new GroupNode();
-			GroupNode sizeN 	= new GroupNode();
-		    gasNode 			= new GroupNode();
-		    loadNode 			= new GroupNode();
-		    boardNode 			= new GroupNode();
-		
 			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/20, gasMeterHeight, gasMeterHeight/20)));
-			
-			gasNode.setTransform(Transform.translate(-0.1f, -0.1f, -0.2f));
-			gasNode.addChildNode(gasMeter);
-			
-			boardNode.setTransform(Transform.translate(0.0f, -0.14f, -0.21f));
-//			boardNode.addChildNode(board);
-			boardNode.addChildNode(sn);
-			
-			//sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.34f, 0.07f, 0.0001f)));
-			sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.024f, 0.022f, 0.002f)));
-			
-			loadNode.setTransform(Transform.translate(0.1f, -0.1f, -0.2f));
-			loadNode.addChildNode(gasMeter);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		GroupNode xformN 	= new GroupNode();
+		GroupNode sizeN 	= new GroupNode();
+	    gasNode 			= new GroupNode();
+	    loadNode 			= new GroupNode();
+	    boardNode 			= new GroupNode();
+		
+		gasNode.setTransform(Transform.translate(-0.1f, -0.1f, -0.2f));
+		gasNode.addChildNode(gasMeter);
+		
+		boardNode.setTransform(Transform.translate(0.0f, -0.14f, -0.21f));
+		//boardNode.addChildNode(board);
+		boardNode.addChildNode(sn);
+		
+		//sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.34f, 0.07f, 0.0001f)));
+		sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.024f, 0.022f, 0.002f)));
+		
+		loadNode.setTransform(Transform.translate(0.1f, -0.1f, -0.2f));
+		loadNode.addChildNode(gasMeter);
 
-			node.addChildNode(xformN);
-			xformN.addChildNode(sizeN);
-			sizeN.addChildNode(hull);
-			sizeN.addChildNode(cockpit);
+		node.addChildNode(xformN);
+		xformN.addChildNode(sizeN);
+		sizeN.addChildNode(hull);
+		sizeN.addChildNode(cockpit);
 
-			node.addChildNode(gasNode);
-			node.addChildNode(loadNode);
-			node.addChildNode(boardNode);
+		node.addChildNode(gasNode);
+		node.addChildNode(loadNode);
+		node.addChildNode(boardNode);
+		
+		refreshShader();
+	}
+	
+	public void refreshShader() {
+		Shader lightingVs = null;
+		Shader lightingFs = null;
+		Shader ambientVs = null;
+		Shader ambientFs = null;
+
+		Texture2D bk = null;
+		
+		try {
 			
-			Texture2D bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
+			bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
+	        
+	        lightingVs = new Shader(new FileInputStream("./shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        lightingFs = new Shader(new FileInputStream("./shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 			
-	    	Shader ambientVs = new Shader(new FileInputStream("./shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader ambientFs = new Shader(new FileInputStream("./shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-	    
-	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+	    	ambientVs = new Shader(new FileInputStream("./shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        ambientFs = new Shader(new FileInputStream("./shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        
-	        Shader lightingVs = new Shader(new FileInputStream("./shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader lightingFs = new Shader(new FileInputStream("./shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
-	      
-	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
-	        
-	        ShaderMaterial boardMat = new ShaderMaterial();
-	        boardMat.setTexture("AMBIENT", "jvr_Texture0", bk);    
-	        boardMat.setShaderProgram("AMBIENT", ambientProgram);	        
-	        boardMat.setTexture("LIGHTING", "jvr_Texture0", bk);    
-	        boardMat.setShaderProgram("LIGHTING", lightingProgram);
-	        sn.setMaterial(boardMat);
-	        
-			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+    
+		ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
+      
+        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
+        
+        ShaderMaterial boardMat = new ShaderMaterial();
+        boardMat.setTexture("AMBIENT", "jvr_Texture0", bk);    
+        boardMat.setShaderProgram("AMBIENT", ambientProgram);	        
+        boardMat.setTexture("LIGHTING", "jvr_Texture0", bk);    
+        boardMat.setShaderProgram("LIGHTING", lightingProgram);
+        
+        sn.setMaterial(boardMat);
 	}
 
 	public void updateState(float gas, float load) {
+		
 		gasNode.setTransform(gasNode.getTransform().mul(Transform.rotateZ(-gasRot)));
 		gasRot = (float) (2-(gas/25f*Math.PI));
 		gasNode.setTransform(gasNode.getTransform().mul(Transform.rotateZ(gasRot)));

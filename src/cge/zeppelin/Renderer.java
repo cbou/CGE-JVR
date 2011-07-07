@@ -54,8 +54,6 @@ public class Renderer {
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setEnabled(true);
         
-       
-      
         zeppelinNode.addChildNodes(cameraIntern, cameraExtern);
         
         add(zeppelinNode, sceneNode, cameraFixed, spot, skyboxNode);
@@ -113,33 +111,29 @@ public class Renderer {
     	     
     		// render quad with dof shader
     		pipeline.drawQuad(sm, "DOFPass");
-    		
-    		
     	} catch (IOException e) {
-    		// TODO Auto-generated catch block
     		e.printStackTrace();
     	}
-
-
     }
     
-    
-    public void switchCamera(){
+    /**
+     * Change the position camera
+     */
+    public void changeCamera(){
     	pov++;
-    	
     	switch (pov) {
 		case 0:
-			System.out.println("Switch to camera intern");
+			System.out.println("change to camera intern");
 	    	switchAmbientCamCmd.switchCamera(cameraIntern);
 	    	switchLightCamCmd.switchCamera(cameraIntern);
 			break;
 		case 1:
-			System.out.println("Switch to camera extern");
+			System.out.println("change to camera extern");
 	    	switchAmbientCamCmd.switchCamera(cameraExtern);
 	    	switchLightCamCmd.switchCamera(cameraExtern);
 			break;
 		case 2:
-			System.out.println("Switch to camera fixed");
+			System.out.println("change to camera fixed");
 	    	switchAmbientCamCmd.switchCamera(cameraFixed);
 	    	switchLightCamCmd.switchCamera(cameraFixed);
 			pov = -1;

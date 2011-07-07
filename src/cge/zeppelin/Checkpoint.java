@@ -28,50 +28,58 @@ import de.bht.jvr.math.Vector3;
 public class Checkpoint extends Entity {
 	
 	float size;
-	private SceneNode sphereModel;
-	private ShapeNode particuleShapeNode;
-    private AttributeCloud cloud;
-    private int count;
-
-    private ArrayList<Vector3> position;
-    private ArrayList<Float> age;
-    private ArrayList<Float> startAngle;
-    private ArrayList<Float> radius;
-
-	private PApplet noiseMaker = new PApplet();
 	
-	final private boolean oldCheckpoint = true;
-	private Vector3 startPos;
-	private SceneNode arrowModel;
-	private ShapeNode arrowShapeNode;
+	SceneNode sphereModel;
+	ShapeNode particuleShapeNode;
+    AttributeCloud cloud;
+    int count;
 
-	public Checkpoint(GroupNode n, float s, Vector3 start){
+    ArrayList<Vector3> position;
+    ArrayList<Float> age;
+    ArrayList<Float> startAngle;
+    ArrayList<Float> radius;
+
+	PApplet noiseMaker = new PApplet();
+	
+	Vector3 startPos;
+	SceneNode arrowModel;
+	ShapeNode arrowShapeNode;
+	
+	final boolean oldCheckpoint = true;
+
+	private World world;
+
+	public Checkpoint(GroupNode n, float s, Vector3 start, World w){
 		size = s;
 		startPos = start;
 		count = 1000;
+		world = w;
 		node = new GroupNode();
 
 		try {
 			arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
-
-			arrowShapeNode = new ShapeNode("Arrow");
-	        Geometry arrowGeom = Finder.findGeometry(arrowModel, null);
-	        arrowShapeNode.setGeometry(arrowGeom);
 		} catch (Exception e) { 	
 			e.printStackTrace();
 		}
+
+		arrowShapeNode = new ShapeNode("Arrow");
+        Geometry arrowGeom = Finder.findGeometry(arrowModel, null);
+        arrowShapeNode.setGeometry(arrowGeom);
 		
 		if (oldCheckpoint) {
+			
 			try {
 				sphereModel   = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
 			} catch (Exception e) { 	
 				e.printStackTrace();
 			}
+			
 			node.setTransform(Transform.translate(start));
 			sphereModel.setTransform(Transform.scale(size, size, size));
 			
 			node.addChildNodes(sphereModel);
 			n.addChildNode(node);
+			
 		} else {
 
 	        particuleShapeNode = new ShapeNode("Emitter");
@@ -79,17 +87,11 @@ public class Checkpoint extends Entity {
 
 			node.setTransform(Transform.translate(start));
 			node.addChildNode(particuleShapeNode);
-			initParticules();			
+			initParticules();
+			
 		}
 		
-	}
-	
-	public void deactivateArrow() {
-		node.removeChildNode(arrowShapeNode);
-	}
-	
-	public void activateArrow() {
-		node.addChildNode(arrowShapeNode);
+		refreshShader();
 	}
 
 	protected void initParticules() {
@@ -117,23 +119,37 @@ public class Checkpoint extends Entity {
 	}
 	
 	public void refreshShader() {
-		ShaderProgram shader = null;
-		ShaderMaterial material = null;
+		
+		// can not compile if there is no context
+		if (world.renderer.ctx == null) return;
+		
 		Shader vert = null;
         Shader frag = null;
         Shader geom = null;
+        
+		ShaderProgram shader = null;
+		ShaderMaterial material = null;
         
 		if (!oldCheckpoint) {
 	        shader = null;
 	        try {
 	            vert = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.vs"), GL3.GL_VERTEX_SHADER);
 	            geom = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.gs"), GL3.GL_GEOMETRY_SHADER);
-	            frag = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.fs"), GL3.GL_FRAGMENT_SHADER);
-	
-	            shader = new ShaderProgram(vert, frag, geom);            
+	            frag = new Shader(Helper.getInputStreamResource("shaders/checkpointParticule.fs"), GL3.GL_FRAGMENT_SHADER); 
+		        
+		        // Without compile the game stops if error in shader
+	            vert.compile(world.renderer.ctx);
+		        geom.compile(world.renderer.ctx);
+		        frag.compile(world.renderer.ctx);
+		        
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	        }
+	        } catch (Exception e) {
+				e.printStackTrace();
+		    	System.out.println("Can not compile shader!");
+			}
+	        
+            shader = new ShaderProgram(vert, frag, geom);
 	
 	        shader.setParameter(GL2GL3.GL_GEOMETRY_INPUT_TYPE_ARB, GL.GL_POINTS);
 	        shader.setParameter(GL2GL3.GL_GEOMETRY_OUTPUT_TYPE_ARB, GL2.GL_QUADS);
@@ -151,21 +167,23 @@ public class Checkpoint extends Entity {
         try {
             vert = new Shader(Helper.getInputStreamResource("shaders/arrow.vs"), GL3.GL_VERTEX_SHADER);
             frag = new Shader(Helper.getInputStreamResource("shaders/arrow.fs"), GL3.GL_FRAGMENT_SHADER);
-
-            shader = new ShaderProgram(vert, frag);  
-            material = new ShaderMaterial("AMBIENT", shader);
-            arrowShapeNode.setMaterial(material);
-         
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        shader = new ShaderProgram(vert, frag);  
+        material = new ShaderMaterial("AMBIENT", shader);
+        arrowShapeNode.setMaterial(material);
 	}
 
     public void manipulate(float elapsed) {
 
     	arrowShapeNode.setTransform(Transform.rotateZDeg(-90).mul(Transform.translate(-17,-3,-1.5f)).mul(Transform.scale(0.2f)));
+    	
 		if (!oldCheckpoint) {
+			
 	        for (int i = 0; i != count; i++) {
+	        	
 	            age.set(i, age.get(i) + elapsed*50);
 	
 	            if (age.get(i) > 360) {
@@ -178,10 +196,30 @@ public class Checkpoint extends Entity {
 	            float x1 = (float) (1 + Math.cos(PApplet.radians(r + startAngle.get(i))) * (radius.get(i)+n/30));
 	            float y1 = (float) (1 + Math.sin(PApplet.radians(r + startAngle.get(i))) * (radius.get(i)+n/30));
 	            position.set(i, new Vector3(x1,y1,1));
+	            
 	        }
-	        // Set
+	
 	        cloud.setAttribute("partPosition", new AttributeVector3(position));
 	        cloud.setAttribute("partRadius", new AttributeFloat(radius));
 		}
     }
+	
+    /**
+     * displays arrow above checkpoint
+     */
+	public void deactivateArrow() {
+		
+		node.removeChildNode(arrowShapeNode);
+		
+	}
+
+	
+    /**
+     * removes arrow above checkpoint
+     */
+	public void activateArrow() {
+		
+		node.addChildNode(arrowShapeNode);
+		
+	}
 }

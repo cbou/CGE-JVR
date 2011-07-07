@@ -10,7 +10,6 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 import de.bht.jvr.logger.Log;
 import de.bht.jvr.logger.LogPrinter;
-import de.bht.jvr.math.Vector3;
 import de.bht.jvr.util.StopWatch;
 import de.bht.jvr.util.awt.InputState;
 
@@ -21,9 +20,8 @@ import de.bht.jvr.util.awt.InputState;
 public class Main {
 
     static Renderer renderer = new Renderer();
-    static Simulator simulator = new Simulator(new Vector3(0, -10, 0));
     static InputState input = new InputState();
-    static World world = new World(input, simulator, renderer);
+    static World world = new World(input, renderer);
     static ControllerManager controllerManager = new ControllerManager(world);
     static RaceManager raceManager = new RaceManager(world, renderer.sceneNode);
     static StopWatch clock = new StopWatch();
