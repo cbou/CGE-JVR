@@ -62,6 +62,8 @@ public class Skybox extends Entity {
 		groupNode.addChildNode(planeUp);
 		
 		node.addChildNode(groupNode);
+		
+		refreshShader();
     }
     
     public void setBrightness(float val){   
@@ -90,19 +92,22 @@ public class Skybox extends Entity {
      * just for test purpose.
      */
     public void update() {
-        this.node.setTransform(Transform.translate(world.renderer.camera.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
+        this.node.setTransform(Transform.translate(world.renderer.cameraIntern.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
     }
 	
 	public void refreshShader() {
-		try {
-			// load texture
-			Texture2D texture = new Texture2D(Helper.getFileResource("textures/grass.jpg"));
-	        texture.bind(world.renderer.ctx);
-	        
+		
+		// can not compile if there is no context
+		if (world.renderer.ctx == null) return;
+		
+		try {	        
 			Shader skyVs = new Shader(Helper.getInputStreamResource("shaders/sky.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader skyFs = new Shader(Helper.getInputStreamResource("shaders/sky.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        
+	        // Without compile the game stops if error in shader
 	        skyFs.compile(world.renderer.ctx);
 	        skyVs.compile(world.renderer.ctx);
+	        
 	        ShaderProgram ambientProgram = new ShaderProgram(skyVs, skyFs);
 	        
 	        ShaderMaterial skyMatBk = new ShaderMaterial();

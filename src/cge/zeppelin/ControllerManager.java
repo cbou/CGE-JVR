@@ -2,77 +2,73 @@ package cge.zeppelin;
 
 import java.awt.event.KeyEvent;
 
-import de.bht.jvr.math.Matrix4;
-import de.bht.jvr.math.Vector3;
-
 public class ControllerManager {
 	World world;
-	private float f;
 
 	public ControllerManager(final World world) {
 		this.world = world;
 	}
 	
 	public void update() {		
-		if (world.input.isDown('W')){
+		if (world.getInput().isDown('W')){
         	world.flyer.accelerate(1);
-        } else if (world.input.isDown('S')){
+        } else if (world.getInput().isDown('S')){
         	world.flyer.accelerate(-1);
         }
 		
-        if (world.input.isDown('A')){
+        if (world.getInput().isDown('A')){
         	world.flyer.turn(1);
-        } else if (world.input.isDown('D')){
+        } else if (world.getInput().isDown('D')){
         	world.flyer.turn(-1);
         }
         
-        if (world.input.isDown('Q')){
+        if (world.getInput().isDown('Q')){
         	world.flyer.balast(10);
         }
         
-        if (world.input.isDown('E')){
+        if (world.getInput().isDown('E')){
         	world.flyer.gaz(10);
         }
         
-        if (world.input.isDown(KeyEvent.VK_UP)){
+        if (world.getInput().isDown(KeyEvent.VK_UP)){
         	world.flyer.pitch(1);
         }
         
-        if (world.input.isDown(KeyEvent.VK_DOWN)){
+        if (world.getInput().isDown(KeyEvent.VK_DOWN)){
         	world.flyer.pitch(-1);
         }
    
-        if (world.input.isTriggered('1')){
-        	world.renderer.switchCamera();
+        if (world.getInput().isTriggered('1')){
+        	world.renderer.changeCamera();
         }
         
-        if (world.input.isDown('M')){
+        if (world.getInput().isDown('M')){
         	world.renderer.zoomIn();
         }
-        if (world.input.isDown('N')){
+        if (world.getInput().isDown('N')){
         	world.renderer.zoomOut();
         }
         
-        if (world.input.isTriggered('R')){
+        if (world.getInput().isTriggered('R')){
         	world.flyer.reset();
         	world.environnement.reset();
         }
 
         // Weather switcher
-        if (world.input.isTriggered('T')){
+        if (world.getInput().isTriggered('T')){
         	world.environnement.switchDisable();
         }
 
         // Refresh shader switcher
-        if (world.input.isTriggered('L')){
+        if (world.getInput().isTriggered('L')){
         	world.switchRefreshShader();
         }
         
-        if (world.input.isTriggered('K')){
-        	world.terrain.resetTerrain();
+        if (world.getInput().isTriggered('K')){
+        	world.getTerrain().resetTerrain();
         }
         
-        if (world.input.isTriggered('J')){
+        if (world.getInput().isTriggered('J')){
         	world.environnement.rainEntity.reset();
         }
         
