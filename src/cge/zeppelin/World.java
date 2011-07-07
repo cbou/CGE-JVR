@@ -96,9 +96,6 @@ public class World {
         renderer.spot.setTransform(Transform.translate(20, 120, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
 
-        renderer.lightning.setTransform(Transform.translate(20, 120, 20)
-                .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
-        
         terrain.node.setTransform(Transform.translate(-300,0,-300));
         add(terrain);
         

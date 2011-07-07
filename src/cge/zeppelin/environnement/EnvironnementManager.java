@@ -125,7 +125,7 @@ public class EnvironnementManager {
 		}
 		if (brightness>MINBRIGHTNESS){
 			brightness-=0.01;
-			float v = 	(Math.abs(brightness - 0.5f) < 0.01 | 
+			float v =  (Math.abs(brightness - 0.5f) < 0.01 | 
 						Math.abs(brightness - 0.4f) < 0.01 | 
 						Math.abs(brightness - 0.2f) < 0.01 ) ? 10 : brightness;
 			

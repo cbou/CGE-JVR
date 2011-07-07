@@ -8,7 +8,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import de.bht.jvr.core.CameraNode;
 import de.bht.jvr.core.Context;
-import de.bht.jvr.core.DirectionalLightNode;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.ShaderMaterial;
@@ -38,7 +37,6 @@ public class Renderer {
     CameraNode camera2 = new CameraNode("Camera2", 1, 60);
    
     SpotLightNode spot = new SpotLightNode("Spot");
-    SpotLightNode lightning = new SpotLightNode("Spot");
     
 	private PipelineCommandPtr switchAmbientCamCmd;
 	private PipelineCommandPtr switchLightCamCmd;
@@ -55,20 +53,11 @@ public class Renderer {
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setEnabled(true);
         
-        lightning.setCastShadow(true);
-        lightning.setSpotCutOff(40);
-        lightning.setShadowBias(0.3f);
-        lightning.setIntensity(1f);
-        lightning.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
-        lightning.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
+       
       
-        lightning.setEnabled(false);
-        lightning.setIntensity(1.0f);
-        
-        
         zeppelinNode.addChildNode(camera);
         
-        add(zeppelinNode, sceneNode, camera2, spot, skyboxNode, lightning);
+        add(zeppelinNode, sceneNode, camera2, spot, skyboxNode);
     }
 
     /**
