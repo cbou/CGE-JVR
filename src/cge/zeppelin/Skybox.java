@@ -2,8 +2,6 @@ package cge.zeppelin;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.media.opengl.GL2GL3;
 

@@ -6,12 +6,9 @@ import java.util.Set;
 import javax.media.opengl.GLAutoDrawable;
 
 import cge.zeppelin.environnement.EnvironnementManager;
-import de.bht.jvr.core.DirectionalLightNode;
 import de.bht.jvr.core.Printer;
-import de.bht.jvr.core.SpotLightNode;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.math.Vector3;
-import de.bht.jvr.util.Color;
 import de.bht.jvr.util.awt.InputState;
 
 /**

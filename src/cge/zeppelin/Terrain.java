@@ -6,11 +6,8 @@ import javax.media.opengl.GL2GL3;
 
 import processing.core.PApplet;
 import cge.zeppelin.util.Helper;
-import de.bht.jvr.collada14.loader.ColladaLoader;
-import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
 import de.bht.jvr.core.Material;
-import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
 import de.bht.jvr.core.ShaderMaterial;
 import de.bht.jvr.core.ShaderProgram;
@@ -19,14 +16,12 @@ import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.TriangleMesh;
 import de.bht.jvr.core.attributes.AttributeVector3;
 import de.bht.jvr.core.uniforms.UniformFloat;
-import de.bht.jvr.core.uniforms.UniformVector3;
 import de.bht.jvr.math.Vector2;
 import de.bht.jvr.math.Vector3;
 
 public class Terrain extends Entity{
 
 	private static final float WATERLEVEL = 0;
-	private SceneNode box;
 	private TriangleMesh triangleMesh;
 	private ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();

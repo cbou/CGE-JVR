@@ -2,12 +2,8 @@ package cge.zeppelin;
 
 import java.awt.event.KeyEvent;
 
-import de.bht.jvr.math.Matrix4;
-import de.bht.jvr.math.Vector3;
-
 public class ControllerManager {
 	World world;
-	private float f;
 
 	public ControllerManager(final World world) {
 		this.world = world;

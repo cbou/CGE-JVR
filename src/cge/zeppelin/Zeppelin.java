@@ -1,7 +1,6 @@
 package cge.zeppelin;
 
 import java.io.FileInputStream;
-import java.util.Collection;
 
 import javax.media.opengl.GL2GL3;
 
