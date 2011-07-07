@@ -52,8 +52,6 @@ public class Renderer {
         spot.setSpecularColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setDiffuseColor(new Color(0.8f, 0.8f, 0.8f));
         spot.setEnabled(true);
-        
-       
       
         zeppelinNode.addChildNode(camera);
         
@@ -112,7 +110,6 @@ public class Renderer {
     	     
     		// render quad with dof shader
     		pipeline.drawQuad(sm, "DOFPass");
-    		
     		
     	} catch (IOException e) {
     		// TODO Auto-generated catch block

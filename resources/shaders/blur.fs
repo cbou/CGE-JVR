@@ -4,13 +4,13 @@ uniform sampler2D jvr_ParticleZ;
 uniform float intensity;
 uniform float dofIntensity;
 
-varying vec2 texCoord;
+varying vec2 texture_coordinate;
 
 float linearizeDepth(sampler2D buffer)
 {
   float n = 0.1;
   float f = 10.0;
-  float z = texture2D(buffer, texCoord).r;
+  float z = texture2D(buffer, texture_coordinate).r;
   return (2.0 * n) / (f + n - z * (f - n));
 }
 
@@ -24,13 +24,11 @@ vec4 blur()
    	{
    		for(int y=-iteration/2; y<iteration/2+1; y++)
    		{
-   			//vec4 originalColor = texture2D(jvr_Texture1, texCoord);
-   			
-   			float particleZ    = texture2D(jvr_ParticleZ, texCoord).r;
-   			float szeneZ       = texture2D(jvr_SzeneZ, texCoord).r;
+   			float particleZ    = texture2D(jvr_ParticleZ, texture_coordinate).r;
+   			float szeneZ       = texture2D(jvr_SzeneZ, texture_coordinate).r;
    			
    			vec2 offset = intensity *  vec2(float(x)/1024.0, float(y)/1024.0);
-   			vec2 texC = texCoord;
+   			vec2 texC = texture_coordinate;
    			
    			if(!(texC.x>1.0 || texC.x<0.0 || texC.y>1.0 || texC.y<0.0))
    			{
@@ -39,9 +37,9 @@ vec4 blur()
 	   			/* Only blur if the particle is visible */
 	   			if ((particleZ <= szeneZ) && (szeneZ<1.0))
 	   			{
-	   				texC = texCoord + offset;
+	   				texC = texture_coordinate + offset;
 	   			} else {
-	   				texC = texCoord + (dofIntensity*vec2(float(x)/1024.0, float(y)/1024.0)*linearizeDepth(jvr_SzeneZ));
+	   				texC = texture_coordinate + (dofIntensity*vec2(float(x)/1024.0, float(y)/1024.0)*linearizeDepth(jvr_SzeneZ));
 	 			}
 	 			
 	 			/* Fog */

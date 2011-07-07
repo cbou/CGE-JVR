@@ -64,7 +64,7 @@ void main (void)
     vec3 R = reflect(-L, N);
     float specular = max(dot(R, E), 0.0);
     if (positionV.y <= waterLevel){
-       	gl_FragColor.rgb = gl_FragColor.rgb + specular * jvr_LightSource_Specular.rgb + vec3(0,0.1,0.5);
+       	gl_FragColor = gl_FragColor + specular * jvr_LightSource_Specular + vec4(0,0.1,0.5,0.5);
     }
   }
   

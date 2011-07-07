@@ -1,7 +1,6 @@
 package cge.zeppelin;
 
 import java.io.FileInputStream;
-import java.util.Collection;
 
 import javax.media.opengl.GL2GL3;
 
@@ -79,13 +78,13 @@ public class Zeppelin extends Entity {
 			
 			Texture2D bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
 			
-	    	Shader ambientVs = new Shader(new FileInputStream("./shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader ambientFs = new Shader(new FileInputStream("./shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	    	Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	    
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 	        
-	        Shader lightingVs = new Shader(new FileInputStream("./shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        Shader lightingFs = new Shader(new FileInputStream("./shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	      
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        
@@ -95,7 +94,6 @@ public class Zeppelin extends Entity {
 	        boardMat.setTexture("LIGHTING", "jvr_Texture0", bk);    
 	        boardMat.setShaderProgram("LIGHTING", lightingProgram);
 	        sn.setMaterial(boardMat);
-	        
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
