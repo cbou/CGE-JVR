@@ -25,6 +25,10 @@ public class EnvironnementManager {
 	long windLastTime = 0;
 	long rainLastTime = 0;
 	
+	float brightness = 1;
+	float MINBRIGHTNESS = 0.1f;
+	float MAXBRIGHTNESS = 0.7f;
+
 	public boolean disabled;
 	private GroupNode node;
 	public RainEntity rainEntity;
@@ -109,12 +113,8 @@ public class EnvironnementManager {
 		);
 	}
 
-	float brightness = 1;
-	float MINBRIGHTNESS = 0.1f;
-	float MAXBRIGHTNESS = 0.7f;
 	
 	protected void affectRain(Flyer entity, float dt) {
-		//if (!(rain instanceof Rain)) return ;
 		if (!(rain instanceof Rain)){
 			if (brightness<MAXBRIGHTNESS){
 				brightness+=0.01;

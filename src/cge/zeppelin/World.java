@@ -32,11 +32,11 @@ public class World {
     	
         input = i;
         renderer = r;
-        environnement = new EnvironnementManager(this, renderer.zeppelinNode);
 
         terrain = new Terrain(this);
         flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0), getTerrain()); 
         skybox = new Skybox(this, renderer.skyboxNode); 
+        environnement = new EnvironnementManager(this, renderer.zeppelinNode);
         
         populateWorld(50, 200);
         
@@ -103,22 +103,6 @@ public class World {
         add(getSkybox());
         
         
-//    	SpotLightNode zepSpot = new SpotLightNode();
-//    	zepSpot.setCastShadow(true);
-//    	zepSpot.setSpotCutOff(30);
-//    	zepSpot.setShadowBias(0.3f);
-//    	zepSpot.setIntensity(0.8f);
-//    	zepSpot.setSpecularColor(new Color(0.8f, 0.5f, 0.8f));
-//    	zepSpot.setDiffuseColor(new Color(0.8f, 0.5f, 0.8f));
-//    	flyer.node.addChildNode(zepSpot);
-/*
-        simulator.addCollisionListener(flyer, new CollisionListener() {
-            @Override
-            public void response(Entity e0, Entity e1) {
-                System.out.println("Collision detected");
-            }
-        });
-        */
     }
 	
 	public void switchRefreshShader() {
