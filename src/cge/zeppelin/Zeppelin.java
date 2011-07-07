@@ -96,11 +96,11 @@ public class Zeppelin extends Entity {
 			
 			bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
 	        
-	        lightingVs = new Shader(new FileInputStream("./shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        lightingFs = new Shader(new FileInputStream("./shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	        lightingVs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        lightingFs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 			
-	    	ambientVs = new Shader(new FileInputStream("./shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-	        ambientFs = new Shader(new FileInputStream("./shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+	    	ambientVs = new Shader(Helper.getInputStreamResource("shaders/zeppelinAmbient.vs"), GL2GL3.GL_VERTEX_SHADER);
+	        ambientFs = new Shader(Helper.getInputStreamResource("shaders/zeppelinAmbient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
