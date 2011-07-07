@@ -73,11 +73,13 @@ public class RainEntity extends Entity {
 	public void reset() {
 		System.out.println("Reset rain effect");
 		
+		int rainWidth = 8;
+		
         count = 20000;
         
         position = new ArrayList<Vector3>(count);
         for (int i = 0; i != count; i++)
-            position.add(new Vector3(noiseMaker.random(-6, 6), 0, noiseMaker.random(-10, -3)));
+            position.add(new Vector3(noiseMaker.random(-1 * rainWidth, 1 * rainWidth), 0, noiseMaker.random(-10, +10)));
 
         deep = new ArrayList<Float>(count);
         for (int i = 0; i != count; i++)

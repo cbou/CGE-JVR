@@ -39,7 +39,6 @@ public class World {
         flyer = new Flyer(renderer.zeppelinNode, new Vector3(3, 10, 0),terrain); 
         skybox = new Skybox(this, renderer.skyboxNode); 
         populateWorld(50, 200);
-        
     }
     
 
@@ -70,6 +69,7 @@ public class World {
     }
 
     void frame(float elapsed, GLAutoDrawable drawable) {
+        renderer.cameraExtern.setTransform(Transform.translate(new Vector3(0,3.5f,+9)));
     	skybox.update();
     	environnement.update();
         for (Entity e : entities) {
@@ -96,7 +96,8 @@ public class World {
         terrain.node.setTransform(Transform.translate(-300,0,-300));
         add(terrain);
         
-        renderer.camera2.setTransform(Transform.translate(new Vector3(0,0,0)));
+        renderer.cameraFixed.setTransform(Transform.translate(new Vector3(0,0,0)));
+        renderer.cameraExtern.setTransform(Transform.translate(new Vector3(0,0,0)));
 
         add(flyer);
         add(skybox);

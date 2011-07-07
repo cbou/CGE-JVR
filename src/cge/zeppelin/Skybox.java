@@ -66,7 +66,7 @@ public class Skybox extends Entity {
     
     public void setBrightness(float val){   
         skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(val));
-        System.out.println(val);
+        //System.out.println(val);
     }
     
     private void loadFiles() throws FileNotFoundException, Exception {
@@ -91,7 +91,7 @@ public class Skybox extends Entity {
      * just for test purpose.
      */
     public void update() {
-        this.node.setTransform(Transform.translate(world.renderer.camera.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
+        this.node.setTransform(Transform.translate(world.renderer.cameraIntern.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
     }
 	
 	public void refreshShader() {

@@ -24,7 +24,7 @@ import de.bht.jvr.util.Color;
  */
 public class Renderer {
 
-	boolean pov = true;
+	int pov = 0;
 	     
     Context ctx = null;
     GroupNode root = new GroupNode("Root");
@@ -33,8 +33,9 @@ public class Renderer {
     GroupNode sceneNode = new GroupNode("Scene");
     
     Pipeline pipeline = new Pipeline(root);
-    CameraNode camera = new CameraNode("Camera", 1, 60);
-    CameraNode camera2 = new CameraNode("Camera2", 1, 60);
+    CameraNode cameraIntern = new CameraNode("Camera", 1, 60);
+    CameraNode cameraExtern = new CameraNode("Camera", 1, 60);
+    CameraNode cameraFixed = new CameraNode("Camera2", 1, 60);
    
     SpotLightNode spot = new SpotLightNode("Spot");
     
@@ -55,9 +56,9 @@ public class Renderer {
         
        
       
-        zeppelinNode.addChildNode(camera);
+        zeppelinNode.addChildNodes(cameraIntern, cameraExtern);
         
-        add(zeppelinNode, sceneNode, camera2, spot, skyboxNode);
+        add(zeppelinNode, sceneNode, cameraFixed, spot, skyboxNode);
     }
 
     /**
@@ -79,7 +80,7 @@ public class Renderer {
     		pipeline.switchFrameBufferObject("SceneMap");
 
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-    		switchAmbientCamCmd = pipeline.switchCamera(camera);
+    		switchAmbientCamCmd = pipeline.switchCamera(cameraIntern);
     		pipeline.drawGeometry("AMBIENT", null);
     		
     		Pipeline ll = pipeline.doLightLoop(false, true);
@@ -90,7 +91,7 @@ public class Renderer {
     		ll.drawGeometry("AMBIENT", null);
     		ll.switchFrameBufferObject(null);
     		
-    		switchLightCamCmd = ll.switchCamera(camera);
+    		switchLightCamCmd = ll.switchCamera(cameraIntern);
     		ll.bindDepthBuffer("jvr_ShadowMap", "ShadowMap");
     		ll.drawGeometry("LIGHTING", null);  
 
@@ -124,9 +125,30 @@ public class Renderer {
     
     
     public void switchCamera(){
-    	pov = !pov;
-    	switchAmbientCamCmd.switchCamera(pov ? camera:camera2);
-    	switchLightCamCmd.switchCamera(pov ? camera:camera2);
+    	pov++;
+    	
+    	switch (pov) {
+		case 0:
+			System.out.println("Switch to camera intern");
+	    	switchAmbientCamCmd.switchCamera(cameraIntern);
+	    	switchLightCamCmd.switchCamera(cameraIntern);
+			break;
+		case 1:
+			System.out.println("Switch to camera extern");
+	    	switchAmbientCamCmd.switchCamera(cameraExtern);
+	    	switchLightCamCmd.switchCamera(cameraExtern);
+			break;
+		case 2:
+			System.out.println("Switch to camera fixed");
+	    	switchAmbientCamCmd.switchCamera(cameraFixed);
+	    	switchLightCamCmd.switchCamera(cameraFixed);
+			pov = -1;
+			break;
+
+		default:
+			pov = 0;
+			break;
+		}
     }
 
     /**
@@ -135,7 +157,6 @@ public class Renderer {
      */
     void render(GLAutoDrawable drawable) {
         try {
-        	  
             pipeline.update();
             pipeline.render(ctx);
         } catch (Exception e) {
@@ -148,7 +169,7 @@ public class Renderer {
      * Call whenever the window size changes.
      */
     void resizeWindowTo(int width, int height) {
-        camera.setAspectRatio((float) width / (float) height);
+        cameraIntern.setAspectRatio((float) width / (float) height);
     }
 
     /**
@@ -168,10 +189,10 @@ public class Renderer {
     }
 
 	public void zoomIn() {
-		camera2.setFieldOfView(camera2.getFieldOfView()+1);
+		cameraFixed.setFieldOfView(cameraFixed.getFieldOfView()+1);
 	}
 
 	public void zoomOut() {
-		camera2.setFieldOfView(camera2.getFieldOfView()-1);
+		cameraFixed.setFieldOfView(cameraFixed.getFieldOfView()-1);
 	}
 }
