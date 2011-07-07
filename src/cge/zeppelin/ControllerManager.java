@@ -7,6 +7,7 @@ import de.bht.jvr.math.Vector3;
 
 public class ControllerManager {
 	World world;
+	private float f;
 
 	public ControllerManager(final World world) {
 		this.world = world;
@@ -74,7 +75,6 @@ public class ControllerManager {
         if (world.input.isTriggered('J')){
         	world.environnement.rainEntity.reset();
         }
-        
         
 	}
 	

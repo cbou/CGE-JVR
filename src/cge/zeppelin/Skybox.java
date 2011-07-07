@@ -2,6 +2,8 @@ package cge.zeppelin;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2GL3;
 
@@ -16,13 +18,15 @@ import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.Transform;
+import de.bht.jvr.core.uniforms.UniformFloat;
 
 public class Skybox extends Entity {
     private Texture2D bk, dn, ft, lf, rt, up;
 	private World world;
 	private SceneNode planeBk, planeDn, planeFt, planeLf, planeRt, planeUp;
 	private ShapeNode shapeNodeBk, shapeNodeDn, shapeNodeFt, shapeNodeLf, shapeNodeRt, shapeNodeUp;
-   
+	private ShaderMaterial skyMatRt;
+	
     public Skybox(World w, GroupNode n) {
     	node = n;
     	world = w;
@@ -60,6 +64,11 @@ public class Skybox extends Entity {
 		groupNode.addChildNode(planeUp);
 		
 		node.addChildNode(groupNode);
+    }
+    
+    public void setBrightness(float val){   
+        skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(val));
+        System.out.println(val);
     }
     
     private void loadFiles() throws FileNotFoundException, Exception {
@@ -115,14 +124,13 @@ public class Skybox extends Entity {
 	        skyMatLf.setTexture("AMBIENT", "jvr_Texture0", lf);
 	        skyMatLf.setShaderProgram("AMBIENT", ambientProgram);
 	        
-	        ShaderMaterial skyMatRt = new ShaderMaterial();
+	        skyMatRt = new ShaderMaterial();
 	        skyMatRt.setTexture("AMBIENT", "jvr_Texture0", rt);
 	        skyMatRt.setShaderProgram("AMBIENT", ambientProgram);
 	        
 	        ShaderMaterial skyMatUp = new ShaderMaterial();
 	        skyMatUp.setTexture("AMBIENT", "jvr_Texture0", up);
 	        skyMatUp.setShaderProgram("AMBIENT", ambientProgram);
-	        
 	        
 	        shapeNodeBk.setMaterial(skyMatBk);
 	        shapeNodeDn.setMaterial(skyMatDn);

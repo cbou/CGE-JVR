@@ -1,5 +1,5 @@
-uniform vec3 toonColor;
 uniform float waterLevel;
+uniform float ambientFactor;
 
 uniform vec4 jvr_LightSource_Diffuse;
 uniform vec4 jvr_LightSource_Specular;
@@ -31,6 +31,7 @@ void main (void)
   /* diffuse intensity */
   float intensity = dot(L, N);
   
+  /* Vary terrain borders dependent on normal */
   high 	 = high   + oN.x * 5.0;
   middle = middle + oN.z * 5.0;
   
@@ -53,7 +54,7 @@ void main (void)
   }
    
   //gl_FragColor = 0.7*gl_FragColor + 0.3*intensity*gl_FragColor ;
-  gl_FragColor = 0.3*gl_FragColor + 0.3*intensity*gl_FragColor ;
+  gl_FragColor = ambientFactor*gl_FragColor + 0.3*intensity*gl_FragColor ;
   
   /* Normal Shader*/
   //gl_FragColor.rgb = normalV;

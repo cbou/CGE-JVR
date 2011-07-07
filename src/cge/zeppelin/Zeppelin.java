@@ -1,6 +1,7 @@
 package cge.zeppelin;
 
 import java.io.FileInputStream;
+import java.util.Collection;
 
 import javax.media.opengl.GL2GL3;
 
@@ -8,6 +9,7 @@ import cge.zeppelin.util.Helper;
 import de.bht.jvr.collada14.loader.ColladaLoader;
 import de.bht.jvr.core.Finder;
 import de.bht.jvr.core.GroupNode;
+import de.bht.jvr.core.Printer;
 import de.bht.jvr.core.SceneNode;
 import de.bht.jvr.core.Shader;
 import de.bht.jvr.core.ShaderMaterial;
@@ -37,9 +39,10 @@ public class Zeppelin extends Entity {
 			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
-			board   = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
+			board   = ColladaLoader.load(Helper.getFileResource("models/cockpit.dae"));
 			
-			sn = Finder.find(board, ShapeNode.class, "Box01_Shape");
+			Printer.print(board);
+			sn = Finder.find(board, ShapeNode.class, "shape0_Shape");
 	        
 			hull.setTransform(Transform.scale(1.2f, 1.2f, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
@@ -55,9 +58,12 @@ public class Zeppelin extends Entity {
 			gasNode.setTransform(Transform.translate(-0.1f, -0.1f, -0.2f));
 			gasNode.addChildNode(gasMeter);
 			
-			boardNode.setTransform(Transform.translate(0.0f, -0.11f, -0.21f));
+			boardNode.setTransform(Transform.translate(0.0f, -0.14f, -0.21f));
+//			boardNode.addChildNode(board);
 			boardNode.addChildNode(sn);
-			sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.34f, 0.07f, 0.0001f)));
+			
+			//sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.34f, 0.07f, 0.0001f)));
+			sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.024f, 0.022f, 0.002f)));
 			
 			loadNode.setTransform(Transform.translate(0.1f, -0.1f, -0.2f));
 			loadNode.addChildNode(gasMeter);
@@ -73,15 +79,11 @@ public class Zeppelin extends Entity {
 			
 			Texture2D bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
 			
-//			Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/null.vs"), GL2GL3.GL_VERTEX_SHADER);
-//	        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/null.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	    	Shader ambientVs = new Shader(new FileInputStream("./shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader ambientFs = new Shader(new FileInputStream("./shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	    
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
 	        
-//			Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/minimal.vs"), GL2GL3.GL_VERTEX_SHADER);
-//	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/phong.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        Shader lightingVs = new Shader(new FileInputStream("./shaders/lighting.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        Shader lightingFs = new Shader(new FileInputStream("./shaders/lighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	      
@@ -89,8 +91,7 @@ public class Zeppelin extends Entity {
 	        
 	        ShaderMaterial boardMat = new ShaderMaterial();
 	        boardMat.setTexture("AMBIENT", "jvr_Texture0", bk);    
-	        boardMat.setShaderProgram("AMBIENT", ambientProgram);
-//	        
+	        boardMat.setShaderProgram("AMBIENT", ambientProgram);	        
 	        boardMat.setTexture("LIGHTING", "jvr_Texture0", bk);    
 	        boardMat.setShaderProgram("LIGHTING", lightingProgram);
 	        sn.setMaterial(boardMat);

@@ -28,9 +28,11 @@ public class EnvironnementManager {
 	public boolean disabled;
 	private GroupNode node;
 	public RainEntity rainEntity;
+	private World world;
 	
 	public EnvironnementManager(World world, GroupNode n) {
 		node = n;
+		this.world = world;
         world.input.addKeyListener(KeyEvent.VK_P, new Runnable() {
 
             @Override
@@ -107,9 +109,31 @@ public class EnvironnementManager {
 		);
 	}
 
+	float brightness = 1;
+	float MINBRIGHTNESS = 0.1f;
+	float MAXBRIGHTNESS = 0.7f;
+	
 	protected void affectRain(Flyer entity, float dt) {
-		if (!(rain instanceof Rain) && !disabled) return ;
-
+		//if (!(rain instanceof Rain)) return ;
+		if (!(rain instanceof Rain)){
+			if (brightness<MAXBRIGHTNESS){
+				brightness+=0.01;
+				world.skybox.setBrightness(brightness);
+				world.terrain.setBrightness(brightness);
+			}
+			return;
+		}
+		if (brightness>MINBRIGHTNESS){
+			brightness-=0.01;
+			float v = 	(Math.abs(brightness - 0.5f) < 0.01 | 
+						Math.abs(brightness - 0.4f) < 0.01 | 
+						Math.abs(brightness - 0.2f) < 0.01 ) ? 10 : brightness;
+			
+			world.skybox.setBrightness(v);
+			world.terrain.setBrightness(v);
+			
+		}
+		
 		entity.translation = entity.translation.mul(
 			Transform.translate(
 				entity.translation.getMatrix().mulDir(
@@ -138,7 +162,7 @@ public class EnvironnementManager {
 		if (disabled) {
 			System.out.println("STOP WEATHER");
 		} else {
-			System.out.println("STOP WEATHER");
+			System.out.println("START WEATHER");
 		}
 	} 
 }

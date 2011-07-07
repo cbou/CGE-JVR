@@ -25,7 +25,7 @@ public class World {
     final Renderer renderer;
     final EnvironnementManager environnement;
     final Flyer flyer;
-    final Skybox skybox;
+    public final Skybox skybox;
 
 	public Terrain terrain = new Terrain();
 	private boolean refreshShader = true;

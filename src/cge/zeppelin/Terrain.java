@@ -47,6 +47,7 @@ public class Terrain extends Entity{
 	private float textureScaling = 2f;
 	private int basinX;
 	private int basinZ;
+	private ShaderMaterial earthMat;
 	
 	Terrain() {
 		try {
@@ -267,14 +268,15 @@ public class Terrain extends Entity{
 	        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/terrainlighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
 	        ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
-	        ShaderMaterial earthMat = new ShaderMaterial();
+	        earthMat = new ShaderMaterial();
 	        
-	        earthMat.setUniform("LIGHTING", "toonColor", new UniformVector3(new Vector3(1, 1, 1)));
 	        earthMat.setUniform("LIGHTING", "waterLevel", new UniformFloat(WATERLEVEL));
+	        earthMat.setUniform("LIGHTING", "ambientFactor", new UniformFloat(1));
+	        
 	        earthMat.setTexture("LIGHTING", "jvr_TextureHigh", textureHigh);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureMiddle", textureMiddle);
 	        earthMat.setTexture("LIGHTING", "jvr_TextureLow", textureLow);
-			       
+			
 	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 	        earthMat.setShaderProgram("LIGHTING", lightingProgram);
 	
@@ -285,6 +287,10 @@ public class Terrain extends Entity{
 	    	e.printStackTrace();
 	    	System.out.println("Can not compile shader!");
 		}
+	}
+
+	public void setBrightness(float val) {
+		   earthMat.setUniform("LIGHTING", "ambientFactor", new UniformFloat(val));
 	}
 
 

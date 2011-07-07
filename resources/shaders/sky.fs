@@ -1,4 +1,5 @@
 uniform sampler2D jvr_Texture0;
+uniform float brightness;
 
 varying vec2 texture_coordinate;
 
@@ -12,5 +13,5 @@ void main (void)
 	if(texC.x<0.001)texC.x = 0.001;
 	if(texC.y<0.001)texC.y = 0.001;
 	
-	gl_FragColor = texture2D(jvr_Texture0, texC)  * 0.3;
+	gl_FragColor = texture2D(jvr_Texture0, texC)  * brightness;
 }

@@ -9,7 +9,7 @@ varying vec3 eyeDirV;
 void main (void)
 {
   vec4 color = texture2D(jvr_Texture0, texture_coordinate);
-  
+  //vec4 color = vec4(1,0,0,1);
   vec3 N = normalize(normalV);
   vec3 L = normalize(lightDirV);
   vec3 E = normalize(eyeDirV);
