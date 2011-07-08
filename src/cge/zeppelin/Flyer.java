@@ -78,20 +78,23 @@ public class Flyer extends Entity {
 		// Gravity, Gas and Balance
 		float overAllGravity = gravity+gas-load;
 		
-		Vector3 position = translation.extractTranslation().getMatrix().translation();
-		/* +300 wegen Translate des Geländes */
-		if (position.y()<=terrain.getElevation(position.x()+300,position.z()+300)+3){
-			//TODO wenn das Terrain steigt, sollte man wieder hochkommen
-			overAllGravity = Math.max(0, overAllGravity);
-		}
-		
-		translation = translation.mul(Transform.translate(0,overAllGravity,0));
-
 		//TODO Alle Velocities in einen Vektor
 		// Friction
 		velocity 	*= 1-(friction*Math.abs(velocity));
 		velocity 	= Math.abs(velocity) < 0.01 ? 0 : velocity;
 
+		Vector3 position = translation.extractTranslation().getMatrix().translation();
+	
+		/* +300 wegen Translate des Geländes */
+		float height = terrain.getCElevation(position.x()+300,position.z()+300);
+		if (position.y()<=height){
+			//TODO wenn das Terrain steigt, sollte man wieder hochkommen
+			overAllGravity = Math.max(0, overAllGravity);		
+			velocity = 0;
+		}
+
+		translation = translation.mul(Transform.translate(0,overAllGravity,0));
+	
 		yRotVelocity *= 1-(friction);//*Math.abs(yRotVelocity));
 		yRotVelocity = Math.abs(yRotVelocity) < 0.01 ? 0 : yRotVelocity;
 

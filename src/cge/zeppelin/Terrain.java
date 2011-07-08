@@ -181,6 +181,19 @@ public class Terrain extends Entity{
 		//TODO RICHTIG machen
 		return (float) (5*amplitude*noise(x,z) + 100*bigNoise(x, z) - influence);
 	}
+	
+	public float getCElevation(float x, float z){
+		float nextX = (int) x / grid*grid;
+		float nextZ = (int) z / grid*grid;
+		float elev0 = getElevation(nextX, nextZ);
+		float elev1 = getElevation(nextX+grid, nextZ);
+		float elev2 = getElevation(nextX, nextZ+grid);
+		float elev3 = getElevation(nextX+grid, nextZ+grid);
+//		System.out.println(nextX+" "+nextZ);
+//		System.out.println(elev0+" "+elev1+" "+elev2+" "+elev3);
+		return Math.max(elev0, Math.max(elev1, Math.max(elev2, elev3)));
+//		return (elev0+elev1+elev2+elev3)/4f;
+	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
 
@@ -241,16 +254,9 @@ public class Terrain extends Entity{
 				  ((y-200)/400f)*((y-200)/400f);
 		
 		return n*f;
-		
 	}
 
-	class terrainMesh{
-		
-	    float[] textCoords;
-		float[] positions ;
-		float[] normals ;
-		
-	}
+	
 
 	public void postPosition(Vector3 translation) {
 		
@@ -315,9 +321,21 @@ public class Terrain extends Entity{
 	}
 
 	public void setBrightness(float val) {
-		
 		   earthMat.setUniform("LIGHTING", "ambientFactor", new UniformFloat(val));
-		   
 	}
 
+	class terrainMesh{
+		float[] textCoords;
+		float[] positions ;
+		float[] normals ;
+
+	}
+	public static void main(String[] args) {
+			float x = 44;
+			int grid = 20;
+		
+			float nextX = (int) x / grid*grid;
+			
+			System.out.println(nextX);
+	}
 }

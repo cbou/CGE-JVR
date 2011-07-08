@@ -42,7 +42,9 @@ public class Zeppelin extends Entity {
 			
 			sn = Finder.find(board, ShapeNode.class, "shape0_Shape");
 	        
-			hull.setTransform(Transform.scale(1.2f, 1.2f, 6).mul(Transform.translate(0, 1f, 0)));
+//			hull.setTransform(Transform.translate(0, 2f, 0));
+			hull.setTransform(Transform.scale(1.3f, 1.3f, 6).mul(Transform.translate(0, 1f, 0)));
+			
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
 		
 			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/20, gasMeterHeight, gasMeterHeight/20)));
