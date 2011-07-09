@@ -25,9 +25,9 @@ public class EnvironnementManager {
 	long windLastTime = 0;
 	long rainLastTime = 0;
 	
-	float brightness = 1;
 	float MINBRIGHTNESS = 0.1f;
-	float MAXBRIGHTNESS = 0.7f;
+	public float MAXBRIGHTNESS = 0.7f;
+	float brightness = 1f;
 
 	public boolean disabled;
 	private GroupNode node;
@@ -138,8 +138,8 @@ public class EnvironnementManager {
 			Transform.translate(
 				entity.translation.getMatrix().mulDir(
 						new Vector3( rain.getForce().x() * rain.direction.x() * dt,
-								rain.getForce().y() * rain.direction.y() * dt,
-								rain.getForce().z() * rain.direction.z() * dt)
+									 rain.getForce().y() * rain.direction.y() * dt,
+									 rain.getForce().z() * rain.direction.z() * dt)
 				)
 			)
 		);

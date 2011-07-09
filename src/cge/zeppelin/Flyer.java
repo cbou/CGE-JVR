@@ -29,6 +29,7 @@ public class Flyer extends Entity {
 	private float roll = 0;
 	private Zeppelin zeppelin;
 	private Terrain terrain;
+	private float maxHeight = 80f;
     
     /**
      * Create a new flyer and attach it to an existing scene node. Needs a
@@ -96,16 +97,20 @@ public class Flyer extends Entity {
     }
 
 	
+	
 	public void update() {
 		
 		Vector3 position = translation.extractTranslation().getMatrix().translation();
 
+		/* Limit position at the bottom */
 		/* +300 wegen Translate des Geländes */
-		float terrainHeight = terrain.getCElevation(position.x()+300,position.z()+300);
+		float terrainHeight = terrain.getCollisionElevation(position.x()+300,position.z()+300);
 		if (position.y()<=terrainHeight){
 			translation = Transform.translate(position.x(),terrainHeight,position.z());
 		}
-
+		if (position.y()>=maxHeight ){
+			translation = Transform.translate(position.x(),maxHeight,position.z());
+		}
 		xform = translation.mul(rotation);
 		node.setTransform(xform);
 		zeppelin.updateState(gas,load);

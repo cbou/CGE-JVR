@@ -38,7 +38,7 @@ public class World {
         skybox = new Skybox(this, renderer.skyboxNode); 
         environnement = new EnvironnementManager(this, renderer.zeppelinNode);
         
-        populateWorld(50, 200);
+        populateWorld();
         
     }
     
@@ -88,7 +88,7 @@ public class World {
     /**
      * Populate the world with the neccessary entities.
      */
-    void populateWorld( int bullets, int boxes) {
+    void populateWorld() {
     	
         renderer.spot.setTransform(Transform.translate(20, 120, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));

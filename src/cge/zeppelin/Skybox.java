@@ -133,13 +133,14 @@ public class Skybox extends Entity {
 	        ShaderMaterial skyMatUp = new ShaderMaterial();
 	        skyMatUp.setTexture("AMBIENT", "jvr_Texture0", up);
 	        skyMatUp.setShaderProgram("AMBIENT", ambientProgram);
-	        
+	   	 
 	        shapeNodeBk.setMaterial(skyMatBk);
 	        shapeNodeDn.setMaterial(skyMatDn);
 	        shapeNodeFt.setMaterial(skyMatFt);
 	        shapeNodeLf.setMaterial(skyMatLf);
 	        shapeNodeRt.setMaterial(skyMatRt);
 	        shapeNodeUp.setMaterial(skyMatUp);
+	        setBrightness(1);
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
