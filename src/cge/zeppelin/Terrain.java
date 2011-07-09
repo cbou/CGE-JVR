@@ -189,8 +189,6 @@ public class Terrain extends Entity{
 		float elev1 = getElevation(nextX+grid, nextZ);
 		float elev2 = getElevation(nextX, nextZ+grid);
 		float elev3 = getElevation(nextX+grid, nextZ+grid);
-//		System.out.println(nextX+" "+nextZ);
-//		System.out.println(elev0+" "+elev1+" "+elev2+" "+elev3);
 		return Math.max(elev0, Math.max(elev1, Math.max(elev2, elev3)));
 //		return (elev0+elev1+elev2+elev3)/4f;
 	}

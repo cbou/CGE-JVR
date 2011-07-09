@@ -27,8 +27,12 @@ public class Zeppelin extends Entity {
 	private GroupNode loadNode;
 	private float loadRot;
 	private GroupNode boardNode;
-	private SceneNode board;
-	private ShapeNode sn;
+	private SceneNode leftBoard;
+	private ShapeNode leftBoardNode;
+	private ShapeNode rightBoardNode;
+	private SceneNode rightBoard;
+	private SceneNode bottomBoard;
+	private ShapeNode bottomBoardNode;
 	
 	public Zeppelin(GroupNode n){
 		node = n;
@@ -38,16 +42,19 @@ public class Zeppelin extends Entity {
 			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
-			board   = ColladaLoader.load(Helper.getFileResource("models/cockpit.dae"));
+
+			leftBoard       = ColladaLoader.load(Helper.getFileResource("models/plane.dae"));
+			rightBoard      = ColladaLoader.load(Helper.getFileResource("models/plane.dae"));
+			bottomBoard     = ColladaLoader.load(Helper.getFileResource("models/plane.dae"));
 			
-			sn = Finder.find(board, ShapeNode.class, "shape0_Shape");
-	        
-//			hull.setTransform(Transform.translate(0, 2f, 0));
-			hull.setTransform(Transform.scale(1.3f, 1.3f, 6).mul(Transform.translate(0, 1f, 0)));
+			leftBoardNode   = Finder.find(leftBoard, ShapeNode.class, "Plane01_Shape");
+	        rightBoardNode  = Finder.find(rightBoard, ShapeNode.class, "Plane01_Shape");
+	        bottomBoardNode = Finder.find(bottomBoard, ShapeNode.class, "Plane01_Shape");
 			
+	        hull.setTransform(Transform.scale(1.3f, 1.3f, 6).mul(Transform.translate(0, 1f, 0)));
 			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
+			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/22, gasMeterHeight/2, gasMeterHeight/42)));
 		
-			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/20, gasMeterHeight, gasMeterHeight/20)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,19 +65,22 @@ public class Zeppelin extends Entity {
 	    loadNode 			= new GroupNode();
 	    boardNode 			= new GroupNode();
 		
-		gasNode.setTransform(Transform.translate(-0.1f, -0.1f, -0.2f));
+		gasNode.setTransform(Transform.translate(-0.15f, -0.11f, -0.2f));
 		gasNode.addChildNode(gasMeter);
 		
-		boardNode.setTransform(Transform.translate(0.0f, -0.14f, -0.21f));
-		//boardNode.addChildNode(board);
-		boardNode.addChildNode(sn);
-		
-		//sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.34f, 0.07f, 0.0001f)));
-		sn.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(0.024f, 0.022f, 0.002f)));
-		
-		loadNode.setTransform(Transform.translate(0.1f, -0.1f, -0.2f));
+		loadNode.setTransform(Transform.translate(0.15f, -0.11f, -0.2f));
 		loadNode.addChildNode(gasMeter);
 
+		boardNode.setTransform(Transform.translate(0f, -0.14f, -0.21f));
+	
+		boardNode.addChildNode(leftBoardNode);
+		boardNode.addChildNode(rightBoardNode);
+		boardNode.addChildNode(bottomBoardNode);
+		
+		leftBoardNode.setTransform(Transform.translate(-0.17f,gasMeterHeight/2,0).mul(Transform.scale(0.12f, 0.12f, 0.12f).mul(Transform.rotate(0,0,1,(float) (Math.PI/4)))));
+		rightBoardNode.setTransform(Transform.translate( 0.17f,gasMeterHeight/2,0).mul(Transform.scale(0.12f, 0.12f, 0.12f).mul(Transform.rotate(0,0,1,(float) (-Math.PI/4)))));
+		bottomBoardNode.setTransform(Transform.translate( 0,-0.012f,-0.01f).mul(Transform.scale(0.4f, 0.1f, 0.12f)));
+		
 		node.addChildNode(xformN);
 		xformN.addChildNode(sizeN);
 		sizeN.addChildNode(hull);
@@ -89,12 +99,14 @@ public class Zeppelin extends Entity {
 		Shader ambientVs = null;
 		Shader ambientFs = null;
 
-		Texture2D bk = null;
+		Texture2D sidePanels = null;
+		Texture2D bottomPanel = null;
 		
 		try {
 			
-			bk = new Texture2D(Helper.getFileResource("textures/wood.png"));
-	        
+			sidePanels = new Texture2D(Helper.getFileResource("textures/panel.jpg"));
+			bottomPanel = new Texture2D(Helper.getFileResource("textures/bottom.jpg"));
+		        
 	        lightingVs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        lightingFs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 			
@@ -110,26 +122,34 @@ public class Zeppelin extends Entity {
 		}
     
 		ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
-      
         ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
         
         ShaderMaterial boardMat = new ShaderMaterial();
-        boardMat.setTexture("AMBIENT", "jvr_Texture0", bk);    
+        boardMat.setTexture("AMBIENT", "jvr_Texture0", sidePanels);    
         boardMat.setShaderProgram("AMBIENT", ambientProgram);	        
-        boardMat.setTexture("LIGHTING", "jvr_Texture0", bk);    
+        boardMat.setTexture("LIGHTING", "jvr_Texture0", sidePanels);    
         boardMat.setShaderProgram("LIGHTING", lightingProgram);
         
-        sn.setMaterial(boardMat);
+        ShaderMaterial bottomMat = new ShaderMaterial();
+        bottomMat.setTexture("AMBIENT", "jvr_Texture0", bottomPanel);    
+        bottomMat.setShaderProgram("AMBIENT", ambientProgram);	        
+        bottomMat.setTexture("LIGHTING", "jvr_Texture0", bottomPanel);    
+        bottomMat.setShaderProgram("LIGHTING", lightingProgram);
+        
+        leftBoardNode.setMaterial(boardMat);
+        rightBoardNode.setMaterial(boardMat);
+        bottomBoardNode.setMaterial(bottomMat);
+        
 	}
 
 	public void updateState(float gas, float load) {
 		
 		gasNode.setTransform(gasNode.getTransform().mul(Transform.rotateZ(-gasRot)));
-		gasRot = (float) (2-(gas/25f*Math.PI));
+		gasRot = (float) (Math.PI+(gas/25f*Math.PI));
 		gasNode.setTransform(gasNode.getTransform().mul(Transform.rotateZ(gasRot)));
 		
 		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(-loadRot)));
-		loadRot = (float) (2-(load/15f*Math.PI));
+		loadRot = (float) (Math.PI-(load/15f*Math.PI));
 		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(loadRot)));
 		
 	}
