@@ -104,16 +104,16 @@
               <color>0 0 0 1</color>
             </emission>
             <ambient>
-              <color>0.8 0 0 1</color>
+              <color>0.4 0.4 0.4 1</color>
             </ambient>
             <diffuse>
-              <color>0.512 0 0 1</color>
+              <color>0.4 0.4 0.4 1</color>
             </diffuse>
             <specular>
               <color>0.25 0.25 0.25 1</color>
             </specular>
             <shininess>
-              <float>50</float>
+              <float>20</float>
             </shininess>
             <index_of_refraction>
               <float>1</float>

@@ -33,6 +33,8 @@ public class Zeppelin extends Entity {
 	private SceneNode rightBoard;
 	private SceneNode bottomBoard;
 	private ShapeNode bottomBoardNode;
+	private SceneNode wing;
+	private SceneNode wing2;
 	
 	public Zeppelin(GroupNode n){
 		node = n;
@@ -42,7 +44,9 @@ public class Zeppelin extends Entity {
 			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
-
+			wing 	= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
+			wing2 	= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
+				
 			leftBoard       = ColladaLoader.load(Helper.getFileResource("models/plane.dae"));
 			rightBoard      = ColladaLoader.load(Helper.getFileResource("models/plane.dae"));
 			bottomBoard     = ColladaLoader.load(Helper.getFileResource("models/plane.dae"));
@@ -51,8 +55,8 @@ public class Zeppelin extends Entity {
 	        rightBoardNode  = Finder.find(rightBoard, ShapeNode.class, "Plane01_Shape");
 	        bottomBoardNode = Finder.find(bottomBoard, ShapeNode.class, "Plane01_Shape");
 			
-	        hull.setTransform(Transform.scale(1.3f, 1.3f, 6).mul(Transform.translate(0, 1f, 0)));
-			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1));
+	        hull.setTransform(Transform.scale(1.4f, 1.4f, 6.5f).mul(Transform.translate(0, 1f, 0)));
+			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1f));
 			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/22, gasMeterHeight/2, gasMeterHeight/42)));
 		
 		} catch (Exception e) {
@@ -72,7 +76,6 @@ public class Zeppelin extends Entity {
 		loadNode.addChildNode(gasMeter);
 
 		boardNode.setTransform(Transform.translate(0f, -0.14f, -0.21f));
-	
 		boardNode.addChildNode(leftBoardNode);
 		boardNode.addChildNode(rightBoardNode);
 		boardNode.addChildNode(bottomBoardNode);
@@ -85,6 +88,8 @@ public class Zeppelin extends Entity {
 		xformN.addChildNode(sizeN);
 		sizeN.addChildNode(hull);
 		sizeN.addChildNode(cockpit);
+		sizeN.addChildNode(wing);
+		sizeN.addChildNode(wing2);
 
 		node.addChildNode(gasNode);
 		node.addChildNode(loadNode);
@@ -152,6 +157,11 @@ public class Zeppelin extends Entity {
 		loadRot = (float) (Math.PI-(load/15f*Math.PI));
 		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(loadRot)));
 		
+		
+		
+		wing.setTransform(Transform.translate(0, 1.4f, 3.0f).mul(Transform.scale(0.01f,1.5f,1f)));
+		wing2.setTransform(Transform.translate(0, 1.4f, 3.0f).mul(Transform.scale(1.5f,0.01f,1f)));
+		hull.setTransform(Transform.scale(2f,2f,6.5f).mul(Transform.translate(0, 0.65f, 0)));
 	}
 	
 }
