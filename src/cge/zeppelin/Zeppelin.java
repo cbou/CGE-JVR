@@ -55,10 +55,12 @@ public class Zeppelin extends Entity {
 	        rightBoardNode  = Finder.find(rightBoard, ShapeNode.class, "Plane01_Shape");
 	        bottomBoardNode = Finder.find(bottomBoard, ShapeNode.class, "Plane01_Shape");
 			
-	        hull.setTransform(Transform.scale(1.4f, 1.4f, 6.5f).mul(Transform.translate(0, 1f, 0)));
-			cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1f));
+	     	cockpit.setTransform(Transform.scale(0.4f, 0.5f, 1f));
 			gasMeter.setTransform(Transform.translate(0,gasMeterHeight/2,0).mul(Transform.scale(gasMeterHeight/22, gasMeterHeight/2, gasMeterHeight/42)));
-		
+			wing.setTransform(Transform.translate(0, 1.4f, 3.0f).mul(Transform.scale(0.01f,1.5f,1f)));
+			wing2.setTransform(Transform.translate(0, 1.4f, 3.0f).mul(Transform.scale(1.5f,0.01f,1f)));
+			hull.setTransform(Transform.scale(2f,2f,6.5f).mul(Transform.translate(0, 0.65f, 0)));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -157,11 +159,6 @@ public class Zeppelin extends Entity {
 		loadRot = (float) (Math.PI-(load/15f*Math.PI));
 		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(loadRot)));
 		
-		
-		
-		wing.setTransform(Transform.translate(0, 1.4f, 3.0f).mul(Transform.scale(0.01f,1.5f,1f)));
-		wing2.setTransform(Transform.translate(0, 1.4f, 3.0f).mul(Transform.scale(1.5f,0.01f,1f)));
-		hull.setTransform(Transform.scale(2f,2f,6.5f).mul(Transform.translate(0, 0.65f, 0)));
 	}
 	
 }
