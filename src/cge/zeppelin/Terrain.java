@@ -45,6 +45,7 @@ public class Terrain extends Entity{
 	private ShaderMaterial earthMat;
 	private World world;
 	private float bigNoiseAmplitude = 100;
+	private boolean debug = false;
 	
 	Terrain(World w) {
 		world = w;
@@ -171,8 +172,7 @@ public class Terrain extends Entity{
 
 	
 	public float getElevation(float x, float z){
-		float sin = (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(z*100f))));
-//		return sin;
+		if (debug)	return (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(z*100f))));
 		basinX = 100;
 		basinZ = 100;
 		Vector2 basinDistance = new Vector2(x-basinX,z-basinZ);

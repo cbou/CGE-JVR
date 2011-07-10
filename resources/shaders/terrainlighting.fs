@@ -17,6 +17,7 @@ varying vec4 positionV;
 float high 	 = 75.8;
 float middle = 25.2;
 float blend  = 25.7;
+bool debug = false;
 
 void main (void)
 {
@@ -56,7 +57,7 @@ void main (void)
   gl_FragColor = ambientFactor*gl_FragColor + 0.3*intensity*gl_FragColor ;
  
   /* Normal Shader*/
-  //gl_FragColor.rgb = normalV;
+  if (debug) gl_FragColor.rgb = objNormalV;
   
    /* Water */
   if (intensity > 0.0) {

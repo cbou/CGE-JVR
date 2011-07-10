@@ -57,7 +57,7 @@ public class Main {
         };
 
         // Setup a simple Swing frame a stablish an OpenGL context.
-        JFrame gui = new JFrame("Physics Integration Example");
+        JFrame gui = new JFrame("Zeppelin-Commander");
 
         GLCanvas glPanel = new GLCanvas();
         FPSAnimator animator = new FPSAnimator(glPanel, 60);
