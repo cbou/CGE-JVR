@@ -172,7 +172,7 @@ public class Terrain extends Entity{
 	
 	public float getElevation(float x, float z){
 		float sin = (float) (amplitude*(1+Math.sin(x*100f)) +  (amplitude*(1+Math.sin(z*100f))));
-//		return sin;
+		//return sin;
 		basinX = 100;
 		basinZ = 100;
 		Vector2 basinDistance = new Vector2(x-basinX,z-basinZ);

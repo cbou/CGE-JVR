@@ -33,7 +33,7 @@ public class TriangleExample {
     public static void main(String[] args) throws Exception {
         GroupNode root = new GroupNode("scene root");
         GroupNode t = new GroupNode("t");
-        t.addChildNode(ColladaLoader.load(Helper.getFileResource("models/plane.dae")));
+        t.addChildNode(ColladaLoader.load(Helper.getFileResource("prototype/triangle/plane.dae")));
         
         PointLightNode light = new PointLightNode("sun");
         light.setEnabled(true);
@@ -48,15 +48,15 @@ public class TriangleExample {
         root.addChildNodes(light, camera,t);
         Printer.print(root);
 
-        Texture2D bk = new Texture2D(Helper.getInputStreamResource("textures/checkered.jpg"));
+        Texture2D bk = new Texture2D(Helper.getInputStreamResource("prototype/triangle/checkered.jpg"));
 		
-    	Shader ambientVs = new Shader(Helper.getInputStreamResource("shaders/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
-        Shader ambientFs = new Shader(Helper.getInputStreamResource("shaders/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+    	Shader ambientVs = new Shader(Helper.getInputStreamResource("prototype/triangle/ambient.vs"), GL2GL3.GL_VERTEX_SHADER);
+        Shader ambientFs = new Shader(Helper.getInputStreamResource("prototype/triangle/ambient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
     
         ShaderProgram ambientProgram = new ShaderProgram(ambientVs, ambientFs);
         
-        Shader lightingVs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.vs"), GL2GL3.GL_VERTEX_SHADER);
-        Shader lightingFs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
+        Shader lightingVs = new Shader(Helper.getInputStreamResource("prototype/triangle/zeppelinLighting.vs"), GL2GL3.GL_VERTEX_SHADER);
+        Shader lightingFs = new Shader(Helper.getInputStreamResource("prototype/triangle/zeppelinLighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
       
         ShaderProgram lightingProgram = new ShaderProgram(lightingVs, lightingFs);
         

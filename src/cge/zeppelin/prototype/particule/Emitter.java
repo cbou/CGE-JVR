@@ -2,7 +2,6 @@ package cge.zeppelin.prototype.particule;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -19,7 +18,6 @@ import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.attributes.AttributeFloat;
 import de.bht.jvr.core.attributes.AttributeVector3;
-import de.bht.jvr.core.uniforms.UniformFloat;
 import de.bht.jvr.math.Vector3;
 
 public class Emitter {

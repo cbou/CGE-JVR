@@ -3,8 +3,6 @@ package cge.zeppelin.environnement;
 import java.util.Calendar;
 
 import processing.core.PApplet;
-
-import cge.zeppelin.util.Helper;
 import de.bht.jvr.math.Vector3;
 
 public abstract class AbstractEnvironnementElement {

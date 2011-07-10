@@ -17,7 +17,6 @@ import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.uniforms.UniformFloat;
-import de.bht.jvr.core.uniforms.UniformValue;
 
 public class Skybox extends Entity {
     private Texture2D bk, dn, ft, lf, rt, up;
