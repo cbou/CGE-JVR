@@ -25,6 +25,7 @@ public class Skybox extends Entity {
 	private SceneNode planeBk, planeDn, planeFt, planeLf, planeRt, planeUp;
 	private ShapeNode shapeNodeBk, shapeNodeDn, shapeNodeFt, shapeNodeLf, shapeNodeRt, shapeNodeUp;
 	private ShaderMaterial skyMatRt;
+	private float brightness;
 	
     public Skybox(World w, GroupNode n) {
     	node = n;
@@ -64,11 +65,12 @@ public class Skybox extends Entity {
 		node.addChildNode(groupNode);
 		
 		refreshShader();
+		
+		setBrightness(0.7f);
     }
     
-    public void setBrightness(float val){   
-      skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(val));
- 	   
+    public void setBrightness(float val){
+    	brightness = val;
     }
     
     private void loadFiles() throws FileNotFoundException, Exception {
@@ -93,9 +95,13 @@ public class Skybox extends Entity {
      * just for test purpose.
      */
     public void update() {
-        this.node.setTransform(Transform.translate(world.renderer.cameraIntern.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
-       //if (skyMatRt!=null) setBrightness(0.7f);
- 	   
+        this.node.setTransform(
+        	Transform.translate(
+        		world.renderer.cameraIntern.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
+        
+        if (skyMatRt!=null) {
+        	skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(brightness));
+        }
     }
 	
 	public void refreshShader() {
@@ -131,6 +137,7 @@ public class Skybox extends Entity {
 	        skyMatRt = new ShaderMaterial();
 	        skyMatRt.setTexture("AMBIENT", "jvr_Texture0", rt);
 	        skyMatRt.setShaderProgram("AMBIENT", ambientProgram);
+	        skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(brightness));
 	        
 	        ShaderMaterial skyMatUp = new ShaderMaterial();
 	        skyMatUp.setTexture("AMBIENT", "jvr_Texture0", up);

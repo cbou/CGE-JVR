@@ -121,10 +121,8 @@ public class Zeppelin extends Entity {
 	        ambientFs = new Shader(Helper.getInputStreamResource("shaders/zeppelinAmbient.fs"), GL2GL3.GL_FRAGMENT_SHADER);
 	        
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     
