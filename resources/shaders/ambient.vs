@@ -9,5 +9,4 @@ void main(void)
 {
   gl_Position = jvr_ModelViewProjectionMatrix * jvr_Vertex;
   texture_coordinate = jvr_TexCoord;
-  
 }

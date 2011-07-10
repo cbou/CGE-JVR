@@ -38,8 +38,8 @@ public class World {
         skybox = new Skybox(this, renderer.skyboxNode); 
         environnement = new EnvironnementManager(this, renderer.zeppelinNode);
         
-        populateWorld(50, 200);
-        
+        populateWorld();
+     
     }
     
 
@@ -67,7 +67,7 @@ public class World {
 
     void frame(float elapsed, GLAutoDrawable drawable) {
     	
-        renderer.cameraExtern.setTransform(Transform.translate(new Vector3(0,3.5f,+9)));
+        renderer.cameraExtern.setTransform(Transform.translate(new Vector3(0, 3.5f, 9)));
     	getSkybox().update();
     	environnement.update();
     	
@@ -81,14 +81,13 @@ public class World {
         
         environnement.affect(flyer, elapsed);
         getInput().frame(elapsed);
-
         renderer.render(drawable);
     }
     
     /**
      * Populate the world with the neccessary entities.
      */
-    void populateWorld( int bullets, int boxes) {
+    void populateWorld() {
     	
         renderer.spot.setTransform(Transform.translate(20, 120, 20)
                 .mul(Transform.rotateY(0.8f)).mul(Transform.rotateX(-0.8f)));
@@ -101,8 +100,6 @@ public class World {
         add(getTerrain());
         add(flyer);
         add(getSkybox());
-        
-        
     }
 	
 	public void switchRefreshShader() {

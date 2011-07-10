@@ -1,4 +1,3 @@
-uniform vec3 toonColor;
 uniform sampler2D jvr_Texture0;
 
 varying vec2 texture_coordinate;

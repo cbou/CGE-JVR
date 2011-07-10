@@ -17,6 +17,7 @@ import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.Texture2D;
 import de.bht.jvr.core.Transform;
 import de.bht.jvr.core.uniforms.UniformFloat;
+import de.bht.jvr.core.uniforms.UniformValue;
 
 public class Skybox extends Entity {
     private Texture2D bk, dn, ft, lf, rt, up;
@@ -44,7 +45,6 @@ public class Skybox extends Entity {
 		planeLf.setTransform(Transform.translate(-1 * boxSize, 0, 0).mul(Transform.rotateYDeg(90)).mul(Transform.scale(1000, 1000, 6)));
 		planeUp.setTransform(Transform.translate(0, boxSize, 0).mul(Transform.rotateYDeg(180)).mul(Transform.rotateXDeg(90)).mul(Transform.scale(1000, 1000, 6)));
 		
-		
 		shapeNodeBk = Finder.find(planeBk, ShapeNode.class, "Plane01_Shape");
 		shapeNodeDn = Finder.find(planeDn, ShapeNode.class, "Plane01_Shape");
 		shapeNodeFt = Finder.find(planeFt, ShapeNode.class, "Plane01_Shape");
@@ -67,7 +67,8 @@ public class Skybox extends Entity {
     }
     
     public void setBrightness(float val){   
-        skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(val));
+      skyMatRt.setUniform("AMBIENT", "brightness", new UniformFloat(val));
+ 	   
     }
     
     private void loadFiles() throws FileNotFoundException, Exception {
@@ -93,10 +94,11 @@ public class Skybox extends Entity {
      */
     public void update() {
         this.node.setTransform(Transform.translate(world.renderer.cameraIntern.getEyeWorldTransform(world.renderer.root).getMatrix().translation()));
+       //if (skyMatRt!=null) setBrightness(0.7f);
+ 	   
     }
 	
 	public void refreshShader() {
-		
 		// can not compile if there is no context
 		if (world.renderer.ctx == null) return;
 		
@@ -133,7 +135,7 @@ public class Skybox extends Entity {
 	        ShaderMaterial skyMatUp = new ShaderMaterial();
 	        skyMatUp.setTexture("AMBIENT", "jvr_Texture0", up);
 	        skyMatUp.setShaderProgram("AMBIENT", ambientProgram);
-	        
+	   	 
 	        shapeNodeBk.setMaterial(skyMatBk);
 	        shapeNodeDn.setMaterial(skyMatDn);
 	        shapeNodeFt.setMaterial(skyMatFt);

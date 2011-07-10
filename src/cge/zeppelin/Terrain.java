@@ -25,15 +25,15 @@ public class Terrain extends Entity{
 	private TriangleMesh triangleMesh;
 	private ShapeNode meshNode;
 	private PApplet noiseMaker = new PApplet();
-	private float amplitude = 4;
+	private float amplitude = 20;
 	private Material mat;
 	private int[] indices;
 	private terrainMesh mesh;
 	private float zOffset = 0;
 	private float xOffset = 0;
 	private int grid  = 20;
-	private int xSize = 40; //Fuer quadratisch halb so gross wie ySize
-	private int zSize = 80;
+	private int xSize = 60; //Fuer quadratisch halb so gross wie ySize
+	private int zSize = 120;
 	private float oldXOffset = Float.MAX_VALUE;
 	private float oldZOffset = Float.MAX_VALUE;
 	private Texture2D textureHigh;
@@ -44,6 +44,7 @@ public class Terrain extends Entity{
 	private int basinZ;
 	private ShaderMaterial earthMat;
 	private World world;
+	private float bigNoiseAmplitude = 100;
 	
 	Terrain(World w) {
 		world = w;
@@ -179,18 +180,16 @@ public class Terrain extends Entity{
 		float influence =  basinDistance.length() < 100 ? 100-basinDistance.length() : 0;
 		
 		//TODO RICHTIG machen
-		return (float) (5*amplitude*noise(x,z) + 100*bigNoise(x, z) - influence);
+		return (float) (amplitude*noise(x,z) + bigNoiseAmplitude*bigNoise(x, z) - influence);
 	}
 	
-	public float getCElevation(float x, float z){
+	public float getCollisionElevation(float x, float z){
 		float nextX = (int) x / grid*grid;
 		float nextZ = (int) z / grid*grid;
 		float elev0 = getElevation(nextX, nextZ);
 		float elev1 = getElevation(nextX+grid, nextZ);
 		float elev2 = getElevation(nextX, nextZ+grid);
 		float elev3 = getElevation(nextX+grid, nextZ+grid);
-//		System.out.println(nextX+" "+nextZ);
-//		System.out.println(elev0+" "+elev1+" "+elev2+" "+elev3);
 		return Math.max(elev0, Math.max(elev1, Math.max(elev2, elev3)));
 //		return (elev0+elev1+elev2+elev3)/4f;
 	}
@@ -256,7 +255,6 @@ public class Terrain extends Entity{
 		return n*f;
 	}
 
-	
 
 	public void postPosition(Vector3 translation) {
 		
@@ -308,8 +306,9 @@ public class Terrain extends Entity{
 			
 	        earthMat.setShaderProgram("AMBIENT", ambientProgram);
 	        earthMat.setShaderProgram("LIGHTING", lightingProgram);
-	
+	          
 	        meshNode.setMaterial(earthMat);
+	        setBrightness(1);
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -328,14 +327,6 @@ public class Terrain extends Entity{
 		float[] textCoords;
 		float[] positions ;
 		float[] normals ;
-
 	}
-	public static void main(String[] args) {
-			float x = 44;
-			int grid = 20;
-		
-			float nextX = (int) x / grid*grid;
-			
-			System.out.println(nextX);
-	}
+	
 }

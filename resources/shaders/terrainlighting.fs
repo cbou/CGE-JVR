@@ -14,9 +14,9 @@ varying vec3 lightDirV;
 varying vec3 eyeDirV;
 varying vec4 positionV;
 
-float high 	 = 35.8;
+float high 	 = 75.8;
 float middle = 25.2;
-float blend  = 5.7;
+float blend  = 25.7;
 
 void main (void)
 {
