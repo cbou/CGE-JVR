@@ -111,9 +111,8 @@ public class Terrain extends Entity{
 				Vector3 nx2 = new Vector3(-x2Diff,amplitude,0);
 				Vector3 nz2 = new Vector3(0,amplitude,-z2Diff);	
 				
-				Vector3 n1 = nx1.add(nx2);
-				n1 = n1.add(nz1).add(nz2);
-
+				Vector3 n1 = nx1.add(nx2).add(nz1).add(nz2);
+			
 				n1=n1.normalize();
 				tmp[i]   = n1.x();
 				tmp[i+1] = n1.y();

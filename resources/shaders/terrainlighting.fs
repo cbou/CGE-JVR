@@ -32,8 +32,8 @@ void main (void)
   float intensity = dot(L, N);
   
   /* Vary terrain borders dependent on normal */
-  high 	 = high   + oN.x * 5.0;
-  middle = middle + oN.z * 5.0;
+  high 	 = high   + oN.x * 15.0;
+  middle = middle + oN.z * 15.0;
   
   if (positionV.y > high)  {
 	  	if (positionV.y < high + blend){
@@ -52,8 +52,7 @@ void main (void)
   } else {
    		gl_FragColor = texture2D(jvr_TextureLow, texture_coordinate);
   }
-   
-  //gl_FragColor = 0.7*gl_FragColor + 0.3*intensity*gl_FragColor ;
+  
   gl_FragColor = ambientFactor*gl_FragColor + 0.3*intensity*gl_FragColor ;
  
   /* Normal Shader*/
