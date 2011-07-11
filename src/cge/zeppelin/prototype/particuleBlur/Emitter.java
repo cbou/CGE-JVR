@@ -2,7 +2,6 @@ package cge.zeppelin.prototype.particuleBlur;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -19,7 +18,6 @@ import de.bht.jvr.core.ShaderProgram;
 import de.bht.jvr.core.ShapeNode;
 import de.bht.jvr.core.attributes.AttributeFloat;
 import de.bht.jvr.core.attributes.AttributeVector3;
-import de.bht.jvr.core.uniforms.UniformFloat;
 import de.bht.jvr.math.Vector3;
 
 public class Emitter {
@@ -103,17 +101,6 @@ public class Emitter {
         // Set
         cloud.setAttribute("partPosition", new AttributeVector3(position));
         cloud.setAttribute("partRadius", new AttributeFloat(radius));
-    }
-
-    private static Random random = new Random();
-
-    private float randomValue(float min, float max) {
-        return min + random.nextFloat() * (max - min);
-    }
-
-    private Vector3 randomVector3(Vector3 min, Vector3 max) {
-        return new Vector3(randomValue(min.x(), max.x()), randomValue(min.y(), max.y()),
-                randomValue(min.z(), max.z()));
     }
 
     public void refreshShader(){

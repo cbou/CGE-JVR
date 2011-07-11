@@ -2,7 +2,7 @@ package cge.zeppelin.environnement;
 
 import java.util.Calendar;
 
-import cge.zeppelin.util.Helper;
+import processing.core.PApplet;
 import de.bht.jvr.math.Vector3;
 
 public abstract class AbstractEnvironnementElement {
@@ -29,7 +29,7 @@ public abstract class AbstractEnvironnementElement {
 	}
 	
 	public Vector3 getForce() {
-		float multiplicator = Math.abs(Math.abs(Helper.map(currentMili, 0, durationMax, -forceMax, forceMax)) - forceMax);
+		float multiplicator = Math.abs(Math.abs(PApplet.map(currentMili, 0, durationMax, -forceMax, forceMax)) - forceMax);
 		
 		return new Vector3( force.x() * multiplicator,
 				force.y() * multiplicator,

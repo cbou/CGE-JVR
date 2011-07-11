@@ -31,14 +31,8 @@ import de.bht.jvr.util.InputState;
 import de.bht.jvr.util.StopWatch;
 
 /**
- * This basic sample demonstrates how to setup a very simple jVR application. It
- * opens a single window that shows a centered box geometry which is lit by a
- * point light source and can be rotated interactively with some keys. This
- * example uses the default phong shader that is applied to geometry loaded from
- * Collada files.
- * 
- * @author Marc Roßbach
- * @author Henrik Tramberend
+ * @author Andreas Rettig
+ * @author Charles Bourasseau
  */
 
 public class BlurExample {

@@ -57,7 +57,7 @@ public class Checkpoint extends Entity {
 		node = new GroupNode();
 
 		try {
-			arrowModel   = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
+			arrowModel = ColladaLoader.load(Helper.getFileResource("models/arrow.dae"));
 		} catch (Exception e) { 	
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class Checkpoint extends Entity {
 		if (oldCheckpoint) {
 			
 			try {
-				sphereModel   = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
+				sphereModel = ColladaLoader.load(Helper.getFileResource("models/sphere.dae"));
 			} catch (Exception e) { 	
 				e.printStackTrace();
 			}
@@ -213,7 +213,6 @@ public class Checkpoint extends Entity {
 		
 	}
 
-	
     /**
      * removes arrow above checkpoint
      */

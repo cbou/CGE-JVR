@@ -13,10 +13,6 @@ import de.bht.jvr.logger.LogPrinter;
 import de.bht.jvr.util.StopWatch;
 import de.bht.jvr.util.awt.InputState;
 
-/**
- * A medium complex example showing integration of the jVR renderer and the
- * jBullet library. Use an AWT widget for OpenGL context creation.
- */
 public class Main {
 
     static Renderer renderer = new Renderer();

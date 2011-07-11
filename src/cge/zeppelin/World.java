@@ -43,7 +43,6 @@ public class World {
      
     }
     
-
     /**
      * Add an entity.
      */

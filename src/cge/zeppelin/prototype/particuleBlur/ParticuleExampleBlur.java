@@ -24,11 +24,8 @@ import de.bht.jvr.util.InputState;
 import de.bht.jvr.util.StopWatch;
 
 /**
- * This basic sample demonstrates how to setup a very simple jVR application
- * that uses a geometry shader.
- * 
- * @author Marc Roßbach
- * @author Henrik Tramberend
+ * @author Andreas Rettig
+ * @author Charles Bourasseau
  */
 
 public class ParticuleExampleBlur {

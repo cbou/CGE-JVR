@@ -190,7 +190,7 @@ public class Terrain extends Entity{
 		float elev2 = getElevation(nextX, nextZ+grid);
 		float elev3 = getElevation(nextX+grid, nextZ+grid);
 		return Math.max(elev0, Math.max(elev1, Math.max(elev2, elev3)));
-//		return (elev0+elev1+elev2+elev3)/4f;
+		//return (elev0+elev1+elev2+elev3)/4f;
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
