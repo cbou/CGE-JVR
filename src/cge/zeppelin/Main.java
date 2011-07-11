@@ -64,7 +64,7 @@ public class Main {
         gui.getContentPane().add(glPanel);
 
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gui.setMinimumSize(new Dimension(800, 600));
+        gui.setMinimumSize(new Dimension(1024, 768));
         gui.setVisible(true);
 
         glPanel.requestFocusInWindow();

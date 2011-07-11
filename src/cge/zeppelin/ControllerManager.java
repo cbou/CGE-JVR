@@ -72,6 +72,11 @@ public class ControllerManager {
         	world.environnement.rainEntity.reset();
         }
         
+        if (world.getInput().isTriggered('9')){
+        	world.flyer.checkPoint(c++);
+        }
+        
 	}
 	
+	int c = 0;
 }

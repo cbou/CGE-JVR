@@ -35,6 +35,7 @@ public class Zeppelin extends Entity {
 	private ShapeNode bottomBoardNode;
 	private SceneNode wing;
 	private SceneNode wing2;
+	private String panelTextPath = "textures/cockpit0.jpg";
 	
 	public Zeppelin(GroupNode n){
 		node = n;
@@ -84,7 +85,7 @@ public class Zeppelin extends Entity {
 		
 		leftBoardNode.setTransform(Transform.translate(-0.17f,gasMeterHeight/2,0).mul(Transform.scale(0.12f, 0.12f, 0.12f).mul(Transform.rotate(0,0,1,(float) (Math.PI/4)))));
 		rightBoardNode.setTransform(Transform.translate( 0.17f,gasMeterHeight/2,0).mul(Transform.scale(0.12f, 0.12f, 0.12f).mul(Transform.rotate(0,0,1,(float) (-Math.PI/4)))));
-		bottomBoardNode.setTransform(Transform.translate( 0,-0.012f,-0.01f).mul(Transform.scale(0.4f, 0.1f, 0.12f)));
+		bottomBoardNode.setTransform(Transform.translate( 0,-0.012f,-0.01f).mul(Transform.scale(0.4f, 0.08f, 0.12f)));
 		
 		node.addChildNode(xformN);
 		xformN.addChildNode(sizeN);
@@ -110,9 +111,8 @@ public class Zeppelin extends Entity {
 		Texture2D bottomPanel = null;
 		
 		try {
-			
 			sidePanels = new Texture2D(Helper.getFileResource("textures/panel.jpg"));
-			bottomPanel = new Texture2D(Helper.getFileResource("textures/bottom.jpg"));
+			bottomPanel = new Texture2D(Helper.getFileResource(panelTextPath));
 		        
 	        lightingVs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.vs"), GL2GL3.GL_VERTEX_SHADER);
 	        lightingFs = new Shader(Helper.getInputStreamResource("shaders/zeppelinLighting.fs"), GL2GL3.GL_FRAGMENT_SHADER);
@@ -131,14 +131,14 @@ public class Zeppelin extends Entity {
         
         ShaderMaterial boardMat = new ShaderMaterial();
         boardMat.setTexture("AMBIENT", "jvr_Texture0", sidePanels);    
-        boardMat.setShaderProgram("AMBIENT", ambientProgram);	        
         boardMat.setTexture("LIGHTING", "jvr_Texture0", sidePanels);    
+        boardMat.setShaderProgram("AMBIENT", ambientProgram);	        
         boardMat.setShaderProgram("LIGHTING", lightingProgram);
         
         ShaderMaterial bottomMat = new ShaderMaterial();
         bottomMat.setTexture("AMBIENT", "jvr_Texture0", bottomPanel);    
-        bottomMat.setShaderProgram("AMBIENT", ambientProgram);	        
         bottomMat.setTexture("LIGHTING", "jvr_Texture0", bottomPanel);    
+        bottomMat.setShaderProgram("AMBIENT", ambientProgram);	        
         bottomMat.setShaderProgram("LIGHTING", lightingProgram);
         
         leftBoardNode.setMaterial(boardMat);
@@ -157,6 +157,13 @@ public class Zeppelin extends Entity {
 		loadRot = (float) (Math.PI-(load/15f*Math.PI));
 		loadNode.setTransform(loadNode.getTransform().mul(Transform.rotateZ(loadRot)));
 		
+	}
+	
+	public void setCheckpointPassed(int n){
+		n = Math.min(Math.max(0, n),4);
+		panelTextPath = "textures/cockpit"+n+".jpg";
+		System.out.println(panelTextPath);
+		refreshShader();
 	}
 	
 }

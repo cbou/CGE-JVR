@@ -140,6 +140,10 @@ public class Flyer extends Entity {
 		gas =  Math.max(0, gas);
 	}
 	
+	public void checkPoint(int n){
+		zeppelin.setCheckpointPassed(n);
+	}
+	
 	public void reset(){
 		gas  = STARTGAS;
 		load = STARTLOAD;

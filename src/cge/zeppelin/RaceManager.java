@@ -27,7 +27,7 @@ public class RaceManager {
 	
 	public void populate() {
 		
-		addCheckpoint(new Checkpoint(node, 3, new Vector3(3,13,-15), world));
+		addCheckpoint(new Checkpoint(node, 3, new Vector3(3,17,-15), world));
 		addCheckpoint(new Checkpoint(node, 3, new Vector3(2, 18,-50), world));
 		addCheckpoint(new Checkpoint(node, 3, new Vector3(-6, 19,-80), world));
 		addCheckpoint(new Checkpoint(node, 3, new Vector3(-14, 21,-100), world));
@@ -49,10 +49,12 @@ public class RaceManager {
 			if (status < checkpoints.size() -1) {
 				status++;
 				System.out.printf("Great! Checkpoint number %s Ok!\n", status);
+				world.flyer.checkPoint(status);
 			} else {
 				sumOfElapsed += elapsed;
-				if (sumOfElapsed > 3) {
+				if (sumOfElapsed > 1) {
 					System.out.println("You won!");
+					world.flyer.checkPoint(4);
 				}
 			}
 			
