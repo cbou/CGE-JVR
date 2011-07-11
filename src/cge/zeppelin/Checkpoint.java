@@ -45,7 +45,7 @@ public class Checkpoint extends Entity {
 	SceneNode arrowModel;
 	ShapeNode arrowShapeNode;
 	
-	final boolean oldCheckpoint = true;
+	final boolean oldCheckpoint = false;
 
 	private World world;
 

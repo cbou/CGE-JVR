@@ -23,7 +23,8 @@ public class World {
     final Skybox skybox;
 	final Terrain terrain;
 	
-	private boolean refreshShader = true;
+	private boolean refreshShader = false;
+	private boolean firstrun = true;
 
     /**
      * Create a new world.
@@ -74,10 +75,13 @@ public class World {
         for (Entity e : entities) {
             e.manipulate(elapsed);
 
-            if (refreshShader) {
+            if (refreshShader | firstrun) {
             	e.refreshShader();
             }
+            
+            
         }
+        firstrun = false;
         
         environnement.affect(flyer, elapsed);
         getInput().frame(elapsed);

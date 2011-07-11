@@ -196,7 +196,6 @@ public class Terrain extends Entity{
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
 
 		float[] tmp  = new float[triangles*9];
-		float[] nor  = new float[triangles*9];
 		
 		for (int i=0;i<triangles/2;i++){
 			

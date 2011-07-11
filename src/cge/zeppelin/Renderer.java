@@ -102,7 +102,7 @@ public class Renderer {
     		pipeline.switchFrameBufferObject(null);
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
     		pipeline.setUniform("intensity", new UniformFloat(2));      // set the particle blur intensity
-    		pipeline.setUniform("dofIntensity", new UniformFloat(1.4f)); // set the DOFblur intensity
+    		pipeline.setUniform("dofIntensity", new UniformFloat(1f)); // set the DOFblur intensity
     		
     		pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
     		pipeline.bindDepthBuffer("jvr_SzeneZ", "SceneMap"); 	 // bind depth buffer from fbo to uniform
