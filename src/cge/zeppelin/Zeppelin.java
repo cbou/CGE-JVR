@@ -41,7 +41,6 @@ public class Zeppelin extends Entity {
 		node = n;
 		
 		try {
-			//TODO Modell
 			hull 	= ColladaLoader.load(Helper.getFileResource("models/spround.dae"));
 			cockpit = ColladaLoader.load(Helper.getFileResource("models/box.dae"));
 			gasMeter= ColladaLoader.load(Helper.getFileResource("models/box.dae"));
@@ -162,7 +161,6 @@ public class Zeppelin extends Entity {
 	public void setCheckpointPassed(int n){
 		n = Math.min(Math.max(0, n),4);
 		panelTextPath = "textures/cockpit"+n+".jpg";
-		System.out.println(panelTextPath);
 		refreshShader();
 	}
 	

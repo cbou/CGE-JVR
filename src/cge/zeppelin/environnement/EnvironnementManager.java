@@ -15,7 +15,9 @@ import de.bht.jvr.math.Vector3;
  * @author charles
  */
 public class EnvironnementManager {
-
+	public boolean disabled;
+	public RainEntity rainEntity;
+		
 	Wind wind = null;
 	Rain rain = null;
 	
@@ -26,12 +28,10 @@ public class EnvironnementManager {
 	long rainLastTime = 0;
 	
 	float MINBRIGHTNESS = 0.1f;
-	public float MAXBRIGHTNESS = 0.7f;
+	float MAXBRIGHTNESS = 0.7f;
 	float brightness = 1f;
 
-	public boolean disabled;
 	private GroupNode node;
-	public RainEntity rainEntity;
 	private World world;
 	
 	public EnvironnementManager(World world, GroupNode n) {
