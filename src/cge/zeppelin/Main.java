@@ -16,6 +16,7 @@ import de.bht.jvr.util.StopWatch;
 import de.bht.jvr.util.awt.InputState;
 
 public class Main {
+	
 	static Splashscreen splashscreen = new Splashscreen();
     static Renderer renderer = new Renderer();
     static InputState input = new InputState();
