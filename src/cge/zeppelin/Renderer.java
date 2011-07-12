@@ -3,6 +3,7 @@ package cge.zeppelin;
 import java.io.File;
 import java.io.IOException;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2GL3;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -101,13 +102,13 @@ public class Renderer {
     		/* Auf Screen zeichnen */   
     		pipeline.switchFrameBufferObject(null);
     		pipeline.clearBuffers(true, true, new Color(0, 0, 0));
-    		pipeline.setUniform("intensity", new UniformFloat(2));      // set the particle blur intensity
+    		pipeline.setUniform("intensity", new UniformFloat(15	));      // set the particle blur intensity
     		pipeline.setUniform("dofIntensity", new UniformFloat(1f)); // set the DOFblur intensity
     		
     		pipeline.bindColorBuffer("jvr_Texture1", "SceneMap", 0); // bind color buffer from fbo to uniform
     		pipeline.bindDepthBuffer("jvr_SzeneZ", "SceneMap"); 	 // bind depth buffer from fbo to uniform
     		pipeline.bindDepthBuffer("jvr_ParticleZ", "Particles");  // bind depth buffer from fbo to uniform
-    	     
+//    	     
     		// render quad with dof shader
     		pipeline.drawQuad(sm, "DOFPass");
     	} catch (IOException e) {

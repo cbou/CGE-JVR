@@ -76,9 +76,7 @@ public class Flyer extends Entity {
 			translation.mul(
 					Transform.translate(rotation.getMatrix().mulDir(new Vector3(0, 0, velocity * dt))));
 
-		// Gravity, Gas and Balance
 		float overAllGravity = gravity+gas-load;
-		Vector3 position = translation.extractTranslation().getMatrix().translation();
 		
 		//TODO Alle Velocities in einen Vektor
 		// Friction

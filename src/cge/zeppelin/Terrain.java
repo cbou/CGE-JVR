@@ -74,7 +74,6 @@ public class Terrain extends Entity{
 	}
 	
 	public void resetTerrain(){
-		//Dauer 9-24 milliSekunden
 		mesh  = createTriangleArea(xSize,zSize, 
 				(int)(Math.round(xOffset/grid)*grid)-xSize*5, 
 				(int)(Math.round(zOffset/grid)*grid)-zSize*2.5f);	
@@ -177,8 +176,7 @@ public class Terrain extends Entity{
 		basinZ = 100;
 		Vector2 basinDistance = new Vector2(x-basinX,z-basinZ);
 		float influence =  basinDistance.length() < 100 ? 100-basinDistance.length() : 0;
-		
-		//TODO RICHTIG machen
+	
 		return (float) (amplitude*noise(x,z) + bigNoiseAmplitude*bigNoise(x, z) - influence);
 	}
 	
@@ -190,7 +188,6 @@ public class Terrain extends Entity{
 		float elev2 = getElevation(nextX, nextZ+grid);
 		float elev3 = getElevation(nextX+grid, nextZ+grid);
 		return Math.max(elev0, Math.max(elev1, Math.max(elev2, elev3)));
-		//return (elev0+elev1+elev2+elev3)/4f;
 	}
 
 	private float[] createTriangleStripe(int triangles, float x, float z, int h){
